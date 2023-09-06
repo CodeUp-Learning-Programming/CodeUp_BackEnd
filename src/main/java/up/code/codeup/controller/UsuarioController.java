@@ -1,16 +1,21 @@
 package up.code.codeup.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.entity.Usuario;
+import up.code.codeup.repository.UsuarioRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     private List<Usuario> usuariosCadastrados = new ArrayList<>();
 
     @GetMapping
@@ -25,6 +30,7 @@ public class UsuarioController {
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario novoUsuario) {
         if (novoUsuario != null) {
             usuariosCadastrados.add(novoUsuario);
+            usuarioRepository.save(novoUsuario);
             return ResponseEntity.status(200).body(novoUsuario);
         }
         return ResponseEntity.status(400).build();
