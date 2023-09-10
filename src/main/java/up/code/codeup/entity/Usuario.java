@@ -9,18 +9,18 @@ import jakarta.persistence.Id;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer idUsuario;
     private String nome;
     private String idade;
     private String email;
     private String senha;
 
-    public Integer getId() {
-        return id;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNome() {
@@ -54,4 +54,6 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+
 }

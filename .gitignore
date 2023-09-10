@@ -1,0 +1,31 @@
+# Arquivos e diretórios específicos para projetos Spring Boot
+
+# Arquivos de configuração do IDE
+.idea/
+.vscode/
+
+# Arquivos de log do Spring Boot
+logs/
+*.log
+
+# Diretórios de saída da compilação e arquivos gerados
+target/
+build/
+bin/
+
+# Dependências do Maven
+# Você pode adicionar outras pastas como /lib/ se necessário
+!**/target/
+!**/target/**
+!**/target/**/*.*
+
+# Arquivos de configuração do Spring Boot
+application.properties
+application.yml
+
+# Cache do Spring Boot DevTools
+.restart/
+
+# Outros arquivos e diretórios gerados pelo Spring Boot
+spring-boot-starter-actuator/
+spring.pid

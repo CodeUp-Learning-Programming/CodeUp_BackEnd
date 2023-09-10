@@ -18,9 +18,15 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
     private List<Usuario> usuariosCadastrados = new ArrayList<>();
 
+    public List<Usuario> atualizarLista(){
+        List<Usuario> usuarios = usuarioRepository.listarUsuarios();
+        return usuariosCadastrados = usuarios;
+    }
     @GetMapping
     public ResponseEntity<List<Usuario>> listar() {
+        atualizarLista();
         if (!usuariosCadastrados.isEmpty()) {
+
             return ResponseEntity.status(200).body(usuariosCadastrados);
         }
         return ResponseEntity.status(404).body(null);
@@ -28,6 +34,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario novoUsuario) {
+        atualizarLista();
         if (novoUsuario != null) {
             usuariosCadastrados.add(novoUsuario);
             usuarioRepository.save(novoUsuario);
@@ -53,12 +60,21 @@ public class UsuarioController {
         }
         return ResponseEntity.status(404).build();
     }
-
     @GetMapping("/{indice}")
     public ResponseEntity<Usuario> getPorId(@PathVariable int indice) {
         if (indice >= 0 && indice < usuariosCadastrados.size()) {
             return ResponseEntity.status(200).body(usuariosCadastrados.get(indice));
         }
         return ResponseEntity.status(404).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
+        Usuario usuarioRetornado = usuarioRepository.login(usuario.getEmail(), usuario.getSenha());
+
+        if(usuarioRetornado != null){
+            return ResponseEntity.status(200).body(usuarioRetornado);
+        }
+            return ResponseEntity.status(401).build();
     }
 }
