@@ -26,7 +26,6 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> listar() {
         atualizarLista();
         if (!usuariosCadastrados.isEmpty()) {
-
             return ResponseEntity.status(200).body(usuariosCadastrados);
         }
         return ResponseEntity.status(404).body(null);
