@@ -1,12 +1,12 @@
-package up.code.codeup.entity;
+package up.code.codeup.entity.usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
-public class Usuario {
+@Entity(name = "Usuario")
+public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idUsuario;
