@@ -1,32 +1,51 @@
 package up.code.codeup.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import up.code.codeup.entity.usuario.UsuarioEntity;
+import org.springframework.web.server.ResponseStatusException;
+import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
+import up.code.codeup.entity.usuario.Usuario;
 import up.code.codeup.entity.usuario.UsuarioLoginDTO;
 import up.code.codeup.repository.UsuarioRepository;
+import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
+import up.code.codeup.service.usuario.dto.UsuarioCriacaoDto;
+import up.code.codeup.service.usuario.dto.UsuarioMapper;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private GerenciadorTokenJwt gerenciadorTokenJwt;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public List<UsuarioEntity> buscarUsuarios() {
+    public List<Usuario> buscarUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    public UsuarioEntity cadastrarUsuario(UsuarioEntity usuario) {
-        return usuarioRepository.save(usuario);
+    public void criar(UsuarioCriacaoDto usuarioCriacaoDto) {
+        final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
+        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
+        this.usuarioRepository.save(novoUsuario);
     }
 
-    public UsuarioEntity atualizarUsuario(UsuarioEntity novoUsuairo, int id) {
-        Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
+    public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isPresent()) {
-            UsuarioEntity usuarioExistente = usuario.get();
+            Usuario usuarioExistente = usuario.get();
             usuarioExistente.setNome(novoUsuairo.getNome());
             usuarioExistente.setEmail(novoUsuairo.getEmail());
             usuarioExistente.setSenha(novoUsuairo.getSenha());
@@ -37,28 +56,49 @@ public class UsuarioService {
     }
 
     public boolean deletarUsuario(int id) {
-        Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
         usuario.ifPresent(u -> usuarioRepository.delete(u));
         return true;
     }
 
-    public UsuarioEntity buscarUsuarioPorId(int id) {
-        Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
+    public Usuario buscarUsuarioPorId(int id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isPresent()) {
-            UsuarioEntity usuarioExistente = usuario.get();
+            Usuario usuarioExistente = usuario.get();
             return usuarioExistente;
         }
         return null;
     }
 
-    public boolean validarLogin(UsuarioLoginDTO login) {
-        UsuarioEntity usuario = usuarioRepository.findByEmail(login.getEmail());
-        if (usuario != null) {
-            if (usuario.getSenha().equals(login.getSenha())) {
-                return true;
-            }
-        }
-        return false;
+//    public boolean validarLogin(UsuarioLoginDTO login) {
+//        Usuario usuario = usuarioRepository.findByEmail(login.getEmail());
+//        if (usuario != null) {
+//            if (usuario.getSenha().equals(login.getSenha())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+    public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDTO.getEmail(), usuarioLoginDTO.getSenha());
+
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
+
+        Usuario usuarioAutenticado =
+                usuarioRepository.findByEmail(usuarioLoginDTO.getEmail())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+        return UsuarioMapper.of(usuarioAutenticado, token);
     }
+
+
 
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity(name = "Usuario")
-public class UsuarioEntity {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idUsuario;
@@ -54,6 +54,4 @@ public class UsuarioEntity {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-
 }

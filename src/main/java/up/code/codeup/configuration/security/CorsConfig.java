@@ -1,4 +1,4 @@
-package up.code.codeup.security;
+package up.code.codeup.configuration.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;

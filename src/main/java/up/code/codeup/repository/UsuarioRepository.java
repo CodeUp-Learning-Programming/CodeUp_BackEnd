@@ -1,8 +1,13 @@
 package up.code.codeup.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import up.code.codeup.entity.usuario.UsuarioEntity;
+import up.code.codeup.entity.usuario.Usuario;
 
-public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
-    UsuarioEntity findByEmail(String email);
+import java.util.Optional;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    Optional<Usuario> findByEmail(String username);
+
+//    Object getReferenceByEmail(String email);
+//    Usuario findByEmail(String email);
 }
