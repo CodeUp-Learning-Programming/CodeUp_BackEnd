@@ -29,7 +29,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfiguracao {
+public class SecurityConfig {
     private static final String ORIGENS_PERMITIDAS = "*";
 
     @Autowired
