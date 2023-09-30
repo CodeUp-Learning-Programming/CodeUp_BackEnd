@@ -1,4 +1,4 @@
 insert into usuario
-    (ID_USUARIO, nome, email, senha)
+    (nome,idade, email, senha)
 values
-    (1, 'John Doe', 'john@doe.com', '$2a$10$0/TKTGxdREbWaWjWYhwf6e9P1fPOAMMNqEnZgOG95jnSkHSfkkIrC');
+    ('Desenvolvedor', 21, 'dev@sptech.school', '$2a$10$J2hkSo44vnvbd04d9oK3zu1DEUF0.yeb2KZnEmY2JhgL4Vs1QNWXa');

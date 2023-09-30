@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
+
     @GetMapping
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         List<Usuario> usuarios = usuarioService.buscarUsuarios();
@@ -26,7 +27,6 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> criar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         this.usuarioService.criar(usuarioCriacaoDto);
         return ResponseEntity.status(201).build();
