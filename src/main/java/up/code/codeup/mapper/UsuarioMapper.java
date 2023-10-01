@@ -1,8 +1,8 @@
 package up.code.codeup.mapper;
 
+import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
-import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
-import up.code.codeup.service.usuario.dto.UsuarioCriacaoDto;
 
 public class UsuarioMapper {
 

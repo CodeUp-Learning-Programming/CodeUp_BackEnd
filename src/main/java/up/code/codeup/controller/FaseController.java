@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import up.code.codeup.entity.fase.Fase;
+import up.code.codeup.dto.faseDto.FaseCriacaoDto;
+import up.code.codeup.entity.Fase;
 import up.code.codeup.service.FaseService;
-import up.code.codeup.service.fase.dto.FaseCriacaoDto;
 
 
 import java.util.List;

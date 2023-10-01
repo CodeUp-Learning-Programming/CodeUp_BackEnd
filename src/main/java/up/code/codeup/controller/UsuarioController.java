@@ -5,32 +5,30 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
+import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
-import up.code.codeup.entity.usuario.UsuarioLoginDTO;
 import up.code.codeup.service.UsuarioService;
-import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
-import up.code.codeup.service.usuario.dto.UsuarioCriacaoDto;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")
-
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         List<Usuario> usuarios = usuarioService.buscarUsuarios();
         return ResponseEntity.status(200).body(usuarios);
     }
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> criar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
+    public ResponseEntity<Void> criarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         this.usuarioService.criar(usuarioCriacaoDto);
         return ResponseEntity.status(201).build();
     }

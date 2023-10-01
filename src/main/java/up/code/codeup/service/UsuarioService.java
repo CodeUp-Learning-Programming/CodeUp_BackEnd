@@ -9,12 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
+import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
+import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
-import up.code.codeup.entity.usuario.UsuarioLoginDTO;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
-import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
-import up.code.codeup.service.usuario.dto.UsuarioCriacaoDto;
 
 import java.util.List;
 import java.util.Optional;

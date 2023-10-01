@@ -1,20 +1,22 @@
-package up.code.codeup.service.usuario.dto;
+package up.code.codeup.dto.usuarioDto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public class UsuarioCriacaoDto {
 
-    @Size(min = 3, max = 15)
+    @NotNull
+    @Size(min = 3, max = 25)
+    @Pattern(regexp = "^(?!.*\\s)(?!.*\\s$)(?!.*\\s{2,})[A-Za-zÀ-ÖØ-öø-ÿ]+$\n",
+    message = "Campo nome inválido" )
     private String nome;
     @Past
     private LocalDate dtNascimento;
     @Email
     private String email;
     @Size(min = 6, max = 15)
+    @Pattern(regexp = "^(?!.*\\s)(?!.*\\s$)(?!.*\\s\\s)[\\S\\s]*$")
     private String senha;
 
     public String getNome() {

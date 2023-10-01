@@ -1,4 +1,4 @@
-package up.code.codeup.entity.usuario;
+package up.code.codeup.dto.usuarioDto;
 
 public class UsuarioLoginDTO {
     private String email;
