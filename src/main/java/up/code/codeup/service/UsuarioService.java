@@ -83,9 +83,7 @@ public class UsuarioService {
                         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         final String token = gerenciadorTokenJwt.generateToken(authentication);
-
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 

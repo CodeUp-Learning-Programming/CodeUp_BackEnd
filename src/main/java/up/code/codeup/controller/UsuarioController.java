@@ -26,16 +26,14 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarios);
     }
 
-    @PostMapping
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> criarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         this.usuarioService.criar(usuarioCriacaoDto);
         return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
         if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
             return ResponseEntity.status(200).body(usuarioAtualizado);
