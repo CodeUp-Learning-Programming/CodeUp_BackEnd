@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.service.usuario.autenticacao.AutenticacaoService;
+import up.code.codeup.service.AutenticacaoService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +51,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/usuarios/login/**"),
+            new AntPathRequestMatcher("/usuarios/cadastrar"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**")
     };

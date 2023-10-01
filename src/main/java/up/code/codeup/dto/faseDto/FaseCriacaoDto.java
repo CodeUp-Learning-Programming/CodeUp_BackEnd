@@ -1,9 +1,9 @@
-package up.code.codeup.service.fase.dto;
+package up.code.codeup.dto.faseDto;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Size;
-import up.code.codeup.entity.materia.Materia;
+import up.code.codeup.entity.Materia;
 
 public class FaseCriacaoDto {
 

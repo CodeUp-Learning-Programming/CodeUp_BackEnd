@@ -1,8 +1,7 @@
-package up.code.codeup.entity.fase;
+package up.code.codeup.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import up.code.codeup.entity.materia.Materia;
 
 @Entity
 public class Fase {

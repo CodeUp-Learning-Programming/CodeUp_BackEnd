@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.service.usuario.autenticacao.AutenticacaoService;
+import up.code.codeup.service.AutenticacaoService;
 
 import java.io.IOException;
 import java.util.Objects;

@@ -1,6 +1,8 @@
-package up.code.codeup.service.fase.dto;
+package up.code.codeup.mapper;
 
-import up.code.codeup.entity.fase.Fase;
+
+import up.code.codeup.dto.faseDto.FaseCriacaoDto;
+import up.code.codeup.entity.Fase;
 
 public class FaseMapper {
     public static Fase of(FaseCriacaoDto faseCriacaoDto) {

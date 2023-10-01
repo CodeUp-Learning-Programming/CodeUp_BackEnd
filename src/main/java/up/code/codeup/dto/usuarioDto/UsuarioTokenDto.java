@@ -1,4 +1,4 @@
-package up.code.codeup.service.usuario.autenticacao.dto;
+package up.code.codeup.dto.usuarioDto;
 
 public class UsuarioTokenDto {
     private Integer id;

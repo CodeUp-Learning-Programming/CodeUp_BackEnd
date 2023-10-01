@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.entity.materia.Materia;
+import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
+import up.code.codeup.entity.Materia;
 import up.code.codeup.service.MateriaService;
-import up.code.codeup.service.materia.dto.MateriaCriacaoDto;
 
 import java.util.List;
 

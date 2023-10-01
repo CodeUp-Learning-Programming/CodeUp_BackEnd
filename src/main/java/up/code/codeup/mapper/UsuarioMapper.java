@@ -1,7 +1,8 @@
-package up.code.codeup.service.usuario.dto;
+package up.code.codeup.mapper;
 
-import up.code.codeup.entity.usuario.Usuario;
-import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
+import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
+import up.code.codeup.entity.Usuario;
 
 public class UsuarioMapper {
 
@@ -9,6 +10,7 @@ public class UsuarioMapper {
         Usuario usuario = new Usuario();
 
         usuario.setEmail(usuarioCriacaoDto.getEmail());
+        usuario.setDtNascimento(usuarioCriacaoDto.getDtNascimento());
         usuario.setNome(usuarioCriacaoDto.getNome());
         usuario.setSenha(usuarioCriacaoDto.getSenha());
 

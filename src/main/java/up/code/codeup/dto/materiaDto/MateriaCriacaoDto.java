@@ -1,4 +1,4 @@
-package up.code.codeup.service.materia.dto;
+package up.code.codeup.dto.materiaDto;
 
 import jakarta.validation.constraints.Size;
 

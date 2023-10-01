@@ -1,4 +1,4 @@
-package up.code.codeup.entity.materia;
+package up.code.codeup.dto.materiaDto;
 
 public class MateriaDTO {
     private String nome;

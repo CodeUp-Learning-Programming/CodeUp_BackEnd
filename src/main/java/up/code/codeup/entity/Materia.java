@@ -1,8 +1,7 @@
-package up.code.codeup.entity.materia;
+package up.code.codeup.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import up.code.codeup.entity.fase.Fase;
 
 import java.util.ArrayList;
 import java.util.List;
