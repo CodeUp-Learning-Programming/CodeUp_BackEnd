@@ -9,12 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.entity.usuario.Usuario;
+import up.code.codeup.entity.Usuario;
 import up.code.codeup.entity.usuario.UsuarioLoginDTO;
+import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.service.usuario.autenticacao.dto.UsuarioTokenDto;
 import up.code.codeup.service.usuario.dto.UsuarioCriacaoDto;
-import up.code.codeup.service.usuario.dto.UsuarioMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,16 +70,6 @@ public class UsuarioService {
         return null;
     }
 
-//    public boolean validarLogin(UsuarioLoginDTO login) {
-//        Usuario usuario = usuarioRepository.findByEmail(login.getEmail());
-//        if (usuario != null) {
-//            if (usuario.getSenha().equals(login.getSenha())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDTO.getEmail(), usuarioLoginDTO.getSenha());
@@ -98,7 +88,6 @@ public class UsuarioService {
 
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
-
 
 
 }

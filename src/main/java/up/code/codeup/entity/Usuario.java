@@ -1,9 +1,11 @@
-package up.code.codeup.entity.usuario;
+package up.code.codeup.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import java.time.LocalDate;
 
 @Entity(name = "Usuario")
 public class Usuario {
@@ -11,7 +13,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
     private String nome;
-    private String idade;
+    private LocalDate dtNascimento;
     private String email;
     private String senha;
 
@@ -31,12 +33,12 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getIdade() {
-        return idade;
+    public LocalDate getDtNascimento() {
+        return dtNascimento;
     }
 
-    public void setIdade(String idade) {
-        this.idade = idade;
+    public void setDtNascimento(LocalDate dtNascimento) {
+        this.dtNascimento = dtNascimento;
     }
 
     public String getEmail() {

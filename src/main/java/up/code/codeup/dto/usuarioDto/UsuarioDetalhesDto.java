@@ -1,8 +1,8 @@
-package up.code.codeup.service.usuario.autenticacao.dto;
+package up.code.codeup.dto.usuarioDto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import up.code.codeup.entity.usuario.Usuario;
+import up.code.codeup.entity.Usuario;
 
 import java.util.Collection;
 

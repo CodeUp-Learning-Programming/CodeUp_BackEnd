@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import up.code.codeup.entity.fase.Fase;
 import up.code.codeup.entity.materia.Materia;
+import up.code.codeup.mapper.FaseMapper;
 import up.code.codeup.repository.FaseRepository;
 import up.code.codeup.repository.MateriaRepository;
 import up.code.codeup.service.fase.dto.FaseCriacaoDto;
-import up.code.codeup.service.fase.dto.FaseMapper;
 
 import java.util.List;
 import java.util.Optional;

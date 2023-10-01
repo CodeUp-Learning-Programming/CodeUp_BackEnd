@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.service.usuario.autenticacao.AutenticacaoService;
+import up.code.codeup.service.AutenticacaoService;
 
 import java.util.Arrays;
 import java.util.List;
