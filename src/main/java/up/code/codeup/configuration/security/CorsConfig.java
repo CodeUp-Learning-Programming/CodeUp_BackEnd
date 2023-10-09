@@ -12,6 +12,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000"); // Defina os origens permitidos
+        config.addAllowedOrigin("http://localhost:5173"); // Defina os origens permitidos
         config.addAllowedHeader("*"); // Permitir todos os cabeçalhos
         config.addAllowedMethod("*"); // Permitir todos os métodos HTTP (GET, POST, PUT, DELETE, etc.)
 
