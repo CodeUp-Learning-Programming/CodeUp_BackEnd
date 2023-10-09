@@ -1,0 +1,1 @@
+Crie um programa que solicita ao usuário um número de 1 a 7 e, em seguida, exibe o dia da semana correspondente ao número inserido. Cada número de 1 a 7 representará um dia da semana, começando com domingo como 1 e terminando com sábado como 7.;function exercicio15() { /* Implemente aqui */ };function respostaExercicio15() { /* Implemente a resposta aqui */ }
