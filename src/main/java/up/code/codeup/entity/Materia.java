@@ -8,23 +8,18 @@ import java.util.List;
 
 @Entity
 public class Materia {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id_materia;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idMateria;
     private String nome;
 
-    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Fase> fases = new ArrayList<>();
 
-    public Integer getId_materia() {
-        return id_materia;
+    public Integer getIdMateria() {
+        return idMateria;
     }
 
-    public void setId_materia(Integer id_materia) {
-        this.id_materia = id_materia;
+    public void setIdMateria(Integer idMateria) {
+        this.idMateria = idMateria;
     }
 
     public String getNome() {
@@ -33,13 +28,5 @@ public class Materia {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Fase> getFases() {
-        return fases;
-    }
-
-    public void setFases(List<Fase> fases) {
-        this.fases = fases;
     }
 }

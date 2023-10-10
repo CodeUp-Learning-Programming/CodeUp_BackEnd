@@ -16,11 +16,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    @Autowired
     private UsuarioService usuarioService;
+    public UsuarioController (UsuarioService service){
+        this.usuarioService = service;
+    }
 
     @GetMapping
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         List<Usuario> usuarios = usuarioService.buscarUsuarios();
         return ResponseEntity.status(200).body(usuarios);
@@ -33,7 +34,6 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
         if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
             return ResponseEntity.status(200).body(usuarioAtualizado);
@@ -42,7 +42,6 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> deletarUsuario(@PathVariable int id) {
         if (usuarioService.deletarUsuario(id)) {
             return ResponseEntity.status(204).build();
@@ -51,7 +50,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
         if (usuarioService.buscarUsuarioPorId(id) != null) {
             return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
@@ -64,4 +62,5 @@ public class UsuarioController {
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDTO);
         return ResponseEntity.status(200).body(usuarioToken);
     }
+
 }

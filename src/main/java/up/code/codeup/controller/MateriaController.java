@@ -13,6 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/materias")
 public class MateriaController {
+    private MateriaService materiaService;
+    public MateriaController(MateriaService materiaService) {
+        this.materiaService = materiaService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Materia>> listarMaterias() {
@@ -20,8 +24,6 @@ public class MateriaController {
         return ResponseEntity.status(200).body(materias);
     }
 
-    @Autowired
-    private MateriaService materiaService;
 
     @PostMapping
     public ResponseEntity<Void> criar(@RequestBody @Valid MateriaCriacaoDto materiaCriacaoDto) {
