@@ -2,6 +2,7 @@ package up.code.codeup.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Exercicio {
@@ -9,11 +10,15 @@ public class Exercicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer num_exercicio;
 
     private String nomeArquivo;
 
+    @Lob
+    private byte[] conteudoArquivo;
+    private Integer num_exercicio;
+
     private boolean concluido;
+
     private String conteudo_teorico;
     private String desafio;
 
@@ -36,20 +41,28 @@ public class Exercicio {
         this.id = id;
     }
 
-    public Integer getNum_exercicio() {
-        return num_exercicio;
-    }
-
-    public void setNum_exercicio(Integer num_exercicio) {
-        this.num_exercicio = num_exercicio;
-    }
-
     public String getNomeArquivo() {
         return nomeArquivo;
     }
 
     public void setNomeArquivo(String nomeArquivo) {
         this.nomeArquivo = nomeArquivo;
+    }
+
+    public byte[] getConteudoArquivo() {
+        return conteudoArquivo;
+    }
+
+    public void setConteudoArquivo(byte[] conteudoArquivo) {
+        this.conteudoArquivo = conteudoArquivo;
+    }
+
+    public Integer getNum_exercicio() {
+        return num_exercicio;
+    }
+
+    public void setNum_exercicio(Integer num_exercicio) {
+        this.num_exercicio = num_exercicio;
     }
 
     public boolean isConcluido() {

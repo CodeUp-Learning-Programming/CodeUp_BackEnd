@@ -2,12 +2,13 @@ package up.code.codeup.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.service.ExercicioService;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/exercicios")
@@ -20,4 +21,18 @@ public class ExercicioController {
         Exercicio exercicioDesejado = this.exercicioService.buscarExercicio(id_fase, num_exercicio);
         return ResponseEntity.status(200).body(exercicioDesejado);
     }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadArquivo(@RequestParam("file") MultipartFile file) throws IOException {
+        Exercicio exercicio = new Exercicio();
+        exercicio.setNomeArquivo(file.getOriginalFilename());
+
+        // Configure o campo de arquivo diretamente com os bytes do arquivo
+        exercicio.setConteudoArquivo(file.getBytes());
+
+        exercicioService.uploadExercicioCSV(file);
+
+        return ResponseEntity.ok("Arquivo salvo com sucesso.");
+    }
+
 }

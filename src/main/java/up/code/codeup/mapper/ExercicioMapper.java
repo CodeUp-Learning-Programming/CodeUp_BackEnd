@@ -1,5 +1,6 @@
 package up.code.codeup.mapper;
 
+import jakarta.persistence.Lob;
 import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDto;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.entity.Fase;
@@ -10,11 +11,9 @@ public class ExercicioMapper {
     public static Exercicio of(ExercicioCriacaoDto exercicioCriacaoDto) {
         Exercicio exercicio = new Exercicio();
         exercicio.setConcluido(exercicioCriacaoDto.isConcluido());
-        exercicio.setConteudo_teorico(exercicioCriacaoDto.getConteudo_teorico());
-        exercicio.setDesafio(exercicioCriacaoDto.getDesafio());
-        exercicio.setInstrucao(exercicioCriacaoDto.getInstrucao());
-        exercicio.setLayout_funcao(exercicioCriacaoDto.getLayout_funcao());
-        exercicio.setResposta(exercicioCriacaoDto.getResposta());
+        exercicio.setNum_exercicio((exercicioCriacaoDto.getNum_exercicio()));
+        exercicio.setConteudoArquivo(exercicioCriacaoDto.getConteudoArquivo());
+        exercicio.setNomeArquivo(exercicioCriacaoDto.getNomeArquivo());
         exercicio.setFase(exercicioCriacaoDto.getFase());
 
         return exercicio;
