@@ -1,1 +1,0 @@
-Analise sequências de cores e descubra o padrão. Por exemplo, se a sequência for "vermelho, amarelo, verde, vermelho, amarelo, verde, ...", qual é a próxima cor na sequência?;function exercicio11() { /* Implemente aqui */ };function respostaExercicio11() { /* Implemente a resposta aqui */ }
