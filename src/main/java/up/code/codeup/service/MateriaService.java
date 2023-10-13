@@ -1,5 +1,6 @@
 package up.code.codeup.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MateriaService {
 
     @Autowired

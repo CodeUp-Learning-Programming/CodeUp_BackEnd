@@ -1,38 +1,65 @@
 package up.code.codeup.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
+import up.code.codeup.dto.exercicioDto.ExercicioDTO;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.service.ExercicioService;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequestMapping("/exercicios")
+@RequiredArgsConstructor
 public class ExercicioController {
 
-    @Autowired
-    private ExercicioService exercicioService;
-    @GetMapping("/{id_fase}/{num_exercicio}")
-    public ResponseEntity<Exercicio> buscarExercicio(@PathVariable Integer id_fase, @PathVariable Integer num_exercicio){
-        Exercicio exercicioDesejado = this.exercicioService.buscarExercicio(id_fase, num_exercicio);
-        return ResponseEntity.status(200).body(exercicioDesejado);
+    private final ExercicioService exercicioService;
+
+    @PostMapping
+    public ResponseEntity<ExercicioCriacaoDTO> criar(@RequestBody @Valid ExercicioCriacaoDTO exercicioCriacaoDTO) {
+        this.exercicioService.criar(exercicioCriacaoDTO);
+        return ResponseEntity.status(201).build();
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadArquivo(@RequestParam("file") MultipartFile file) throws IOException {
-        Exercicio exercicio = new Exercicio();
-        exercicio.setNomeArquivo(file.getOriginalFilename());
-
-        // Configure o campo de arquivo diretamente com os bytes do arquivo
-        exercicio.setConteudoArquivo(file.getBytes());
-
-        exercicioService.uploadExercicioCSV(file);
-
-        return ResponseEntity.ok("Arquivo salvo com sucesso.");
+    @PutMapping("/{id}")
+    public ResponseEntity<Exercicio> atualizarExercicio(@PathVariable int id, @RequestBody Exercicio materiaAtualizado) {
+        if (exercicioService.atualizarExercicio(materiaAtualizado, id) != null) {
+            return ResponseEntity.status(200).body(materiaAtualizado);
+        }
+        return ResponseEntity.status(404).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Exercicio> deletarExercicio(@PathVariable int id) {
+        if (exercicioService.deletarExercicio(id)) {
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(204).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Exercicio> buscarExercicioPorId(@PathVariable int id) {
+        if (exercicioService.buscarExercicioPorId(id) != null) {
+            return ResponseEntity.status(200).body(exercicioService.buscarExercicioPorId(id));
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/{fk_fase}/{numExercicio}")
+    public ResponseEntity<ExercicioDTO> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
+        ExercicioDTO exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
+        return ResponseEntity.ok(exercicioDesejado);
+    }
+
+    @GetMapping("/{fk_fase}")
+    public ResponseEntity<List<ExercicioDTO>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
+        List<ExercicioDTO> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
+
+        if(exercicioDesejados.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(exercicioDesejados);
+    }
 }

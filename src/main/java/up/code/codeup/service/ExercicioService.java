@@ -1,87 +1,88 @@
 package up.code.codeup.service;
 
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
+import up.code.codeup.dto.exercicioDto.ExercicioDTO;
 import up.code.codeup.entity.Exercicio;
+import up.code.codeup.entity.Fase;
+import up.code.codeup.exception.EntidadeNaoEncontradaException;
+import up.code.codeup.mapper.ExercicioMapper;
 import up.code.codeup.repository.ExercicioRepository;
+import up.code.codeup.repository.FaseRepository;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ExercicioService {
 
-    @Autowired
-    private ExercicioRepository exercicioRepository;
+    private final ExercicioRepository exercicioRepository;
+    private final FaseRepository faseRepository;
 
+    public List<ExercicioDTO> buscarFases() {
+        List<Exercicio> listaExercicio = this.exercicioRepository.findAll();
+        List<ExercicioDTO> listaExercicioDTO = new ArrayList<>();
 
-    @Transactional
-    public void uploadExercicioCSV(MultipartFile file) throws IOException {
-        if (!file.isEmpty()) {
-            Exercicio exercicio = new Exercicio(); // Substitua Exercicio pelo nome da sua entidade
-            exercicio.setNomeArquivo(file.getOriginalFilename());
-
-            // Lê o conteúdo do arquivo como um array de bytes
-            byte[] arquivoBytes = file.getBytes();
-
-            // Salva o conteúdo do arquivo como um BLOB
-            exercicio.setConteudoArquivo(arquivoBytes);
-
-            // Salve o objeto Exercicio no banco de dados
-            exercicioRepository.save(exercicio);
+        for(int i = 0; i < listaExercicio.size();i++){
+            listaExercicioDTO.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
         }
+
+        return listaExercicioDTO;
     }
 
-    public Exercicio buscarExercicio(Integer id_fase, Integer num_exercicio) {
-        FileReader arquivo = null;
-        Scanner entrada = null;
-        boolean deuRuim = false;
-        Exercicio exercicioDesejado = new Exercicio();
-        String nomeArquivo = "fases/algoritmos/fase" + id_fase + "_exercicio" + num_exercicio + ".csv";
-
-        System.out.println(nomeArquivo);
-        //Tentando abrir o arquivo
-        try {
-            arquivo = new FileReader(nomeArquivo.exercicioReposito());
-            entrada = new Scanner(arquivo).useDelimiter(";|\\n");
-        } catch (FileNotFoundException erro) {
-            System.out.println("Arquivo não encontrado!");
-            return null;
-        }
-
-        //Tentando ler o arquivo
-        try {
-            String conteudo_teorico = entrada.next();
-            String desafio = entrada.next();
-            String instrucao = entrada.next();
-            String layout_funcao = entrada.next();
-            String exercicio_desejado = entrada.next();
-
-        } catch (NoSuchElementException erro) {
-            System.out.println("Arquivo com problemas");
-            erro.printStackTrace();
-        } catch (IllegalStateException erro) {
-            System.out.println("Erro na leitura do arquivo");
-            erro.printStackTrace();
-        } finally {
-            entrada.close();
-
-            try {
-                arquivo.close();
-            } catch (IOException erro) {
-                System.out.println("Erro ao fechar o arquivo");
-                deuRuim = true;
-            }
-            if (deuRuim) {
-                System.out.println("O arquivo ficou aberto!");
-            }
-        }
-        return exercicioDesejado;
+    public Exercicio criar(ExercicioCriacaoDTO exercicioCriacaoDTO) {
+        final Exercicio novoExercicio = ExercicioMapper.paraEntidade(exercicioCriacaoDTO);
+        Fase fase = faseRepository.findById(exercicioCriacaoDTO.getFase().getId()).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Fase")
+        );
+        novoExercicio.setFase(fase);
+        this.exercicioRepository.save(novoExercicio);
+        return novoExercicio;
     }
 
+    public Exercicio atualizarExercicio(Exercicio novaExercicio, int id) {
+        exercicioRepository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Exercicio")
+        );
+        novaExercicio.setId(id);
+        return exercicioRepository.save(novaExercicio);
+
+    }
+
+    public boolean deletarExercicio(int id) {
+        Exercicio fase = exercicioRepository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Exercicio")
+        );
+
+        exercicioRepository.delete(fase);
+        return true;
+    }
+
+    public Exercicio buscarExercicioPorId(int id) {
+        Exercicio fase = exercicioRepository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Exercicio")
+        );
+        return fase;
+    }
+
+    public ExercicioDTO buscarExercicio(Integer fk_fase, Integer numExercicio) {
+        Exercicio exercicio = this.exercicioRepository.buscarExercicioPorNumero(fk_fase, numExercicio).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Exercicio")
+        );
+
+        return ExercicioMapper.paraDTO(exercicio);
+    }
+
+    public List<ExercicioDTO> buscarExercicioPorNumExercicio(Integer fk_fase) {
+        List<Exercicio> listaExercicio = this.exercicioRepository.findByFase(fk_fase);
+        List<ExercicioDTO> listaExercicioDTO = new ArrayList<>();
+
+        for(int i = 0; i < listaExercicio.size();i++){
+            listaExercicioDTO.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
+        }
+
+        return listaExercicioDTO;
+    }
 
 }
