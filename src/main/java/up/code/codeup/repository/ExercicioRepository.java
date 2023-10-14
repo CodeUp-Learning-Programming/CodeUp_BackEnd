@@ -6,7 +6,6 @@ import up.code.codeup.entity.Exercicio;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface ExercicioRepository extends JpaRepository <Exercicio, Integer> {
 

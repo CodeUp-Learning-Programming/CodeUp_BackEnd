@@ -2,7 +2,6 @@ package up.code.codeup.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;

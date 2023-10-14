@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import up.code.codeup.dto.faseDto.FaseCriacaoDTO;
-import up.code.codeup.dto.faseDto.FaseDTO;
 import up.code.codeup.entity.Fase;
 import up.code.codeup.service.FaseService;
 
