@@ -1,7 +1,7 @@
 package up.code.codeup.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
@@ -12,18 +12,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/materias")
+@RequiredArgsConstructor
 public class MateriaController {
-    private MateriaService materiaService;
-    public MateriaController(MateriaService materiaService) {
-        this.materiaService = materiaService;
-    }
+
+    private final MateriaService materiaService;
 
     @GetMapping
     public ResponseEntity<List<Materia>> listarMaterias() {
         List<Materia> materias = materiaService.buscarMaterias();
         return ResponseEntity.status(200).body(materias);
     }
-
 
     @PostMapping
     public ResponseEntity<Void> criar(@RequestBody @Valid MateriaCriacaoDto materiaCriacaoDto) {
