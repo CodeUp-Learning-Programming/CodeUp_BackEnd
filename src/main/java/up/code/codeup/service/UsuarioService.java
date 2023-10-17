@@ -141,7 +141,7 @@ public class UsuarioService {
     }
 
 
-    @PersistenceContext
+  /*  @PersistenceContext
     private EntityManager entityManager;
 
     @Transactional
@@ -172,5 +172,5 @@ public class UsuarioService {
         }
     }
 
-
+*/
         }
