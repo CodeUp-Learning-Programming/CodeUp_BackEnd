@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
@@ -63,4 +65,25 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
+    @GetMapping("/exibirCsv")
+    public ResponseEntity<String> exibirCsv() {
+        //ModelAndView modelAndView = new ModelAndView("csv");
+        usuarioService.lerExibirArquivoCsv("usuarios");
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/salvarCsv")
+    public String salvarCsv(@RequestParam("file") MultipartFile file) {
+        // Aqui você pode chamar o serviço para salvar o arquivo CSV no banco de dados
+        usuarioService.saveUsuariosFromCsv(file);
+        return "redirect:/exibirCsv"; // Redireciona para a página de exibição do CSV
+    }
+
+    @GetMapping("/exportar-csv")
+    public ResponseEntity<String> exportarUsuariosParaCsv() {
+        List<Usuario> usuarios = usuarioService.buscarUsuarios(); // Substitua por um método que obtém a lista de usuários do banco de dados.
+        String nomeArquivo = "usuarios"; // Nome do arquivo CSV
+        usuarioService.gravaUsuariosEmArquivoCsv(usuarios, nomeArquivo);
+        return ResponseEntity.ok("Arquivo CSV exportado com sucesso.");
+    }
 }
