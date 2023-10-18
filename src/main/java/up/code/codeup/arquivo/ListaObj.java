@@ -1,3 +1,5 @@
+package up.code.codeup.arquivo;
+
 public class ListaObj <T> {
 
     // 01) Declarar vetor de int:
@@ -43,6 +45,43 @@ public class ListaObj <T> {
         return -1;
     }
 
+    public T buscaPorIndice(int indice) {
+        if (indice < 0 || indice >= nroElem) {
+            System.out.println("\nÍndice inválido!");
+            return null;
+        }
+
+        return vetor[indice];
+    }
+
+    public void adicionaNoIndice(int indice, T elemento) {
+
+        if (indice < 0 || indice > nroElem) {
+            System.out.println("Indice invalido");
+        }
+        else if (nroElem >=vetor.length) {
+            System.out.println("Lista cheia");
+        }
+        else {
+            // desloca os elementos uma posicao para frente
+            // a fim de abrir o espaco para inserir o valor
+            for (int i = nroElem - 1; i >= indice; i--) {
+                vetor[i + 1] = vetor[i];
+            }
+            vetor[indice] = elemento;
+            nroElem++;
+        }
+    }
+
+    public void substitui(int indice, T elemento) {
+
+        if (indice < 0 || indice > nroElem) {
+            System.out.println("Indice invalido");
+        }
+        else {
+            vetor[indice] = elemento;
+        }
+    }
     // 06) Método removePeloIndice:
     // Recebe o índice do elemento a ser removido
     // Se o índice for inválido, retorna false
@@ -109,6 +148,8 @@ public class ListaObj <T> {
             }
         }
     }
+
+
 
 }
 

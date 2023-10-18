@@ -24,6 +24,9 @@ public class CsvBanco {
                 usuario.setNome(line[1]);
                 usuario.setEmail(line[2]);
                 usuario.setSenha(line[3]);
+                usuario.setNivel(Integer.parseInt(line[4]));
+                usuario.setXp(Integer.parseInt(line[5]));
+
                 // Parse LocalDate from line[4] if needed
 
                 // Save the Usuario entity to the H2 Database

@@ -15,12 +15,14 @@ public class UsuarioCsvImporter {
 
         try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
             for (Usuario usuario : usuarios) {
-                String linha = String.format("%d;%s;%s;%s;%s\n",
+                String linha = String.format("%d;%s;%s;%s;%s;%d;%d\n",
                         usuario.getIdUsuario(),
                         usuario.getNome(),
                         usuario.getEmail(),
                         usuario.getSenha(),
-                        usuario.getDtNascimento());
+                        usuario.getDtNascimento(),
+                        usuario.getNivel(),
+                        usuario.getXp());
 
                 arquivoCsv.write(linha);
             }
@@ -35,14 +37,16 @@ public class UsuarioCsvImporter {
         try (FileReader arq = new FileReader(nomeArq);
              Scanner entrada = new Scanner(arq).useDelimiter(";|\\n")) {
 
-            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s\n", "ID", "NOME", "EMAIL", "SENHA", "DTNASCIMENTO");
+            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s, %8s\n", "ID", "NOME", "EMAIL", "SENHA", "DTNASCIMENTO","NIVEL","XP");
             while (entrada.hasNext()) {
                 int id = entrada.nextInt();
                 String nome = entrada.next();
                 String email = entrada.next();
                 String senha = entrada.next();
                 String dtNascimento = entrada.next();
-                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s\n", id, nome, email, senha, dtNascimento);
+                int nivel = entrada.nextInt();
+                int xp = entrada.nextInt();
+                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s %d %d\n", id, nome, email, senha, dtNascimento, nivel, xp);
             }
         } catch (IOException e) {
             e.printStackTrace();

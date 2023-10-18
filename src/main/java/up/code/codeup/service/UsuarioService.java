@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import up.code.codeup.arquivo.ListaObj;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
@@ -97,17 +98,20 @@ public class UsuarioService {
     }
 
 
-    public void gravaUsuariosEmArquivoCsv(List<Usuario> usuarios, String nomeArq) {
+    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
         nomeArq += ".csv";
 
         try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
-            for (Usuario usuario : usuarios) {
-                String linha = String.format("%d;%s;%s;%s;%s\n",
+            for(int i = 0; i < usuarioListaObj.getTamanho(); i++){
+                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
+                String linha = String.format("%d;%s;%s;%s;%s;%d;%d\n",
                         usuario.getIdUsuario(),
                         usuario.getNome(),
                         usuario.getEmail(),
                         usuario.getSenha(),
-                        usuario.getDtNascimento());
+                        usuario.getDtNascimento(),
+                        usuario.getNivel(),
+                        usuario.getXp());
 
                 arquivoCsv.write(linha);
             }
@@ -122,18 +126,16 @@ public class UsuarioService {
         try (FileReader arq = new FileReader(nomeArq);
              Scanner entrada = new Scanner(arq).useDelimiter(";|\\n")) {
 
-            System.out.printf("%-4s %-15s %-17s %-60s %-15s\n", "ID", "NOME", "EMAIL", "SENHA", "DTNASCIMENTO");
+            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s, %8s\n", "ID", "NOME", "EMAIL", "SENHA", "DTNASCIMENTO","NIVEL","XP");
             while (entrada.hasNext()) {
-                try {
-                    int id = Integer.parseInt(entrada.next());
-                    String nome = entrada.next();
-                    String email = entrada.next();
-                    String senha = entrada.next();
-                    String dtNascimento = entrada.next();
-                    System.out.printf("%04d %-15s %-17s %-60s %-15s\n", id, nome, email, senha, dtNascimento);
-                } catch (NumberFormatException e) {
-                    System.err.println("Erro ao converter um valor para inteiro. Ignorando a linha.");
-                }
+                int id = entrada.nextInt();
+                String nome = entrada.next();
+                String email = entrada.next();
+                String senha = entrada.next();
+                String dtNascimento = entrada.next();
+                int nivel = entrada.nextInt();
+                int xp = entrada.nextInt();
+                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s %d %d\n", id, nome, email, senha, dtNascimento, nivel, xp);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +143,7 @@ public class UsuarioService {
     }
 
 
-  /*  @PersistenceContext
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Transactional
@@ -172,5 +174,4 @@ public class UsuarioService {
         }
     }
 
-*/
         }
