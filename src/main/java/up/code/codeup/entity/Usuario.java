@@ -1,7 +1,10 @@
 package up.code.codeup.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
 
@@ -19,7 +22,26 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDate dtNascimento;
+    @ColumnDefault("''")
+    private String cpf;
+    @ColumnDefault("'gratuito'")
+    private String plano;
+
+    @ColumnDefault("0")
+    private Integer moedas;
+
+    @ColumnDefault("0")
+    private Integer diamantes;
+
+    @ColumnDefault("0")
     private Integer nivel;
+
+    @ColumnDefault("0")
     private Integer xp;
 
+    @ColumnDefault("0")
+    private Integer diasConsecutivos;
+
+    @ColumnDefault("0")
+    private Integer maxDiasConsecutivos;
 }

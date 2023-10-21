@@ -1,17 +1,11 @@
 package up.code.codeup.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import up.code.codeup.arquivo.ListaObj;
+import up.code.codeup.ListaObj;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
@@ -20,10 +14,8 @@ import up.code.codeup.service.UsuarioService;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -82,19 +74,9 @@ public class UsuarioController {
         return ResponseEntity.status(200).build();
     }
 
-/*
-    @PostMapping("/salvarCsv")
-    public String salvarCsv(@RequestParam("file") MultipartFile file) {
-        // Aqui você pode chamar o serviço para salvar o arquivo CSV no banco de dados
-        usuarioService.saveUsuariosFromCsv(file);
-        return "redirect:/exibirCsv"; // Redireciona para a página de exibição do CSV
-    }
-*/
-
-    @GetMapping("/exportar-csv")
-    public ResponseEntity<String> exportarUsuariosParaCsv() {
-        List<Usuario> usuarios = usuarioService.buscarUsuarios(); // Substitua por um método que obtém a lista de usuários do banco de dados.
-
+    @GetMapping(value = "/download-ordenado", produces = "text/csv")
+    public ResponseEntity<Resource> ordenarCsv() throws IOException {
+        List<Usuario> usuarios = usuarioService.buscarUsuarios();
         ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
 
         for(int i = 0; i < usuarios.size(); i++){
@@ -103,25 +85,45 @@ public class UsuarioController {
 
         // Selection sort otimizado
         for (int i = 0; i < usuarioListaObj.getTamanho() - 1; i++) {
-                int indiceMenor = i;
-                for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
-                    if (usuarioListaObj.buscaPorIndice(j).getNivel() < usuarioListaObj.buscaPorIndice(indiceMenor).getNivel()) {
-                        indiceMenor = j;
-                    }
+            int indiceMaior = i;
+            for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
+                if (usuarioListaObj.buscaPorIndice(j).getNivel() > usuarioListaObj.buscaPorIndice(indiceMaior).getNivel()) {
+                    indiceMaior = j;
                 }
+            }
 
-                Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
-                usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMenor));
-                usuarioListaObj.substitui(indiceMenor, usuarioAux);
+            Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
+            usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMaior));
+            usuarioListaObj.substitui(indiceMaior, usuarioAux);
         }
 
-        String nomeArquivo = "usuarios"; // Nome do arquivo CSV
+
+        String nomeArquivo = "usuarios";
         usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-        return ResponseEntity.ok("Arquivo CSV exportado com sucesso.");
+
+        // Carregue o arquivo CSV
+        File csvFile = new File("usuarios.csv");
+        FileInputStream fileInputStream = new FileInputStream(csvFile);
+        InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+        return ResponseEntity.status(200).header(
+                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
+                .body(resource);
     }
 
     @GetMapping(value = "/download", produces = "text/csv")
     public ResponseEntity<Resource> downloadCsv() throws IOException {
+
+
+        List<Usuario> usuarios = usuarioService.buscarUsuarios();
+        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
+
+        for(int i = 0; i < usuarios.size(); i++){
+            usuarioListaObj.adiciona(usuarios.get(i));
+        }
+        String nomeArquivo = "usuarios"; // Nome do arquivo CSV
+        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
+
         // Carregue o arquivo CSV
         File csvFile = new File("usuarios.csv");
         FileInputStream fileInputStream = new FileInputStream(csvFile);
@@ -131,6 +133,4 @@ public class UsuarioController {
                 "content-disposition", "attachment; filename=\"usuarios.csv\"")
                 .body(resource);
     }
-
-
 }

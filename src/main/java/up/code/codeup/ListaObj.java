@@ -1,4 +1,4 @@
-package up.code.codeup.arquivo;
+package up.code.codeup;
 
 public class ListaObj <T> {
 

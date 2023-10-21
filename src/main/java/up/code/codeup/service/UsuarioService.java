@@ -4,7 +4,6 @@ import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import up.code.codeup.arquivo.ListaObj;
+import up.code.codeup.ListaObj;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
@@ -49,6 +48,7 @@ public class UsuarioService {
         final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
+
         this.usuarioRepository.save(novoUsuario);
     }
 
@@ -100,18 +100,42 @@ public class UsuarioService {
 
     public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
         nomeArq += ".csv";
+            //Titulo
+            try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                   "IdUsuario",
+                   "Nome",
+                   "Email",
+                   "DtNascimento",
+                   "Cpf",
+                   "Plano",
+                   "Moedas",
+                   "Diamantes",
+                   "Nivel",
+                   "Xp",
+                   "DiasConsecutivos",
+                   "MaxDiasConsecutivos"
+            );
 
-        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+            arquivoCsv.write(titulo);
+
+            //Linha
             for(int i = 0; i < usuarioListaObj.getTamanho(); i++){
                 Usuario usuario = usuarioListaObj.buscaPorIndice(i);
-                String linha = String.format("%d;%s;%s;%s;%s;%d;%d\n",
+                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
                         usuario.getIdUsuario(),
                         usuario.getNome(),
                         usuario.getEmail(),
-                        usuario.getSenha(),
                         usuario.getDtNascimento(),
+                        usuario.getCpf(),
+                        usuario.getPlano(),
+                        usuario.getMoedas(),
+                        usuario.getDiamantes(),
                         usuario.getNivel(),
-                        usuario.getXp());
+                        usuario.getXp(),
+                        usuario.getDiasConsecutivos(),
+                        usuario.getMaxDiasConsecutivos()
+                );
 
                 arquivoCsv.write(linha);
             }
@@ -126,16 +150,15 @@ public class UsuarioService {
         try (FileReader arq = new FileReader(nomeArq);
              Scanner entrada = new Scanner(arq).useDelimiter(";|\\n")) {
 
-            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s, %8s\n", "ID", "NOME", "EMAIL", "SENHA", "DTNASCIMENTO","NIVEL","XP");
+            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s\n", "ID", "NOME", "EMAIL", "", "DTNASCIMENTO","NIVEL","XP");
             while (entrada.hasNext()) {
                 int id = entrada.nextInt();
                 String nome = entrada.next();
                 String email = entrada.next();
-                String senha = entrada.next();
                 String dtNascimento = entrada.next();
                 int nivel = entrada.nextInt();
                 int xp = entrada.nextInt();
-                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s %d %d\n", id, nome, email, senha, dtNascimento, nivel, xp);
+                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s %d %d\n", id, nome, email, dtNascimento, nivel, xp);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,4 +197,4 @@ public class UsuarioService {
         }
     }
 
-        }
+}

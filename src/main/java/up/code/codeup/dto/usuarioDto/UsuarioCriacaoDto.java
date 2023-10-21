@@ -1,9 +1,16 @@
 package up.code.codeup.dto.usuarioDto;
 
 import jakarta.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UsuarioCriacaoDto {
     @NotNull(message = "Campo nome obrigatório")
     @Size(min = 3, max = 25, message = "Campo nome deve ter min 3 caracteres max 25")
@@ -20,34 +27,26 @@ public class UsuarioCriacaoDto {
     @Pattern(regexp = "^(?!.*\\s)(?!.*\\s$)(?!.*\\s\\s)[\\S\\s]*$", message = "Campo senha inválida - regex")
     private String senha;
 
-    public String getNome() {
-        return nome;
-    }
+    private String cpf;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    @ColumnDefault("'gratuito'")
+    private String plano;
 
-    public LocalDate getDtNascimento() {
-        return dtNascimento;
-    }
+    @ColumnDefault("0")
+    private Integer moedas;
 
-    public void setDtNascimento(LocalDate dtNascimento) {
-        this.dtNascimento = dtNascimento;
-    }
-    public String getEmail() {
-        return email;
-    }
+    @ColumnDefault("0")
+    private Integer diamantes;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @ColumnDefault("0")
+    private Integer nivel;
 
-    public String getSenha() {
-        return senha;
-    }
+    @ColumnDefault("0")
+    private Integer xp;
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+    @ColumnDefault("0")
+    private Integer diasConsecutivos;
+
+    @ColumnDefault("0")
+    private Integer maxDiasConsecutivos;
 }
