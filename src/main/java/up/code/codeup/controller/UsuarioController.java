@@ -1,5 +1,6 @@
 package up.code.codeup.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -26,18 +27,21 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         List<Usuario> usuarios = usuarioService.buscarUsuarios();
         return ResponseEntity.status(200).body(usuarios);
     }
 
     @PostMapping("/cadastrar")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         this.usuarioService.criar(usuarioCriacaoDto);
         return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
         if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
             return ResponseEntity.status(200).body(usuarioAtualizado);
@@ -46,6 +50,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> deletarUsuario(@PathVariable int id) {
         if (usuarioService.deletarUsuario(id)) {
             return ResponseEntity.status(204).build();
@@ -54,6 +59,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
         if (usuarioService.buscarUsuarioPorId(id) != null) {
             return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
@@ -68,6 +74,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/exibirCsv")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<String> exibirCsv() {
         //ModelAndView modelAndView = new ModelAndView("csv");
         usuarioService.lerExibirArquivoCsv("usuarios");

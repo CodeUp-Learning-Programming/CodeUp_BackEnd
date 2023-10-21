@@ -1,5 +1,6 @@
 package up.code.codeup.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,14 @@ public class ExercicioController {
     private final ExercicioService exercicioService;
 
     @PostMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<ExercicioCriacaoDTO> criar(@RequestBody @Valid ExercicioCriacaoDTO exercicioCriacaoDTO) {
         this.exercicioService.criar(exercicioCriacaoDTO);
         return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Exercicio> atualizarExercicio(@PathVariable int id, @RequestBody Exercicio materiaAtualizado) {
         if (exercicioService.atualizarExercicio(materiaAtualizado, id) != null) {
             return ResponseEntity.status(200).body(materiaAtualizado);
@@ -32,6 +35,7 @@ public class ExercicioController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Exercicio> deletarExercicio(@PathVariable int id) {
         if (exercicioService.deletarExercicio(id)) {
             return ResponseEntity.status(204).build();
@@ -40,6 +44,7 @@ public class ExercicioController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Exercicio> buscarExercicioPorId(@PathVariable int id) {
         if (exercicioService.buscarExercicioPorId(id) != null) {
             return ResponseEntity.status(200).body(exercicioService.buscarExercicioPorId(id));
@@ -48,12 +53,14 @@ public class ExercicioController {
     }
 
     @GetMapping("/{fk_fase}/{numExercicio}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<ExercicioDTO> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
         ExercicioDTO exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
         return ResponseEntity.ok(exercicioDesejado);
     }
 
     @GetMapping("/{fk_fase}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<ExercicioDTO>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
         List<ExercicioDTO> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
 
