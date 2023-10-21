@@ -1,41 +1,47 @@
 package up.code.codeup.entity;
 
-public class Usuario {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.UniqueElements;
 
+import java.time.LocalDate;
+
+@Entity(name = "Usuario")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUsuario;
     private String nome;
-    private String idade;
     private String email;
     private String senha;
+    private LocalDate dtNascimento;
+    @ColumnDefault("''")
+    private String cpf;
+    @ColumnDefault("'gratuito'")
+    private String plano;
 
-    public String getNome() {
-        return nome;
-    }
+    @ColumnDefault("0")
+    private Integer moedas;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    @ColumnDefault("0")
+    private Integer diamantes;
 
-    public String setIdade() {
-        return idade;
-    }
+    @ColumnDefault("0")
+    private Integer nivel;
 
-    public void setIdade(String idade) {
-        this.idade = idade;
-    }
+    @ColumnDefault("0")
+    private Integer xp;
 
-    public String getEmail() {
-        return email;
-    }
+    @ColumnDefault("0")
+    private Integer diasConsecutivos;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+    @ColumnDefault("0")
+    private Integer maxDiasConsecutivos;
 }

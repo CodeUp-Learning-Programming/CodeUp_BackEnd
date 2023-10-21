@@ -1,0 +1,33 @@
+package up.code.codeup.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Fase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Integer numFase;
+    private String titulo;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_materia")
+    @JsonBackReference
+    private Materia materia;
+
+    @OneToMany(mappedBy = "fase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Exercicio> exercicios = new ArrayList<>();
+
+}
