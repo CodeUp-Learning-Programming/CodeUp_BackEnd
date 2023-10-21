@@ -113,18 +113,16 @@ public class UsuarioController {
 
     @GetMapping(value = "/download", produces = "text/csv")
     public ResponseEntity<Resource> downloadCsv() throws IOException {
-
-
         List<Usuario> usuarios = usuarioService.buscarUsuarios();
         ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
 
         for(int i = 0; i < usuarios.size(); i++){
             usuarioListaObj.adiciona(usuarios.get(i));
         }
-        String nomeArquivo = "usuarios"; // Nome do arquivo CSV
+
+        String nomeArquivo = "usuarios";
         usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
 
-        // Carregue o arquivo CSV
         File csvFile = new File("usuarios.csv");
         FileInputStream fileInputStream = new FileInputStream(csvFile);
         InputStreamResource resource = new InputStreamResource(fileInputStream);

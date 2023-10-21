@@ -24,9 +24,7 @@ import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 
 import java.io.*;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
 public class UsuarioService {
@@ -72,10 +70,20 @@ public class UsuarioService {
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        if (usuario.isPresent()) {
-            Usuario usuarioExistente = usuario.get();
-            return usuarioExistente;
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        int indiceInferior = 0;
+        int indiceSuperior = usuarios.size() - 1;
+        int meio;
+        while (indiceInferior <= indiceSuperior) {
+            meio = (indiceInferior + indiceSuperior) / 2;
+            if (id == usuarios.get(meio).getIdUsuario()) {
+                return usuarios.get(meio);
+            } else if (id < usuarios.get(meio).getIdUsuario()) {
+                indiceSuperior = meio - 1;
+            } else {
+                indiceInferior = meio + 1;
+            }
         }
         return null;
     }
@@ -100,27 +108,27 @@ public class UsuarioService {
 
     public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
         nomeArq += ".csv";
-            //Titulo
-            try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+        //Titulo
+        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
             String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                   "IdUsuario",
-                   "Nome",
-                   "Email",
-                   "DtNascimento",
-                   "Cpf",
-                   "Plano",
-                   "Moedas",
-                   "Diamantes",
-                   "Nivel",
-                   "Xp",
-                   "DiasConsecutivos",
-                   "MaxDiasConsecutivos"
+                    "IdUsuario",
+                    "Nome",
+                    "Email",
+                    "DtNascimento",
+                    "Cpf",
+                    "Plano",
+                    "Moedas",
+                    "Diamantes",
+                    "Nivel",
+                    "Xp",
+                    "DiasConsecutivos",
+                    "MaxDiasConsecutivos"
             );
 
             arquivoCsv.write(titulo);
 
             //Linha
-            for(int i = 0; i < usuarioListaObj.getTamanho(); i++){
+            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
                 Usuario usuario = usuarioListaObj.buscaPorIndice(i);
                 String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
                         usuario.getIdUsuario(),
@@ -150,7 +158,7 @@ public class UsuarioService {
         try (FileReader arq = new FileReader(nomeArq);
              Scanner entrada = new Scanner(arq).useDelimiter(";|\\n")) {
 
-            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s\n", "ID", "NOME", "EMAIL", "", "DTNASCIMENTO","NIVEL","XP");
+            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s\n", "ID", "NOME", "EMAIL", "DTNASCIMENTO", "NIVEL", "XP");
             while (entrada.hasNext()) {
                 int id = entrada.nextInt();
                 String nome = entrada.next();
