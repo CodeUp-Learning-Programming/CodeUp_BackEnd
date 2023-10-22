@@ -73,14 +73,6 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
-    @GetMapping("/exibirCsv")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<String> exibirCsv() {
-        //ModelAndView modelAndView = new ModelAndView("csv");
-        usuarioService.lerExibirArquivoCsv("usuarios");
-        return ResponseEntity.status(200).build();
-    }
-
     @GetMapping(value = "/download-ordenado", produces = "text/csv")
     public ResponseEntity<Resource> ordenarCsv() throws IOException {
         List<Usuario> usuarios = usuarioService.buscarUsuarios();

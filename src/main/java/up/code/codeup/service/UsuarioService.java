@@ -152,28 +152,6 @@ public class UsuarioService {
         }
     }
 
-    public void lerExibirArquivoCsv(String nomeArq) {
-        nomeArq += ".csv";
-
-        try (FileReader arq = new FileReader(nomeArq);
-             Scanner entrada = new Scanner(arq).useDelimiter(";|\\n")) {
-
-            System.out.printf("%-4s %-15s %-6s %-10s %-15s %-5s %5s\n", "ID", "NOME", "EMAIL", "DTNASCIMENTO", "NIVEL", "XP");
-            while (entrada.hasNext()) {
-                int id = entrada.nextInt();
-                String nome = entrada.next();
-                String email = entrada.next();
-                String dtNascimento = entrada.next();
-                int nivel = entrada.nextInt();
-                int xp = entrada.nextInt();
-                System.out.printf("%04d %-15s %-6s %-10s %-15s %5s %d %d\n", id, nome, email, dtNascimento, nivel, xp);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @PersistenceContext
     private EntityManager entityManager;
 
