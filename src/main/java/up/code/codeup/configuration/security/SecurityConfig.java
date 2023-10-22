@@ -53,7 +53,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/usuarios/download"),
             new AntPathRequestMatcher("/usuarios/download-ordenado"),
-//            new AntPathRequestMatcher("/usuarios/cadastrar"),
+            new AntPathRequestMatcher("/usuarios/cadastrar"),
 //            new AntPathRequestMatcher("/usuarios"),
 //            new AntPathRequestMatcher("/usuarios/**"),
 //            new AntPathRequestMatcher("/**"),
