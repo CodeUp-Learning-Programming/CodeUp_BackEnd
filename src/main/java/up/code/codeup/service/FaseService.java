@@ -26,35 +26,6 @@ public class FaseService {
         return faseRepository.findAll();
     }
 
-    public void criar(FaseCriacaoDTO faseCriacaoDto) {
-        final Fase novaFase = FaseMapper.paraEntidade(faseCriacaoDto);
-        Materia materia = materiaRepository.findById(faseCriacaoDto.getMateria().getId()).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Materia")
-        );
-        novaFase.setMateria(materia);
-        this.faseRepository.save(novaFase);
-    }
-
-    public Fase atualizarFase(Fase novaFase, int id) {
-        faseRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Fase")
-        );
-
-        novaFase.setId(id);
-        Fase atualizada = faseRepository.save(novaFase);
-
-        return atualizada;
-    }
-
-    public boolean deletarFase(int id) {
-        Fase fase = faseRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Fase")
-        );
-
-        faseRepository.delete(fase);
-        return true;
-    }
-
     public Fase buscarFasePorId(int id) {
         Fase fase = faseRepository.findById(id).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Fase")

@@ -1,5 +1,5 @@
 IdUsuario;Nome;Email;DtNascimento;Cpf;Plano;Moedas;Diamantes;Nivel;Xp;DiasConsecutivos;MaxDiasConsecutivos
-1;Desenvolvedor;dev@sptech.school;2002-02-13;;pro;0;0;100;100000;0;0
+1;Matheus;matheusribeiro@sptech.school;2002-02-13;;pro;0;0;100;100000;0;0
 16;Roberto Ribeiro;roberto.ribeiro@outlook.com;1984-12-07;;gratuito;0;0;60;60000;0;0
 14;Eduardo Alves;eduardo.alves@hotmail.com;1994-04-27;;gratuito;0;0;59;59000;0;0
 12;Fernando Santos;fernando.santos@gmail.com;1996-09-14;;gratuito;0;0;58;58000;0;0
@@ -15,3 +15,4 @@ IdUsuario;Nome;Email;DtNascimento;Cpf;Plano;Moedas;Diamantes;Nivel;Xp;DiasConsec
 9;Luana Pereira;luana.pereira@gmail.com;1987-04-30;;gratuito;0;0;47;47000;0;0
 11;Isabella Oliveira;isabella.oliveira@hotmail.com;1989-11-02;;gratuito;0;0;46;46000;0;0
 3;Maria Santos;maria.santos@gmail.com;1985-08-22;;gratuito;0;0;45;45000;0;0
+17;Matheus;matheusribeiro@sptech.school;2001-05-31;;gratuito;0;0;0;0;0;0
