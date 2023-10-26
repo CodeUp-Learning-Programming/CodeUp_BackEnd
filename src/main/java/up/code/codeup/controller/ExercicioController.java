@@ -18,30 +18,6 @@ public class ExercicioController {
 
     private final ExercicioService exercicioService;
 
-    @PostMapping
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ExercicioCriacaoDTO> criar(@RequestBody @Valid ExercicioCriacaoDTO exercicioCriacaoDTO) {
-        this.exercicioService.criar(exercicioCriacaoDTO);
-        return ResponseEntity.status(201).build();
-    }
-
-    @PutMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> atualizarExercicio(@PathVariable int id, @RequestBody Exercicio materiaAtualizado) {
-        if (exercicioService.atualizarExercicio(materiaAtualizado, id) != null) {
-            return ResponseEntity.status(200).body(materiaAtualizado);
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-    @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> deletarExercicio(@PathVariable int id) {
-        if (exercicioService.deletarExercicio(id)) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(204).build();
-    }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")

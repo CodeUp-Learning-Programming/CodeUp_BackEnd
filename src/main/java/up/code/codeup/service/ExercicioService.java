@@ -31,34 +31,6 @@ public class ExercicioService {
         return listaExercicioDTO;
     }
 
-    public Exercicio criar(ExercicioCriacaoDTO exercicioCriacaoDTO) {
-        final Exercicio novoExercicio = ExercicioMapper.paraEntidade(exercicioCriacaoDTO);
-        Fase fase = faseRepository.findById(exercicioCriacaoDTO.getFase().getId()).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Fase")
-        );
-        novoExercicio.setFase(fase);
-        this.exercicioRepository.save(novoExercicio);
-        return novoExercicio;
-    }
-
-    public Exercicio atualizarExercicio(Exercicio novaExercicio, int id) {
-        exercicioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Exercicio")
-        );
-        novaExercicio.setId(id);
-        return exercicioRepository.save(novaExercicio);
-
-    }
-
-    public boolean deletarExercicio(int id) {
-        Exercicio fase = exercicioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Exercicio")
-        );
-
-        exercicioRepository.delete(fase);
-        return true;
-    }
-
     public Exercicio buscarExercicioPorId(int id) {
         Exercicio fase = exercicioRepository.findById(id).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Exercicio")

@@ -22,28 +22,6 @@ public class MateriaService {
         return materiaRepository.findAll();
     }
 
-    public void criar(MateriaCriacaoDto materiaCriacaoDto) {
-        final Materia novaMateria = MateriaMapper.of(materiaCriacaoDto);
-        this.materiaRepository.save(novaMateria);
-    }
-
-    public Materia atualizarMateria(Materia novaMateria, int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
-        if (materia.isPresent()) {
-            Materia materiaExistente = materia.get();
-            materiaExistente.setNome(novaMateria.getNome());
-            materiaRepository.save(materiaExistente);
-            return materiaExistente;
-        }
-        return null;
-    }
-
-    public boolean deletarMateria(int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
-        materia.ifPresent(u -> materiaRepository.delete(u));
-        return true;
-    }
-
     public Materia buscarMateriaPorId(int id) {
         Optional<Materia> materia = materiaRepository.findById(id);
         if (materia.isPresent()) {
