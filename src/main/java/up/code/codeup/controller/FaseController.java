@@ -1,12 +1,10 @@
 package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import up.code.codeup.dto.faseDto.FaseCriacaoDTO;
 import up.code.codeup.entity.Fase;
 import up.code.codeup.service.FaseService;
 

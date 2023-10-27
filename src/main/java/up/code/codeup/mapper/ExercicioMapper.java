@@ -1,14 +1,14 @@
 package up.code.codeup.mapper;
 
 import lombok.Builder;
-import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
-import up.code.codeup.dto.exercicioDto.ExercicioDTO;
+import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDto;
+import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
 import up.code.codeup.entity.Exercicio;
 
 @Builder
 public class ExercicioMapper {
 
-    public static Exercicio paraEntidade(ExercicioCriacaoDTO exercicioCriacaoDTO) {
+    public static Exercicio paraEntidade(ExercicioCriacaoDto exercicioCriacaoDTO) {
         return Exercicio.builder()
                 .numExercicio(exercicioCriacaoDTO.getNumExercicio())
                 .conteudoTeorico(exercicioCriacaoDTO.getConteudoTeorico())
@@ -20,8 +20,8 @@ public class ExercicioMapper {
                 .build();
     }
 
-    public static ExercicioDTO paraDTO(Exercicio exercicio) {
-        return ExercicioDTO.builder()
+    public static ExercicioResponseDto paraDTO(Exercicio exercicio) {
+        return ExercicioResponseDto.builder()
                 .numExercicio(exercicio.getNumExercicio())
                 .conteudoTeorico(exercicio.getConteudoTeorico())
                 .desafio(exercicio.getDesafio())

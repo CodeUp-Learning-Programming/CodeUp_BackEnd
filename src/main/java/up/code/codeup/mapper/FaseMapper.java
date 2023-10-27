@@ -1,16 +1,11 @@
 package up.code.codeup.mapper;
 
-import up.code.codeup.dto.faseDto.FaseCriacaoDTO;
-import up.code.codeup.dto.faseDto.FaseDTO;
-import up.code.codeup.entity.Exercicio;
+import up.code.codeup.dto.faseDto.FaseCriacaoDto;
+import up.code.codeup.dto.faseDto.FaseResponseDto;
 import up.code.codeup.entity.Fase;
-import up.code.codeup.entity.Materia;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FaseMapper {
-    public static Fase paraEntidade(FaseCriacaoDTO faseCriacaoDTO) {
+    public static Fase paraEntidade(FaseCriacaoDto faseCriacaoDTO) {
         return Fase.builder()
                 .numFase(faseCriacaoDTO.getNumFase())
                 .titulo(faseCriacaoDTO.getTitulo())
@@ -19,13 +14,14 @@ public class FaseMapper {
                 .build();
     }
 
-    public static FaseDTO paraDTO(Fase fase) {
-        return FaseDTO.builder()
+    public static FaseResponseDto paraFaseResponseDto(Fase fase) {
+
+        return FaseResponseDto.builder()
                 .numFase(fase.getNumFase())
                 .titulo(fase.getTitulo())
-                .materia(fase.getMateria())
-                .exercicios(fase.getExercicios())
                 .build();
+
     }
+
 
 }

@@ -1,12 +1,10 @@
 package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
-import up.code.codeup.dto.exercicioDto.ExercicioDTO;
+import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.service.ExercicioService;
 import java.util.List;
@@ -30,15 +28,15 @@ public class ExercicioController {
 
     @GetMapping("/{fk_fase}/{numExercicio}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ExercicioDTO> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
-        ExercicioDTO exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
+    public ResponseEntity<ExercicioResponseDto> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
+        ExercicioResponseDto exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
         return ResponseEntity.ok(exercicioDesejado);
     }
 
     @GetMapping("/{fk_fase}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ExercicioDTO>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
-        List<ExercicioDTO> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
+    public ResponseEntity<List<ExercicioResponseDto>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
+        List<ExercicioResponseDto> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
 
         if(exercicioDesejados.isEmpty()){
             return ResponseEntity.noContent().build();

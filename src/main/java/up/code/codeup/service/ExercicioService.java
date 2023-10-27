@@ -2,10 +2,8 @@ package up.code.codeup.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
-import up.code.codeup.dto.exercicioDto.ExercicioDTO;
+import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
 import up.code.codeup.entity.Exercicio;
-import up.code.codeup.entity.Fase;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.ExercicioMapper;
 import up.code.codeup.repository.ExercicioRepository;
@@ -20,15 +18,15 @@ public class ExercicioService {
     private final ExercicioRepository exercicioRepository;
     private final FaseRepository faseRepository;
 
-    public List<ExercicioDTO> buscarFases() {
+    public List<ExercicioResponseDto> buscarFases() {
         List<Exercicio> listaExercicio = this.exercicioRepository.findAll();
-        List<ExercicioDTO> listaExercicioDTO = new ArrayList<>();
+        List<ExercicioResponseDto> listaExercicioResponseDto = new ArrayList<>();
 
         for(int i = 0; i < listaExercicio.size();i++){
-            listaExercicioDTO.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
+            listaExercicioResponseDto.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
         }
 
-        return listaExercicioDTO;
+        return listaExercicioResponseDto;
     }
 
     public Exercicio buscarExercicioPorId(int id) {
@@ -38,7 +36,7 @@ public class ExercicioService {
         return fase;
     }
 
-    public ExercicioDTO buscarExercicio(Integer fk_fase, Integer numExercicio) {
+    public ExercicioResponseDto buscarExercicio(Integer fk_fase, Integer numExercicio) {
         Exercicio exercicio = this.exercicioRepository.buscarExercicioPorNumero(fk_fase, numExercicio).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Exercicio")
         );
@@ -46,15 +44,15 @@ public class ExercicioService {
         return ExercicioMapper.paraDTO(exercicio);
     }
 
-    public List<ExercicioDTO> buscarExercicioPorNumExercicio(Integer fk_fase) {
+    public List<ExercicioResponseDto> buscarExercicioPorNumExercicio(Integer fk_fase) {
         List<Exercicio> listaExercicio = this.exercicioRepository.findByFase(fk_fase);
-        List<ExercicioDTO> listaExercicioDTO = new ArrayList<>();
+        List<ExercicioResponseDto> listaExercicioResponseDto = new ArrayList<>();
 
         for(int i = 0; i < listaExercicio.size();i++){
-            listaExercicioDTO.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
+            listaExercicioResponseDto.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
         }
 
-        return listaExercicioDTO;
+        return listaExercicioResponseDto;
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FaseCriacaoDTO {
+public class FaseCriacaoDto {
 
     private Integer numFase;
     @NotNull(message = "Campo titulo obrigatório")

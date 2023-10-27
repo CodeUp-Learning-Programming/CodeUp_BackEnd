@@ -8,7 +8,14 @@ insert into materia (nome) values ('Algoritmos');
 insert into fase
     (num_fase,titulo,fk_materia)
 values
-    (1, 'Primeiros Passos', 1);
+    (1, 'Primeiros Passos', 1),
+    (2, 'Primeiros Passos', 1),
+    (3, 'Primeiros Passos', 1),
+    (4, 'Primeiros Passos', 1),
+    (5, 'Primeiros Passos', 1),
+    (6, 'Primeiros Passos', 1),
+    (7, 'Primeiros Passos', 1),
+    (8, 'Primeiros Passos', 1);
 
 insert into exercicio
     (num_exercicio, conteudo_teorico, desafio, instrucao, layout_funcao, resposta, fk_fase)
