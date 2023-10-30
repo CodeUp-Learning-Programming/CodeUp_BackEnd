@@ -23,7 +23,7 @@ public class ExercicioService {
         List<ExercicioResponseDto> listaExercicioResponseDto = new ArrayList<>();
 
         for(int i = 0; i < listaExercicio.size();i++){
-            listaExercicioResponseDto.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
+            listaExercicioResponseDto.add(ExercicioMapper.paraExercicioResponseDto(listaExercicio.get(i)));
         }
 
         return listaExercicioResponseDto;
@@ -41,7 +41,7 @@ public class ExercicioService {
                 () -> new EntidadeNaoEncontradaException("Exercicio")
         );
 
-        return ExercicioMapper.paraDTO(exercicio);
+        return ExercicioMapper.paraExercicioResponseDto(exercicio);
     }
 
     public List<ExercicioResponseDto> buscarExercicioPorNumExercicio(Integer fk_fase) {
@@ -49,7 +49,7 @@ public class ExercicioService {
         List<ExercicioResponseDto> listaExercicioResponseDto = new ArrayList<>();
 
         for(int i = 0; i < listaExercicio.size();i++){
-            listaExercicioResponseDto.add(ExercicioMapper.paraDTO(listaExercicio.get(i)));
+            listaExercicioResponseDto.add(ExercicioMapper.paraExercicioResponseDto(listaExercicio.get(i)));
         }
 
         return listaExercicioResponseDto;

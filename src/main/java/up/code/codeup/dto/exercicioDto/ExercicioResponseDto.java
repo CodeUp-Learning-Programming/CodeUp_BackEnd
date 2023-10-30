@@ -16,5 +16,4 @@ public class ExercicioResponseDto {
     private String instrucao;
     private String layoutFuncao;
     private String resposta;
-    private Fase fase;
 }

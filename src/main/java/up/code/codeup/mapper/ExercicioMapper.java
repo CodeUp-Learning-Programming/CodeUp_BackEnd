@@ -20,7 +20,7 @@ public class ExercicioMapper {
                 .build();
     }
 
-    public static ExercicioResponseDto paraDTO(Exercicio exercicio) {
+    public static ExercicioResponseDto paraExercicioResponseDto(Exercicio exercicio) {
         return ExercicioResponseDto.builder()
                 .numExercicio(exercicio.getNumExercicio())
                 .conteudoTeorico(exercicio.getConteudoTeorico())
@@ -28,7 +28,6 @@ public class ExercicioMapper {
                 .instrucao(exercicio.getInstrucao())
                 .layoutFuncao(exercicio.getLayoutFuncao())
                 .resposta(exercicio.getResposta())
-                .fase(exercicio.getFase())
                 .build();
     }
 
