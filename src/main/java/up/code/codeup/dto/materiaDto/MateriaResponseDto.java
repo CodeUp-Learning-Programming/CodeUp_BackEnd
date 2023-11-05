@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MateriaDTO {
-
+public class MateriaResponseDto {
     private String nome;
 }

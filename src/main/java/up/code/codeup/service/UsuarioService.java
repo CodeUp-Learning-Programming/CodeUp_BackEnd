@@ -42,14 +42,27 @@ public class UsuarioService {
         return repository.findAll();
     }
 
-    public void cadastrar(Usuario novoUsuario) {
-        repository.findByEmailOrNome(novoUsuario.getEmail(), novoUsuario.getNome()).ifPresent(u -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já cadastrado");
+    public Usuario cadastrar(Usuario novoUsuario) {
+        if (novoUsuario.getNome().equals("tempUser")) {
+            int totalTempUsers = repository.countByNomeContainsIgnoreCase("tempUser");
+            novoUsuario.setEmail("tempUser" + (totalTempUsers + 1) + "@tempmail.com");
+            novoUsuario.setDtNascimento(novoUsuario.getDtNascimento());
+            novoUsuario.setNome(novoUsuario.getNome() + (totalTempUsers + 1));
+            novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
+            this.repository.save(novoUsuario);
+            return novoUsuario;
+        }
+        repository.findByEmail(novoUsuario.getEmail()).ifPresent(usuarioExistente -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
         });
 
-        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senhaCriptografada);
+        repository.findByNomeIgnoreCase(novoUsuario.getNome()).ifPresent(usuarioExistente -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Nome já cadastrado");
+        });
+
+        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
         repository.save(novoUsuario);
+        return novoUsuario;
     }
 
     public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {

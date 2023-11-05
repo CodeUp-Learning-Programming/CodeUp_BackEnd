@@ -8,7 +8,7 @@ import up.code.codeup.entity.Fase;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExercicioDTO {
+public class ExercicioCriacaoDto {
     
     private Integer numExercicio;
     private String conteudoTeorico;

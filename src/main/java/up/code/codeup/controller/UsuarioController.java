@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioDetalhesCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
@@ -30,10 +31,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
+    public ResponseEntity<UsuarioDetalhesCriacaoDto> cadastrar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
-        service.cadastrar(novoUsuario);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(new UsuarioDetalhesCriacaoDto(service.cadastrar(novoUsuario)));
     }
 //
 //    @PutMapping("/{id}")
