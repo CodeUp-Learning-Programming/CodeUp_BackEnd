@@ -42,12 +42,21 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public void criar(UsuarioCriacaoDto usuarioCriacaoDto) {
+    public UsuarioCriacaoDto criar(UsuarioCriacaoDto usuarioCriacaoDto) {
         final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
 
+        if(novoUsuario.getNome().equals("tempUser")){
+           int totalTempUsers= usuarioRepository.countByNomeContainsIgnoreCase("tempUser") +1;
+            novoUsuario.setEmail("tempUser"+totalTempUsers+"@tempmail.com");
+            novoUsuario.setDtNascimento(novoUsuario.getDtNascimento());
+            novoUsuario.setNome(novoUsuario.getNome() + totalTempUsers);
+            novoUsuario.setSenha(novoUsuario.getSenha());
+        }
+
         this.usuarioRepository.save(novoUsuario);
+        return UsuarioMapper.toDto(novoUsuario);
     }
 
     public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {

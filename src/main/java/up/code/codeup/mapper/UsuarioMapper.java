@@ -25,7 +25,25 @@ public class UsuarioMapper {
 
         return usuario;
     }
+    public static UsuarioCriacaoDto toDto(Usuario usuario) {
+        UsuarioCriacaoDto usuarioDto = new UsuarioCriacaoDto();
 
+        usuarioDto.setEmail(usuario.getEmail());
+        usuarioDto.setDtNascimento(usuario.getDtNascimento());
+        usuarioDto.setNome(usuario.getNome());
+        usuarioDto.setSenha(usuario.getSenha());
+        usuarioDto.setCpf("");
+        usuarioDto.setPlano("gratuito");
+        usuarioDto.setMoedas(0);
+        usuarioDto.setDiamantes(0);
+        usuarioDto.setNivel(0);
+        usuarioDto.setXp(0);
+        usuarioDto.setDiasConsecutivos(0);
+        usuarioDto.setMaxDiasConsecutivos(0);
+
+
+        return usuarioDto;
+    }
     public static UsuarioTokenDto of(Usuario usuario, String token) {
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
