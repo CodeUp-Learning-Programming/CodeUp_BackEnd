@@ -3,9 +3,7 @@ package up.code.codeup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
 import up.code.codeup.entity.Materia;
-import up.code.codeup.mapper.MateriaMapper;
 import up.code.codeup.repository.MateriaRepository;
 
 import java.util.List;

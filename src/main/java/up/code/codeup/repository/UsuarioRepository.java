@@ -6,5 +6,6 @@ import up.code.codeup.entity.Usuario;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByEmail(String username);
+    Optional<Usuario> findByEmailOrNome(String email, String nome);
+    Optional<Usuario> findByEmail(String email);
 }

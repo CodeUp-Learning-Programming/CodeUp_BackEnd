@@ -8,7 +8,6 @@ public class UsuarioMapper {
 
     public static Usuario of(UsuarioCriacaoDto usuarioCriacaoDto) {
         Usuario usuario = new Usuario();
-
         usuario.setEmail(usuarioCriacaoDto.getEmail());
         usuario.setDtNascimento(usuarioCriacaoDto.getDtNascimento());
         usuario.setNome(usuarioCriacaoDto.getNome());
@@ -21,8 +20,6 @@ public class UsuarioMapper {
         usuario.setXp(0);
         usuario.setDiasConsecutivos(0);
         usuario.setMaxDiasConsecutivos(0);
-
-
         return usuario;
     }
 

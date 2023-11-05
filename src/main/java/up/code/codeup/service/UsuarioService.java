@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import up.code.codeup.ListaObj;
+import up.code.codeup.utils.ListaObj;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
@@ -32,45 +32,47 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository repository;
     @Autowired
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public List<Usuario> buscarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<Usuario> listar() {
+        return repository.findAll();
     }
 
-    public void criar(UsuarioCriacaoDto usuarioCriacaoDto) {
-        final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
+    public void cadastrar(Usuario novoUsuario) {
+        repository.findByEmailOrNome(novoUsuario.getEmail(), novoUsuario.getNome()).ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já cadastrado");
+        });
+
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
-
-        this.usuarioRepository.save(novoUsuario);
+        repository.save(novoUsuario);
     }
 
     public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        Optional<Usuario> usuario = repository.findById(id);
         if (usuario.isPresent()) {
             Usuario usuarioExistente = usuario.get();
             usuarioExistente.setNome(novoUsuairo.getNome());
             usuarioExistente.setEmail(novoUsuairo.getEmail());
             usuarioExistente.setSenha(novoUsuairo.getSenha());
-            usuarioRepository.save(usuarioExistente);
+            repository.save(usuarioExistente);
             return usuarioExistente;
         }
         return null;
     }
 
     public boolean deletarUsuario(int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        usuario.ifPresent(u -> usuarioRepository.delete(u));
+        Optional<Usuario> usuario = repository.findById(id);
+        usuario.ifPresent(u -> repository.delete(u));
         return true;
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<Usuario> usuarios = repository.findAll();
 
         int indiceInferior = 0;
         int indiceSuperior = usuarios.size() - 1;
@@ -95,7 +97,7 @@ public class UsuarioService {
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
         Usuario usuarioAutenticado =
-                usuarioRepository.findByEmail(usuarioLoginDTO.getEmail())
+                repository.findByEmail(usuarioLoginDTO.getEmail())
                         .orElseThrow(
                                 () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
                         );

@@ -2,12 +2,9 @@ package up.code.codeup.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
 import up.code.codeup.dto.exercicioDto.ExercicioDTO;
 import up.code.codeup.entity.Exercicio;
-import up.code.codeup.entity.Fase;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
-import up.code.codeup.mapper.ExercicioMapper;
 import up.code.codeup.repository.ExercicioRepository;
 import up.code.codeup.repository.FaseRepository;
 
