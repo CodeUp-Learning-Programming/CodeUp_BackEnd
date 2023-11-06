@@ -1,30 +1,22 @@
 package up.code.codeup.service;
 
-import com.opencsv.*;
-import com.opencsv.exceptions.CsvValidationException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import up.code.codeup.ListaObj;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
-import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -32,45 +24,41 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository repository;
     @Autowired
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public List<Usuario> buscarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<Usuario> listar() {
+        return repository.findAll();
     }
 
-    public void criar(UsuarioCriacaoDto usuarioCriacaoDto) {
-        final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
-        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senhaCriptografada);
-
-        this.usuarioRepository.save(novoUsuario);
-    }
-
-    public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        if (usuario.isPresent()) {
-            Usuario usuarioExistente = usuario.get();
-            usuarioExistente.setNome(novoUsuairo.getNome());
-            usuarioExistente.setEmail(novoUsuairo.getEmail());
-            usuarioExistente.setSenha(novoUsuairo.getSenha());
-            usuarioRepository.save(usuarioExistente);
-            return usuarioExistente;
+    public Usuario cadastrar(Usuario novoUsuario) {
+        if (novoUsuario.getNome().equals("tempUser")) {
+            int totalTempUsers = repository.countByNomeContainsIgnoreCase("tempUser");
+            novoUsuario.setEmail("tempUser" + (totalTempUsers + 1) + "@tempmail.com");
+            novoUsuario.setDtNascimento(novoUsuario.getDtNascimento());
+            novoUsuario.setNome(novoUsuario.getNome() + (totalTempUsers + 1));
+            novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
+            this.repository.save(novoUsuario);
+            return novoUsuario;
         }
-        return null;
-    }
+        repository.findByEmail(novoUsuario.getEmail()).ifPresent(usuarioExistente -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
+        });
 
-    public boolean deletarUsuario(int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        usuario.ifPresent(u -> usuarioRepository.delete(u));
-        return true;
+        repository.findByNomeIgnoreCase(novoUsuario.getNome()).ifPresent(usuarioExistente -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Nome já cadastrado");
+        });
+
+        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
+        repository.save(novoUsuario);
+        return novoUsuario;
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<Usuario> usuarios = repository.findAll();
 
         int indiceInferior = 0;
         int indiceSuperior = usuarios.size() - 1;
@@ -95,7 +83,7 @@ public class UsuarioService {
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
         Usuario usuarioAutenticado =
-                usuarioRepository.findByEmail(usuarioLoginDTO.getEmail())
+                repository.findByEmail(usuarioLoginDTO.getEmail())
                         .orElseThrow(
                                 () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
                         );
@@ -106,81 +94,81 @@ public class UsuarioService {
     }
 
 
-    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
-        nomeArq += ".csv";
-        //Titulo
-        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
-            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                    "IdUsuario",
-                    "Nome",
-                    "Email",
-                    "DtNascimento",
-                    "Cpf",
-                    "Plano",
-                    "Moedas",
-                    "Diamantes",
-                    "Nivel",
-                    "Xp",
-                    "DiasConsecutivos",
-                    "MaxDiasConsecutivos"
-            );
-
-            arquivoCsv.write(titulo);
-
-            //Linha
-            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
-                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
-                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
-                        usuario.getIdUsuario(),
-                        usuario.getNome(),
-                        usuario.getEmail(),
-                        usuario.getDtNascimento(),
-                        usuario.getCpf(),
-                        usuario.getPlano(),
-                        usuario.getMoedas(),
-                        usuario.getDiamantes(),
-                        usuario.getNivel(),
-                        usuario.getXp(),
-                        usuario.getDiasConsecutivos(),
-                        usuario.getMaxDiasConsecutivos()
-                );
-
-                arquivoCsv.write(linha);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    public void saveUsuariosFromCsv(MultipartFile file) {
-        try {
-            CSVParser csvParser = new CSVParserBuilder()
-                    .withSeparator(';') // Configura o delimitador como ponto e vírgula
-                    .build();
-
-            CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-
-            String[] line;
-            while ((line = reader.readNext()) != null) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(Integer.parseInt(line[0]));
-                usuario.setNome(line[1]);
-                usuario.setEmail(line[2]);
-                usuario.setSenha(line[3]);
-                // Parse LocalDate from line[4] if needed
-
-                // Save the Usuario entity to the H2 Database
-                entityManager.persist(usuario);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
+//        nomeArq += ".csv";
+//        //Titulo
+//        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+//            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+//                    "IdUsuario",
+//                    "Nome",
+//                    "Email",
+//                    "DtNascimento",
+//                    "Cpf",
+//                    "Plano",
+//                    "Moedas",
+//                    "Diamantes",
+//                    "Nivel",
+//                    "Xp",
+//                    "DiasConsecutivos",
+//                    "MaxDiasConsecutivos"
+//            );
+//
+//            arquivoCsv.write(titulo);
+//
+//            //Linha
+//            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
+//                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
+//                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
+//                        usuario.getIdUsuario(),
+//                        usuario.getNome(),
+//                        usuario.getEmail(),
+//                        usuario.getDtNascimento(),
+//                        usuario.getCpf(),
+//                        usuario.getPlano(),
+//                        usuario.getMoedas(),
+//                        usuario.getDiamantes(),
+//                        usuario.getNivel(),
+//                        usuario.getXp(),
+//                        usuario.getDiasConsecutivos(),
+//                        usuario.getMaxDiasConsecutivos()
+//                );
+//
+//                arquivoCsv.write(linha);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @PersistenceContext
+//    private EntityManager entityManager;
+//
+//    @Transactional
+//    public void saveUsuariosFromCsv(MultipartFile file) {
+//        try {
+//            CSVParser csvParser = new CSVParserBuilder()
+//                    .withSeparator(';') // Configura o delimitador como ponto e vírgula
+//                    .build();
+//
+//            CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+//
+//            String[] line;
+//            while ((line = reader.readNext()) != null) {
+//                Usuario usuario = new Usuario();
+//                usuario.setIdUsuario(Integer.parseInt(line[0]));
+//                usuario.setNome(line[1]);
+//                usuario.setEmail(line[2]);
+//                usuario.setSenha(line[3]);
+//                // Parse LocalDate from line[4] if needed
+//
+//                // Save the Usuario entity to the H2 Database
+//                entityManager.persist(usuario);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (CsvValidationException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 }

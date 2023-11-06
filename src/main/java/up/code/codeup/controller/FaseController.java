@@ -1,12 +1,11 @@
 package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import up.code.codeup.dto.faseDto.FaseCriacaoDTO;
+import up.code.codeup.dto.faseDto.FaseExercicioResponseDto;
 import up.code.codeup.entity.Fase;
 import up.code.codeup.service.FaseService;
 
@@ -18,21 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FaseController {
 
-    private final FaseService faseService;
+    private final FaseService service;
 
-    @GetMapping
+    @GetMapping("/{idMateria}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<Fase>> listarFases() {
-        List<Fase> fases = faseService.buscarFases();
-        return ResponseEntity.status(200).body(fases);
-    }
+    public ResponseEntity buscarFasesPorIdMateria(@PathVariable int idMateria) {
+        List<FaseExercicioResponseDto> fases = service.buscarFasesPorIdMateria(idMateria)
+                .stream()
+                .map(fase -> new FaseExercicioResponseDto(fase)).toList();
 
-    @GetMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Fase> buscarFasePorId(@PathVariable int id) {
-        if (faseService.buscarFasePorId(id) != null) {
-            return ResponseEntity.status(200).body(faseService.buscarFasePorId(id));
+        if (fases.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(fases);
     }
 }

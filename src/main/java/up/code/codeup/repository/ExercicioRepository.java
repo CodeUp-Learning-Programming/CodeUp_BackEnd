@@ -13,4 +13,5 @@ public interface ExercicioRepository extends JpaRepository <Exercicio, Integer> 
     Optional<Exercicio> buscarExercicioPorNumero(Integer fk_fase, Integer numExercicio);
 
     List<Exercicio> findByFase(Integer fk_fase);
+    List<Exercicio> findByFaseId(Integer idFase);
 }
