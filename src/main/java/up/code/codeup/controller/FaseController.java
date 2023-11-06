@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.faseDto.FaseExercicioResponseDto;
 import up.code.codeup.entity.Fase;
 import up.code.codeup.service.FaseService;
+import up.code.codeup.utils.UsuarioUtils;
 
 
 import java.util.List;

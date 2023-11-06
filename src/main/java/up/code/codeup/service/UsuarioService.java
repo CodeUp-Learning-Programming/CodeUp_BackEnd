@@ -93,7 +93,7 @@ public class UsuarioService {
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 
-
+}
 //    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
 //        nomeArq += ".csv";
 //        //Titulo
@@ -171,4 +171,4 @@ public class UsuarioService {
 //        }
 //    }
 
-}
+
