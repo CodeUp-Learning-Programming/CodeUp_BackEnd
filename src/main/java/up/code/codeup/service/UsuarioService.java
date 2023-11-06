@@ -1,9 +1,5 @@
 package up.code.codeup.service;
 
-import com.opencsv.*;
-import com.opencsv.exceptions.CsvValidationException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,10 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import up.code.codeup.utils.ListaObj;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
@@ -23,8 +16,7 @@ import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -65,25 +57,6 @@ public class UsuarioService {
         return novoUsuario;
     }
 
-    public Usuario atualizarUsuario(Usuario novoUsuairo, int id) {
-        Optional<Usuario> usuario = repository.findById(id);
-        if (usuario.isPresent()) {
-            Usuario usuarioExistente = usuario.get();
-            usuarioExistente.setNome(novoUsuairo.getNome());
-            usuarioExistente.setEmail(novoUsuairo.getEmail());
-            usuarioExistente.setSenha(novoUsuairo.getSenha());
-            repository.save(usuarioExistente);
-            return usuarioExistente;
-        }
-        return null;
-    }
-
-    public boolean deletarUsuario(int id) {
-        Optional<Usuario> usuario = repository.findById(id);
-        usuario.ifPresent(u -> repository.delete(u));
-        return true;
-    }
-
     public Usuario buscarUsuarioPorId(int id) {
         List<Usuario> usuarios = repository.findAll();
 
@@ -121,81 +94,81 @@ public class UsuarioService {
     }
 
 
-    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
-        nomeArq += ".csv";
-        //Titulo
-        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
-            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                    "IdUsuario",
-                    "Nome",
-                    "Email",
-                    "DtNascimento",
-                    "Cpf",
-                    "Plano",
-                    "Moedas",
-                    "Diamantes",
-                    "Nivel",
-                    "Xp",
-                    "DiasConsecutivos",
-                    "MaxDiasConsecutivos"
-            );
-
-            arquivoCsv.write(titulo);
-
-            //Linha
-            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
-                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
-                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
-                        usuario.getIdUsuario(),
-                        usuario.getNome(),
-                        usuario.getEmail(),
-                        usuario.getDtNascimento(),
-                        usuario.getCpf(),
-                        usuario.getPlano(),
-                        usuario.getMoedas(),
-                        usuario.getDiamantes(),
-                        usuario.getNivel(),
-                        usuario.getXp(),
-                        usuario.getDiasConsecutivos(),
-                        usuario.getMaxDiasConsecutivos()
-                );
-
-                arquivoCsv.write(linha);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    public void saveUsuariosFromCsv(MultipartFile file) {
-        try {
-            CSVParser csvParser = new CSVParserBuilder()
-                    .withSeparator(';') // Configura o delimitador como ponto e vírgula
-                    .build();
-
-            CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-
-            String[] line;
-            while ((line = reader.readNext()) != null) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(Integer.parseInt(line[0]));
-                usuario.setNome(line[1]);
-                usuario.setEmail(line[2]);
-                usuario.setSenha(line[3]);
-                // Parse LocalDate from line[4] if needed
-
-                // Save the Usuario entity to the H2 Database
-                entityManager.persist(usuario);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
+//        nomeArq += ".csv";
+//        //Titulo
+//        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+//            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+//                    "IdUsuario",
+//                    "Nome",
+//                    "Email",
+//                    "DtNascimento",
+//                    "Cpf",
+//                    "Plano",
+//                    "Moedas",
+//                    "Diamantes",
+//                    "Nivel",
+//                    "Xp",
+//                    "DiasConsecutivos",
+//                    "MaxDiasConsecutivos"
+//            );
+//
+//            arquivoCsv.write(titulo);
+//
+//            //Linha
+//            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
+//                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
+//                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
+//                        usuario.getIdUsuario(),
+//                        usuario.getNome(),
+//                        usuario.getEmail(),
+//                        usuario.getDtNascimento(),
+//                        usuario.getCpf(),
+//                        usuario.getPlano(),
+//                        usuario.getMoedas(),
+//                        usuario.getDiamantes(),
+//                        usuario.getNivel(),
+//                        usuario.getXp(),
+//                        usuario.getDiasConsecutivos(),
+//                        usuario.getMaxDiasConsecutivos()
+//                );
+//
+//                arquivoCsv.write(linha);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @PersistenceContext
+//    private EntityManager entityManager;
+//
+//    @Transactional
+//    public void saveUsuariosFromCsv(MultipartFile file) {
+//        try {
+//            CSVParser csvParser = new CSVParserBuilder()
+//                    .withSeparator(';') // Configura o delimitador como ponto e vírgula
+//                    .build();
+//
+//            CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+//
+//            String[] line;
+//            while ((line = reader.readNext()) != null) {
+//                Usuario usuario = new Usuario();
+//                usuario.setIdUsuario(Integer.parseInt(line[0]));
+//                usuario.setNome(line[1]);
+//                usuario.setEmail(line[2]);
+//                usuario.setSenha(line[3]);
+//                // Parse LocalDate from line[4] if needed
+//
+//                // Save the Usuario entity to the H2 Database
+//                entityManager.persist(usuario);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (CsvValidationException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 }

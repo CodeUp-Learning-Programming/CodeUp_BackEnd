@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.service.ExercicioService;
+
 import java.util.List;
 
 @RestController
@@ -14,33 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExercicioController {
 
-    private final ExercicioService exercicioService;
+    private final ExercicioService service;
 
-
-    @GetMapping("/{id}")
+    @GetMapping("/{idFase}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> buscarExercicioPorId(@PathVariable int id) {
-        if (exercicioService.buscarExercicioPorId(id) != null) {
-            return ResponseEntity.status(200).body(exercicioService.buscarExercicioPorId(id));
+    public ResponseEntity<List<ExercicioResponseDto>> buscarExerciciosPorIdFase(@PathVariable Integer idFase) {
+        List<ExercicioResponseDto> exercicios = service.buscarExerciciosPorIdFase(idFase)
+                .stream()
+                .map(exercicio -> new ExercicioResponseDto(exercicio)).toList();
+
+        if (exercicios.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(404).build();
-    }
-
-    @GetMapping("/{fk_fase}/{numExercicio}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ExercicioResponseDto> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
-        ExercicioResponseDto exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
-        return ResponseEntity.ok(exercicioDesejado);
-    }
-
-    @GetMapping("/{fk_fase}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ExercicioResponseDto>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
-        List<ExercicioResponseDto> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
-
-        if(exercicioDesejados.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(exercicioDesejados);
+        return ResponseEntity.ok(exercicios);
     }
 }

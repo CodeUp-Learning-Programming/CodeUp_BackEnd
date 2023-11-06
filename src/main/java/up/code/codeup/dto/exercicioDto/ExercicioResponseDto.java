@@ -1,19 +1,25 @@
 package up.code.codeup.dto.exercicioDto;
 
 import lombok.*;
+import up.code.codeup.entity.Exercicio;
 import up.code.codeup.entity.Fase;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class ExercicioResponseDto {
-    
-    private Integer numExercicio;
-    private String conteudoTeorico;
-    private String desafio;
-    private String instrucao;
-    private String layoutFuncao;
-    private String resposta;
+public record ExercicioResponseDto(
+        Integer id,
+        Integer numExercicio,
+        String conteudoTeorico,
+        String desafio,
+        String instrucao,
+        String layoutFuncao,
+        String resposta
+) {
+    public ExercicioResponseDto(Exercicio exercicio) {
+        this(exercicio.getId(),
+                exercicio.getNumExercicio(),
+                exercicio.getConteudoTeorico(),
+                exercicio.getDesafio(),
+                exercicio.getInstrucao(),
+                exercicio.getLayoutFuncao(),
+                exercicio.getResposta());
+    }
 }

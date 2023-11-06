@@ -35,24 +35,7 @@ public class UsuarioController {
         Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
         return ResponseEntity.status(201).body(new UsuarioDetalhesCriacaoDto(service.cadastrar(novoUsuario)));
     }
-//
-//    @PutMapping("/{id}")
-//    @SecurityRequirement(name = "Bearer")
-//    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
-//        if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
-//            return ResponseEntity.status(200).body(usuarioAtualizado);
-//        }
-//        return ResponseEntity.status(404).build();
-//    }
 
-//    @DeleteMapping("/{id}")
-//    @SecurityRequirement(name = "Bearer")
-//    public ResponseEntity<Usuario> deletarUsuario(@PathVariable int id) {
-//        if (usuarioService.deletarUsuario(id)) {
-//            return ResponseEntity.status(204).build();
-//        }
-//        return ResponseEntity.status(204).build();
-//    }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
