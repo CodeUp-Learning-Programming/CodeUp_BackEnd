@@ -10,9 +10,15 @@ import java.util.List;
 public record FaseExercicioResponseDto(
         Integer id,
         Integer numFase,
-        String titulo
+        String titulo,
+        int qtdExerciciosConcluidos;
 ) {
-    public FaseExercicioResponseDto(Fase fase) {
-        this(fase.getId(), fase.getNumFase(), fase.getTitulo());
+    public FaseExercicioResponseDto(Fase fase, int exerciciosConcluidos) {
+        this(
+                fase.getId(),
+                fase.getNumFase(),
+                fase.getTitulo(),
+                exerciciosConcluidos
+        );
     }
 }

@@ -26,8 +26,7 @@ public class Fase {
     @JsonBackReference
     private Materia materia;
 
-    @OneToMany(mappedBy = "fase", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "fase")
     private List<Exercicio> exercicios = new ArrayList<>();
 
 }

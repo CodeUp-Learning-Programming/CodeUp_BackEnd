@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +18,6 @@ public class Exercicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private Integer numExercicio;
 
     @Size(max = 1000)
@@ -34,8 +35,10 @@ public class Exercicio {
     @Size(max = 1000)
     private String resposta;
 
+    @OneToMany(mappedBy = "exercicio")
+    private List<ExerciciosUsuario> exerciciosUsuarios;
+
     @ManyToOne
     @JoinColumn(name = "fk_fase")
-    @JsonBackReference
     private Fase fase;
 }

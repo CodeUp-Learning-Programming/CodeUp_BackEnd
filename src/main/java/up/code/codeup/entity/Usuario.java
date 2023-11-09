@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "Usuario")
 @Getter
@@ -44,4 +45,7 @@ public class Usuario {
 
     @ColumnDefault("0")
     private Integer maxDiasConsecutivos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<ExerciciosUsuario> exerciciosUsuarios;
 }

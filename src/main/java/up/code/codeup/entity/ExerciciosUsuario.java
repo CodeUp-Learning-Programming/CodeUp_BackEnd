@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsuarioMateria {
+public class ExerciciosUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,8 @@ public class UsuarioMateria {
     private boolean concluido;
 
     @ManyToOne
-    @JoinColumn(name = "fk_exercicio")
-    private Materia materia;
+    private Exercicio exercicio;
 
     @ManyToOne
-    @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
 }
