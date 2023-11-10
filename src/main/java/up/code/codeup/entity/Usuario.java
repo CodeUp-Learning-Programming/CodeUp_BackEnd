@@ -1,10 +1,8 @@
 package up.code.codeup.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUsuario;
+    private Integer id;
     private String nome;
     private String email;
     private String senha;
@@ -47,5 +45,5 @@ public class Usuario {
     private Integer maxDiasConsecutivos;
 
     @OneToMany(mappedBy = "usuario")
-    private List<ExerciciosUsuario> exerciciosUsuarios;
+    private List<ExercicioUsuario> exerciciosUsuarios;
 }

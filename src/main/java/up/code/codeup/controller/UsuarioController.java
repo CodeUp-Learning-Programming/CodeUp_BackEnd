@@ -40,10 +40,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        if (service.buscarUsuarioPorId(id) != null) {
-            return ResponseEntity.status(200).body(service.buscarUsuarioPorId(id));
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(service.buscarUsuarioPorId(id));
     }
 
     @PostMapping("/login")

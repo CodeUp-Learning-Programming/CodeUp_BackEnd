@@ -26,6 +26,15 @@ values
     (4, 'Experimente problemas de lógica de portas, como o clássico "Você está em uma sala com duas portas - uma leva à liberdade e a outra à prisão. Existem duas pessoas, uma sempre diz a verdade e a outra sempre mente. Você pode fazer uma pergunta para determinar qual porta leva à liberdade?','Desafio do Exercício 1', 'Passo 1: Faça isso\n     Passo 2: Faça aquilo', 'function exercicio1() { /* Implemente aqui */ }', 'function respostaExercicio1() { /* Implemente a resposta aqui */ }', 1),
     (1, 'Experimente problemas de lógica de portas, como o clássico "Você está em uma sala com duas portas - uma leva à liberdade e a outra à prisão. Existem duas pessoas, uma sempre diz a verdade e a outra sempre mente. Você pode fazer uma pergunta para determinar qual porta leva à liberdade?','Desafio do Exercício 1', 'Passo 1: Faça isso\n     Passo 2: Faça aquilo', 'function exercicio1() { /* Implemente aqui */ }', 'function respostaExercicio1() { /* Implemente a resposta aqui */ }', 2);
 
+insert into exercicio_usuario
+    (usuario_id, exercicio_id, concluido)
+    values
+    (1, 1, true),
+    (1, 2, true),
+    (1, 3, true),
+    (1, 4, true),
+    (1, 5, true);
+
 
 insert into usuario
     (nome, dt_nascimento, email, senha, xp, nivel)
