@@ -1,6 +1,7 @@
 package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class ExercicioController {
 
     @GetMapping("/{idFase}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ExercicioResponseDto>> buscarExerciciosPorIdFase(@PathVariable Integer idFase) {
+    public ResponseEntity<List<ExercicioResponseDto>> buscarExerciciosPorIdFase(@PathVariable @NotNull Integer idFase) {
         List<ExercicioResponseDto> exercicios = service.buscarExerciciosPorIdFase(idFase)
                 .stream()
                 .map(exercicio -> new ExercicioResponseDto(exercicio)).toList();
