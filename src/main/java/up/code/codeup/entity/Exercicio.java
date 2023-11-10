@@ -1,6 +1,5 @@
 package up.code.codeup.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -36,7 +35,7 @@ public class Exercicio {
     private String resposta;
 
     @OneToMany(mappedBy = "exercicio")
-    private List<ExerciciosUsuario> exerciciosUsuarios;
+    private List<ExercicioUsuario> exerciciosUsuarios;
 
     @ManyToOne
     @JoinColumn(name = "fk_fase")

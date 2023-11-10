@@ -13,6 +13,7 @@ import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
+import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 
@@ -60,14 +61,18 @@ public class UsuarioService {
     public Usuario buscarUsuarioPorId(int id) {
         List<Usuario> usuarios = repository.findAll();
 
+        if (repository.findById(id).isEmpty()) {
+            throw new EntidadeNaoEncontradaException("Não há usuários cadastrados");
+        }
+
         int indiceInferior = 0;
         int indiceSuperior = usuarios.size() - 1;
         int meio;
         while (indiceInferior <= indiceSuperior) {
             meio = (indiceInferior + indiceSuperior) / 2;
-            if (id == usuarios.get(meio).getIdUsuario()) {
+            if (id == usuarios.get(meio).getId()) {
                 return usuarios.get(meio);
-            } else if (id < usuarios.get(meio).getIdUsuario()) {
+            } else if (id < usuarios.get(meio).getId()) {
                 indiceSuperior = meio - 1;
             } else {
                 indiceInferior = meio + 1;
