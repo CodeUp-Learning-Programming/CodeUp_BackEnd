@@ -20,7 +20,7 @@ public class ExceptionController {
         List<String> errors = ex.getBindingResult().getAllErrors()
                 .stream()
                 .map(erro -> erro.getDefaultMessage()).toList();
-        return new ResponseEntity(errors, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
 }
