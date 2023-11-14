@@ -11,14 +11,14 @@ public class UsuarioMapper {
         usuario.setDtNascimento(usuarioCriacaoDto.getDtNascimento());
         usuario.setNome(usuarioCriacaoDto.getNome());
         usuario.setSenha(usuarioCriacaoDto.getSenha());
-        usuario.setCpf("");
-        usuario.setPlano("gratuito");
-        usuario.setMoedas(0);
-        usuario.setDiamantes(0);
-        usuario.setNivel(0);
-        usuario.setXp(0);
-        usuario.setDiasConsecutivos(0);
-        usuario.setMaxDiasConsecutivos(0);
+//        usuario.setCpf("");
+//        usuario.setPlano("gratuito");
+//        usuario.setMoedas(0);
+//        usuario.setDiamantes(0);
+//        usuario.setNivel(0);
+//        usuario.setXp(0);
+//        usuario.setDiasConsecutivos(0);
+//        usuario.setMaxDiasConsecutivos(0);
         return usuario;
     }
 //    public static UsuarioCriacaoDto toDto(Usuario usuario) {

@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/exercicios")
 @RequiredArgsConstructor
 public class ExercicioController {
-
     private final ExercicioService service;
 
     @GetMapping("/{idFase}")

@@ -38,6 +38,5 @@ public class Exercicio {
     private List<ExercicioUsuario> exerciciosUsuarios;
 
     @ManyToOne
-    @JoinColumn(name = "fk_fase")
     private Fase fase;
 }

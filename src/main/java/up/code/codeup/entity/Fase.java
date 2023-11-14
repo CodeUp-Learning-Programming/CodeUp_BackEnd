@@ -22,7 +22,6 @@ public class Fase {
     private String titulo;
 
     @ManyToOne
-    @JoinColumn(name = "fk_materia")
     @JsonBackReference
     private Materia materia;
 
