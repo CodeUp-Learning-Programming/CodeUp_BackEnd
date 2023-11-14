@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import up.code.codeup.entity.view.ViewFaseResult;
+import up.code.codeup.dto.faseDto.FaseResultDto;
+import up.code.codeup.entity.Materia;
 import up.code.codeup.service.FaseService;
+import up.code.codeup.service.MateriaService;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
@@ -19,15 +21,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FaseController {
     private final FaseService service;
+    private final MateriaService materiaService;
 
     @GetMapping("/{idMateria}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ViewFaseResult>> buscarFaseResultPorIdMateriaIdUsuario(@PathVariable @NotNull Integer idMateria) {
-        List<ViewFaseResult> listFaseResults = service.buscarFaseResultPorIdMateriaIdUsuario(idMateria, UsuarioUtils.getUsuarioLogado().getId());
+    public ResponseEntity<List<FaseResultDto>> buscarFaseResultPorIdMateriaIdUsuario(@PathVariable @NotNull Integer idMateria) {
+        Materia materia = materiaService.buscarMateriaPorId(idMateria);
 
-        if (listFaseResults.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(listFaseResults);
+        List<FaseResultDto> dtos = materia.getFases()
+                .stream()
+                .map(fase -> {
+                    long qtdExerciciosFaseConcluidos = fase.getExercicios()
+                            .stream()
+                            .flatMap(exercicio -> exercicio.getExerciciosUsuarios().stream())
+                            .filter(exercicioUsuario -> exercicioUsuario.getUsuario().getId().equals(UsuarioUtils.getUsuarioLogado().getId()) &&
+                                    exercicioUsuario.isConcluido())
+                            .count();
+
+                    return new FaseResultDto(materia.getNome(), fase.getId(), fase.getNumFase(),
+                            fase.getTitulo(), fase.getExercicios().size(), (int) qtdExerciciosFaseConcluidos);
+                }).toList();
+        return ResponseEntity.status(200).body(dtos);
     }
 }
