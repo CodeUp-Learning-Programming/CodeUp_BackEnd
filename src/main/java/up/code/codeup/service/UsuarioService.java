@@ -65,19 +65,6 @@ public class UsuarioService {
             throw new EntidadeNaoEncontradaException("Não há usuários cadastrados");
         }
 
-        int indiceInferior = 0;
-        int indiceSuperior = usuarios.size() - 1;
-        int meio;
-        while (indiceInferior <= indiceSuperior) {
-            meio = (indiceInferior + indiceSuperior) / 2;
-            if (id == usuarios.get(meio).getId()) {
-                return usuarios.get(meio);
-            } else if (id < usuarios.get(meio).getId()) {
-                indiceSuperior = meio - 1;
-            } else {
-                indiceInferior = meio + 1;
-            }
-        }
         return null;
     }
 

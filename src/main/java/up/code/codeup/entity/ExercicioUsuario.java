@@ -2,7 +2,6 @@ package up.code.codeup.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 @Entity
 @Getter
 @Setter
