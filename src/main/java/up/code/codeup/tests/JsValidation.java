@@ -1,5 +1,6 @@
 package up.code.codeup.tests;
 
+import org.graalvm.polyglot.Source;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +13,20 @@ import org.graalvm.polyglot.PolyglotException;
 import org.graalvm.polyglot.Value;
 import up.code.codeup.tests.JsResult;
 
-@RequestMapping("/teste")
+import java.io.IOException;
+
+@RequestMapping("/testes")
 @RestController
 public class JsValidation {
 
-    @GetMapping
+    @GetMapping("/js")
     public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao) {
         JsResult jsResult = new JsResult();
 
         try (Context context = Context.create()) {
             // Execute o bloco de código JavaScript usando Graal.js
-            Value resultado = context.eval("js", funcao);
+            Value resultado = context.eval(Source.newBuilder("js", funcao, "nome_do_arquivo.js").build());
+
 
             // Configure o resultado no objeto JsResult
             jsResult.setResultado(resultado.as(Object.class));
@@ -34,6 +38,8 @@ public class JsValidation {
             System.err.println("Erro ao executar código JavaScript: " + e.getMessage());
             jsResult.setResultado("Erro ao executar código JavaScript. Verifique o log para mais detalhes.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(jsResult);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
