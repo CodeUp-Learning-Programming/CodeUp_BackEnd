@@ -17,7 +17,6 @@ import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 
-<<<<<<< HEAD
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,9 +24,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-=======
-import java.util.List;
->>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
 
 @Service
 public class UsuarioService {
@@ -108,7 +104,6 @@ public class UsuarioService {
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 
-<<<<<<< HEAD
 
 //    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
 //        nomeArq += ".csv";
@@ -340,8 +335,6 @@ public class UsuarioService {
 //
 //    }
 
-=======
->>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
 }
 //    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
 //        nomeArq += ".csv";

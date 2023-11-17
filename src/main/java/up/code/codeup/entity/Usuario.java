@@ -45,7 +45,6 @@ public class Usuario {
 //    @ColumnDefault("0")
 //    private Integer maxDiasConsecutivos;
 
-<<<<<<< HEAD
     @ColumnDefault("0")
     private Integer xp;
 
@@ -55,8 +54,4 @@ public class Usuario {
     @ColumnDefault("0")
     private Integer maxDiasConsecutivos;
 
-=======
-    @OneToMany(mappedBy = "usuario")
-    private List<ExercicioUsuario> exerciciosUsuarios;
->>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
 }
