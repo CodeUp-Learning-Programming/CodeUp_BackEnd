@@ -2,10 +2,11 @@ package up.code.codeup.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import up.code.codeup.entity.Materia;
-import up.code.codeup.mapper.MateriaMapper;
+import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.repository.MateriaRepository;
 
 import java.util.List;
@@ -16,19 +17,18 @@ import java.util.Optional;
 public class MateriaService {
 
     @Autowired
-    private MateriaRepository materiaRepository;
+    private MateriaRepository repository;
 
     public List<Materia> buscarMaterias() {
-        return materiaRepository.findAll();
+        return repository.findAll();
     }
 
     public Materia buscarMateriaPorId(int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
+        Optional<Materia> materia = repository.findById(id);
         if (materia.isPresent()) {
-            Materia materiaExistente = materia.get();
-            return materiaExistente;
+            return materia.get();
         }
-        return null;
+        throw new EntidadeNaoEncontradaException("Id inválido");
     }
 
 }

@@ -2,6 +2,7 @@ package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+<<<<<<< HEAD
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.core.io.InputStreamResource;
@@ -10,73 +11,65 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.ListaObj;
+=======
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+>>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
+import up.code.codeup.dto.usuarioDto.UsuarioDetalhesCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
+<<<<<<< HEAD
 import up.code.codeup.service.ProcessamentoService;
+=======
+import up.code.codeup.mapper.UsuarioMapper;
+>>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
 import up.code.codeup.service.UsuarioService;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 @Data
 public class UsuarioController {
+<<<<<<< HEAD
     private UsuarioService usuarioService;
     private ProcessamentoService processamentoService;
     public UsuarioController (UsuarioService service, ProcessamentoService processamentoService){
         this.processamentoService = processamentoService;
         this.usuarioService = service;
+=======
+    private UsuarioService service;
+
+    public UsuarioController(UsuarioService service) {
+        this.service = service;
+>>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623
     }
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        List<Usuario> usuarios = usuarioService.buscarUsuarios();
+    public ResponseEntity<List<Usuario>> listar() {
+        List<Usuario> usuarios = service.listar();
         return ResponseEntity.status(200).body(usuarios);
     }
 
     @PostMapping("/cadastrar")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
-        this.usuarioService.criar(usuarioCriacaoDto);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<UsuarioDetalhesCriacaoDto> cadastrar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
+        Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
+        return ResponseEntity.status(201).body(new UsuarioDetalhesCriacaoDto(service.cadastrar(novoUsuario)));
     }
 
-    @PutMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
-        if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
-            return ResponseEntity.status(200).body(usuarioAtualizado);
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-    @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> deletarUsuario(@PathVariable int id) {
-        if (usuarioService.deletarUsuario(id)) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(204).build();
-    }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        if (usuarioService.buscarUsuarioPorId(id) != null) {
-            return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(service.buscarUsuarioPorId(id));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDTO);
+        UsuarioTokenDto usuarioToken = this.service.autenticar(usuarioLoginDTO);
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
@@ -116,6 +109,7 @@ public class UsuarioController {
 //                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
 //                .body(resource);
 //    }
+<<<<<<< HEAD
 
 //    @GetMapping(value = "/download", produces = "text/csv")
 //    public ResponseEntity<Resource> downloadCsv() throws IOException {
@@ -173,3 +167,27 @@ public class UsuarioController {
         return ResponseEntity.ok().body(executarAgendado);
     }
 }
+=======
+
+//    @GetMapping(value = "/download", produces = "text/csv")
+//    public ResponseEntity<Resource> downloadCsv() throws IOException {
+//        List<Usuario> usuarios = usuarioService.buscarUsuarios();
+//        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
+//
+//        for(int i = 0; i < usuarios.size(); i++){
+//            usuarioListaObj.adiciona(usuarios.get(i));
+//        }
+//
+//        String nomeArquivo = "usuarios";
+//        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
+//
+//        File csvFile = new File("usuarios.csv");
+//        FileInputStream fileInputStream = new FileInputStream(csvFile);
+//        InputStreamResource resource = new InputStreamResource(fileInputStream);
+//
+//        return ResponseEntity.status(200).header(
+//                "content-disposition", "attachment; filename=\"usuarios.csv\"")
+//                .body(resource);
+//    }
+}
+>>>>>>> e8ecfeb5850290f4912ea9ff528a73166ff5d623

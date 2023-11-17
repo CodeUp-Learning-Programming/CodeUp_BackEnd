@@ -1,4 +1,4 @@
-package up.code.codeup;
+package up.code.codeup.utils;
 
 public class ListaObj <T> {
 
