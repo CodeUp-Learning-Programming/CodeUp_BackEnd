@@ -21,6 +21,7 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDate dtNascimento;
+    private Integer moedas;
 
     @ColumnDefault("0")
     private Integer nivel;
@@ -30,5 +31,4 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
-
 }
