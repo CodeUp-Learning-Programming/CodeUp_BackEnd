@@ -33,8 +33,8 @@ public class LojaController {
         List<String> tipoDosItens = itens.stream().map(ItemLoja::getTipo).distinct().toList();
         List<ItemLojaDto> itensLoja = itens.stream()
                 .map(itemLoja -> {
-                    boolean aduirido = usuarioUtils.usuarioPossuiItem(itemLoja);
-                    return new ItemLojaDto(itemLoja, aduirido);
+                    boolean adquirido = usuarioUtils.usuarioPossuiItem(itemLoja);
+                    return new ItemLojaDto(itemLoja, adquirido);
                 }).toList();
         return ResponseEntity.status(200).body(new LojaCompletaDto(tipoDosItens, itensLoja));
     }

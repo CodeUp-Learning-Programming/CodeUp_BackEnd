@@ -1,5 +1,6 @@
 package up.code.codeup.mapper;
 
+import up.code.codeup.dto.lojaDto.ItemLojaAdquiridoLoginDto;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
@@ -21,7 +22,8 @@ public class UsuarioMapper {
 //        usuario.setMaxDiasConsecutivos(0);
         return usuario;
     }
-//    public static UsuarioCriacaoDto toDto(Usuario usuario) {
+
+    //    public static UsuarioCriacaoDto toDto(Usuario usuario) {
 //        UsuarioCriacaoDto usuarioDto = new UsuarioCriacaoDto();
 //
 //        usuarioDto.setEmail(usuario.getEmail());
@@ -48,6 +50,8 @@ public class UsuarioMapper {
         usuarioTokenDto.setNome(usuario.getNome());
         usuarioTokenDto.setToken(token);
         usuarioTokenDto.setMoedas(usuario.getMoedas());
+        usuarioTokenDto.setItensAdquiridos(usuario.getItemAdquiridos().stream()
+                .map(itemAdquirido -> new ItemLojaAdquiridoLoginDto(itemAdquirido.getItemLoja(), itemAdquirido.isEquipado())).toList());
 
         return usuarioTokenDto;
     }
