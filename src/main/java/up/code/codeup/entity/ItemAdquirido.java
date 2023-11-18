@@ -1,23 +1,20 @@
 package up.code.codeup.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.service.annotation.GetExchange;
+
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class ExercicioUsuario {
-
+public class ItemAdquirido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private boolean concluido;
-
-    @ManyToOne
-    private Exercicio exercicio;
-
     @ManyToOne
     private Usuario usuario;
+    @ManyToOne
+    private ItemLoja itemLoja;
+    private boolean equipado;
 }

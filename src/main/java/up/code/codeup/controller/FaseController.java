@@ -22,6 +22,7 @@ import java.util.List;
 public class FaseController {
     private final FaseService service;
     private final MateriaService materiaService;
+    private final UsuarioUtils usuarioUtils ;
 
     @GetMapping("/{idMateria}")
     @SecurityRequirement(name = "Bearer")
@@ -34,7 +35,7 @@ public class FaseController {
                     long qtdExerciciosFaseConcluidos = fase.getExercicios()
                             .stream()
                             .flatMap(exercicio -> exercicio.getExerciciosUsuarios().stream())
-                            .filter(exercicioUsuario -> exercicioUsuario.getUsuario().getId().equals(UsuarioUtils.getUsuarioLogado().getId()) &&
+                            .filter(exercicioUsuario -> exercicioUsuario.getUsuario().getId().equals(usuarioUtils.getUsuarioLogado().getId()) &&
                                     exercicioUsuario.isConcluido())
                             .count();
 

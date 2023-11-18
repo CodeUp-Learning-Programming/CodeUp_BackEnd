@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class UsuarioCriacaoDto {
 
     @NotNull(message = "Campo nome obrigatório")
-    @Size(min = 3, max = 25, message = "Campo nome deve ter min 3 caracteres max 25")
+    @Size(min = 3, max = 45, message = "Campo nome deve ter min 3 caracteres max 45")
     @Pattern(regexp = "^(?!\\s)(?!.*\\s$)(?!.*\\s{2,})[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$",
     message = "Campo nome inválido - regex" )
     private String nome;
