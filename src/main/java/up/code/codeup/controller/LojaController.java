@@ -11,6 +11,7 @@ import up.code.codeup.dto.lojaDto.LojaCompletaDto;
 import up.code.codeup.entity.ItemLoja;
 import up.code.codeup.repository.ItemAdquiridoRepository;
 import up.code.codeup.repository.ItemLojaRepository;
+import up.code.codeup.service.LojaService;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
@@ -19,21 +20,22 @@ import java.util.List;
 @RequestMapping("/loja")
 @RequiredArgsConstructor
 public class LojaController {
-    private final ItemLojaRepository itemLojaRepository;
     private final UsuarioUtils usuarioUtils;
+    private final LojaService service;
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<LojaCompletaDto> buscarLojaCompleta() {
-        List<ItemLoja> itens = itemLojaRepository.findAll();
+        List<ItemLoja> itens = service.buscarItensLoja();
+        if (itens.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
         List<String> tipoDosItens = itens.stream().map(ItemLoja::getTipo).distinct().toList();
-
         List<ItemLojaDto> itensLoja = itens.stream()
                 .map(itemLoja -> {
                     boolean aduirido = usuarioUtils.usuarioPossuiItem(itemLoja);
                     return new ItemLojaDto(itemLoja, aduirido);
                 }).toList();
-
         return ResponseEntity.status(200).body(new LojaCompletaDto(tipoDosItens, itensLoja));
     }
 }

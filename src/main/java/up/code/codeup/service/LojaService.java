@@ -12,7 +12,7 @@ import java.util.List;
 public class LojaService {
     private final ItemLojaRepository itemLojaRepository;
 
-    public List<ItemLoja> buscarLojaCompleta() {
-        return null;
+    public List<ItemLoja> buscarItensLoja() {
+        return itemLojaRepository.findAll();
     }
 }

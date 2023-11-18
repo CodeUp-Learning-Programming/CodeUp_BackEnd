@@ -24,10 +24,6 @@ public class UsuarioUtils {
     }
 
     public boolean usuarioPossuiItem(ItemLoja itemLoja) {
-        System.out.println("Id do usuário logado" + getUsuarioLogado().getId());
-        if (usuarioRepository == null) {
-            System.out.println("usuarioRepository é nulo");
-        }
         Usuario usuario = usuarioRepository.findById(getUsuarioLogado().getId()).get();
         return usuario.getItemAdquiridos().stream()
                 .anyMatch(itemAdquirido -> itemAdquirido.getItemLoja().equals(itemLoja));
