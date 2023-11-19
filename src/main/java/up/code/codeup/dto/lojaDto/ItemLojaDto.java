@@ -2,8 +2,11 @@ package up.code.codeup.dto.lojaDto;
 
 import up.code.codeup.entity.ItemLoja;
 
+import java.util.Base64;
+
 public record ItemLojaDto(
         String nomeItem,
+        String fotoItem,
         String tipoItem,
         Integer precoItem,
         String descricaoItem,
@@ -12,6 +15,7 @@ public record ItemLojaDto(
     public ItemLojaDto(ItemLoja itemLoja, boolean adquirido) {
         this(
                 itemLoja.getNomeItem(),
+                itemLoja.getImagem() != null ? Base64.getEncoder().encodeToString(itemLoja.getImagem()) : null,
                 itemLoja.getTipo(),
                 itemLoja.getPreco().intValue(),
                 itemLoja.getDescricao(),

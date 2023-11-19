@@ -2,6 +2,7 @@ package up.code.codeup.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 @Entity
 @Getter
 @Setter
@@ -14,6 +15,7 @@ public class ExercicioUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private boolean concluido;
+    private String resposta_usuario;
 
     @ManyToOne
     private Exercicio exercicio;
