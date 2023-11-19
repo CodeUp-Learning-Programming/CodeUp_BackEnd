@@ -18,9 +18,14 @@ public class Exercicio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer numExercicio;
+    private Integer moeda;
+    private Integer xp;
 
     @Size(max = 1000)
     private String conteudoTeorico;
+
+    @Size(max = 1000)
+    private String titulo;
 
     @Size(max = 1000)
     private String desafio;
@@ -34,9 +39,6 @@ public class Exercicio {
     @Size(max = 1000)
     private String resposta;
 
-    private Integer moeda;
-
-    private Integer xp;
 
     @OneToMany(mappedBy = "exercicio")
     private List<ExercicioUsuario> exerciciosUsuarios;

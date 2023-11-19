@@ -26,6 +26,7 @@ public class Usuario {
 
     @ColumnDefault("0")
     private Integer nivel;
+    @ColumnDefault("0")
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;
