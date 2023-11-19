@@ -10,7 +10,9 @@ import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.service.UsuarioService;
+import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
 
@@ -18,9 +20,13 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private UsuarioService service;
+    private UsuarioRepository repository;
+    private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service) {
+    public UsuarioController(UsuarioService service, UsuarioRepository repository, UsuarioUtils usuarioUtils) {
         this.service = service;
+        this.repository = repository;
+        this.usuarioUtils = usuarioUtils;
     }
 
     @GetMapping
@@ -48,6 +54,15 @@ public class UsuarioController {
         UsuarioTokenDto usuarioToken = this.service.autenticar(usuarioLoginDTO);
         return ResponseEntity.status(200).body(usuarioToken);
     }
+
+    @PatchMapping(value = "/foto", consumes = "image/*")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> patchFoto(@RequestBody byte[] novaFoto) {
+        repository.setFoto(usuarioUtils.getUsuarioLogado().getId(), novaFoto);
+
+        return ResponseEntity.status(200).build();
+    }
+
 
 //    @GetMapping(value = "/download-ordenado", produces = "text/csv")
 //    public ResponseEntity<Resource> ordenarCsv() throws IOException {

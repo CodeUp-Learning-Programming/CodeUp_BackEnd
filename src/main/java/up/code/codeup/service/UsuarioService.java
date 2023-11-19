@@ -59,13 +59,10 @@ public class UsuarioService {
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        List<Usuario> usuarios = repository.findAll();
-
         if (repository.findById(id).isEmpty()) {
             throw new EntidadeNaoEncontradaException("Não há usuários cadastrados");
         }
-
-        return null;
+        return repository.findById(id).get();
     }
 
     public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
