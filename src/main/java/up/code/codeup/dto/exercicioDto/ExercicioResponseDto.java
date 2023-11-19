@@ -11,7 +11,9 @@ public record ExercicioResponseDto(
         String desafio,
         String instrucao,
         String layoutFuncao,
-        String resposta
+        String resposta,
+        Integer moeda,
+        Integer xp
 ) {
     public ExercicioResponseDto(Exercicio exercicio) {
         this(exercicio.getId(),
@@ -20,6 +22,9 @@ public record ExercicioResponseDto(
                 exercicio.getDesafio(),
                 exercicio.getInstrucao(),
                 exercicio.getLayoutFuncao(),
-                exercicio.getResposta());
+                exercicio.getResposta(),
+                exercicio.getMoeda(),
+                exercicio.getXp()
+        );
     }
 }

@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class JsResult {
+
     private Object resultado;
+    private Boolean passou;
 }

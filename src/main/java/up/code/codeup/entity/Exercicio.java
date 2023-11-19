@@ -34,6 +34,10 @@ public class Exercicio {
     @Size(max = 1000)
     private String resposta;
 
+    private Integer moeda;
+
+    private Integer xp;
+
     @OneToMany(mappedBy = "exercicio")
     private List<ExercicioUsuario> exerciciosUsuarios;
 
