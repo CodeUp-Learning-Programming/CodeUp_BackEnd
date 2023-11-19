@@ -57,7 +57,7 @@ public class JsValidation {
             System.err.println("Erro durante a execução do código: " + e.getMessage());
             jsResult.setResultado("Erro durante a execução do código.");
             jsResult.setPassou(false);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(jsResult);
+            return ResponseEntity.status(200).body(jsResult);
         }
     }
 }

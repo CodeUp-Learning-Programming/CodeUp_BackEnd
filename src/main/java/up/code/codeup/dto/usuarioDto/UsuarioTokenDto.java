@@ -14,6 +14,9 @@ public class UsuarioTokenDto {
     private String email;
     private String token;
     private Integer moedas;
+    private Integer nivel;
+    private Integer xp;
+
     private List<ItemLojaAdquiridoLoginDto> itensAdquiridos;
 
 }

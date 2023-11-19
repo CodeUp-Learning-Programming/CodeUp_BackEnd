@@ -22,6 +22,7 @@ public class Usuario {
     private String senha;
     private LocalDate dtNascimento;
     private Integer moedas;
+    private Integer xp;
 
     @ColumnDefault("0")
     private Integer nivel;
