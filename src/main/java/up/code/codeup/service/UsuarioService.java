@@ -1,5 +1,6 @@
 package up.code.codeup.service;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import up.code.codeup.entity.Usuario;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
+import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class UsuarioService {
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UsuarioUtils usuarioUtils;
 
     public List<Usuario> listar() {
         return repository.findAll();
@@ -80,6 +84,17 @@ public class UsuarioService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = gerenciadorTokenJwt.generateToken(authentication);
         return UsuarioMapper.of(usuarioAutenticado, token);
+    }
+
+    public void atualizarFotoPerfil(@NotNull byte[] foto) {
+        repository.setFoto(usuarioUtils.getUsuarioLogado().getId(), foto);
+    }
+
+    public void removerFotoPerfil() {
+        repository.findById(usuarioUtils.getUsuarioLogado().getId()).ifPresent(usuario -> {
+            usuario.setFotoPerfil(null);
+            repository.save(usuario);
+        });
     }
 
 }

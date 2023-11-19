@@ -2,6 +2,8 @@ package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
@@ -57,9 +59,15 @@ public class UsuarioController {
 
     @PatchMapping(value = "/foto", consumes = "image/*")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> patchFoto(@RequestBody byte[] novaFoto) {
-        repository.setFoto(usuarioUtils.getUsuarioLogado().getId(), novaFoto);
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull byte[] novaFoto) {
+        service.atualizarFotoPerfil(novaFoto);
+        return ResponseEntity.status(200).build();
+    }
 
+    @DeleteMapping("/foto")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> removerFotoPerfil() {
+        service.removerFotoPerfil();
         return ResponseEntity.status(200).build();
     }
 
