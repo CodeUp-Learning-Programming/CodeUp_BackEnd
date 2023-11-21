@@ -3,6 +3,7 @@ package up.code.codeup.dto.exercicioDto;
 import lombok.*;
 import up.code.codeup.entity.Exercicio;
 import up.code.codeup.entity.Fase;
+import up.code.codeup.utils.UsuarioUtils;
 
 public record ExercicioResponseDto(
         Integer id,
@@ -11,11 +12,12 @@ public record ExercicioResponseDto(
         String desafio,
         String instrucao,
         String layoutFuncao,
-        String resposta,
+        String respostaCorreta,
+        String respostaUsuario,
         Integer moeda,
         Integer xp
 ) {
-    public ExercicioResponseDto(Exercicio exercicio) {
+    public ExercicioResponseDto(Exercicio exercicio, String respostaUsuario) {
         this(exercicio.getId(),
                 exercicio.getNumExercicio(),
                 exercicio.getConteudoTeorico(),
@@ -23,6 +25,7 @@ public record ExercicioResponseDto(
                 exercicio.getInstrucao(),
                 exercicio.getLayoutFuncao(),
                 exercicio.getResposta(),
+                respostaUsuario,
                 exercicio.getMoeda(),
                 exercicio.getXp()
         );

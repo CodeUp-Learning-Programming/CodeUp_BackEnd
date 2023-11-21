@@ -62,13 +62,6 @@ public class UsuarioService {
         return novoUsuario;
     }
 
-    public Usuario buscarUsuarioPorId(int id) {
-        if (repository.findById(id).isEmpty()) {
-            throw new EntidadeNaoEncontradaException("Não há usuários cadastrados");
-        }
-        return repository.findById(id).get();
-    }
-
     public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDTO.getEmail(), usuarioLoginDTO.getSenha());

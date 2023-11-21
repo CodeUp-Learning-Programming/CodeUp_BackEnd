@@ -44,13 +44,6 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(new UsuarioDetalhesCriacaoDto(service.cadastrar(novoUsuario)));
     }
 
-
-    @GetMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        return ResponseEntity.status(200).body(service.buscarUsuarioPorId(id));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
         UsuarioTokenDto usuarioToken = this.service.autenticar(usuarioLoginDTO);

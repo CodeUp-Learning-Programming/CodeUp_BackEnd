@@ -48,7 +48,11 @@ public class UsuarioMapper {
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
         usuarioTokenDto.setId(usuario.getId());
-        usuarioTokenDto.setFotoPerfil(Base64.getEncoder().encodeToString(usuario.getFotoPerfil()));
+        if (usuario.getFotoPerfil() != null) {
+            usuarioTokenDto.setFotoPerfil(Base64.getEncoder().encodeToString(usuario.getFotoPerfil()));
+        } else {
+            usuarioTokenDto.setFotoPerfil(null);
+        }
         usuarioTokenDto.setEmail(usuario.getEmail());
         usuarioTokenDto.setNome(usuario.getNome());
         usuarioTokenDto.setToken(token);

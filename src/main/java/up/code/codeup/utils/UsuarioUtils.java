@@ -23,6 +23,10 @@ public class UsuarioUtils {
         return (UsuarioDetalhesDto) authentication.getPrincipal();
     }
 
+    public Usuario getUsuarioLogadoCompleto() {
+        return usuarioRepository.findById(getUsuarioLogado().getId()).get();
+    }
+
     public boolean usuarioPossuiItem(ItemLoja itemLoja) {
         Usuario usuario = usuarioRepository.findById(getUsuarioLogado().getId()).get();
         return usuario.getItemAdquiridos().stream()
