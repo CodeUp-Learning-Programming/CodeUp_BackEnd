@@ -41,6 +41,10 @@ public class UsuarioService {
         return repository.findAll();
     }
 
+    public Usuario buscarPorId(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+    }
+
     public Usuario cadastrar(Usuario novoUsuario) {
         if (novoUsuario.getNome().equals("tempUser")) {
             int totalTempUsers = repository.countByNomeContainsIgnoreCase("tempUser");
@@ -73,16 +77,11 @@ public class UsuarioService {
     }
 
     public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
-        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-                usuarioLoginDTO.getEmail(), usuarioLoginDTO.getSenha());
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.getEmail(), usuarioLoginDTO.getSenha());
 
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-        Usuario usuarioAutenticado =
-                repository.findByEmail(usuarioLoginDTO.getEmail())
-                        .orElseThrow(
-                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
-                        );
+        Usuario usuarioAutenticado = repository.findByEmail(usuarioLoginDTO.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Email do usuário não cadastrado", null));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = gerenciadorTokenJwt.generateToken(authentication);

@@ -19,7 +19,5 @@ public class UsuarioTokenDto {
     private Integer moedas;
     private Integer nivel;
     private Integer xp;
-
     private List<ItemLojaAdquiridoLoginDto> itensAdquiridos;
-
 }

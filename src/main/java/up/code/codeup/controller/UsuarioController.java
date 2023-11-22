@@ -8,11 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
-import up.code.codeup.dto.usuarioDto.UsuarioDetalhesCriacaoDto;
-import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
-import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
+import up.code.codeup.dto.lojaDto.ItemLojaAdquiridoLoginDto;
+import up.code.codeup.dto.lojaDto.ItemLojaDto;
+import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
+import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.service.UsuarioService;
@@ -20,12 +20,15 @@ import up.code.codeup.utils.UsuarioUtils;
 
 import java.beans.Encoder;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
+    @Autowired
+    private UsuarioRepository repository;
 
     public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
         this.service = service;
@@ -37,6 +40,14 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> listar() {
         List<Usuario> usuarios = service.listar();
         return ResponseEntity.status(200).body(usuarios);
+    }
+
+    @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<UsuarioDetalhesPerfil> buscarPorId(@PathVariable @NotNull Integer id) {
+        Usuario usuario = service.buscarPorId(id);
+        new UsuarioDetalhesPerfil(usuario);
+        return ResponseEntity.status(200).body(new UsuarioDetalhesPerfil(usuario));
     }
 
     @PostMapping("/cadastrar")
