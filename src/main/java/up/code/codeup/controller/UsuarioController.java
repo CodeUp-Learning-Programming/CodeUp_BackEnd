@@ -3,43 +3,23 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.lojaDto.ItemLojaAdquiridoLoginDto;
-import up.code.codeup.dto.lojaDto.ItemLojaDto;
 import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
-import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
-import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
-
-import java.beans.Encoder;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
-    @Autowired
-    private UsuarioRepository repository;
 
     public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
         this.service = service;
         this.usuarioUtils = usuarioUtils;
-    }
-
-    @GetMapping
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<Usuario>> listar() {
-        List<Usuario> usuarios = service.listar();
-        return ResponseEntity.status(200).body(usuarios);
     }
 
     @GetMapping("/{id}")

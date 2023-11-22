@@ -37,10 +37,6 @@ public class UsuarioService {
     @Autowired
     private UsuarioUtils usuarioUtils;
 
-    public List<Usuario> listar() {
-        return repository.findAll();
-    }
-
     public Usuario buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
     }
