@@ -3,8 +3,10 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioDetalhesCriacaoDto;
@@ -16,18 +18,17 @@ import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
+import java.beans.Encoder;
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private UsuarioService service;
-    private UsuarioRepository repository;
     private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service, UsuarioRepository repository, UsuarioUtils usuarioUtils) {
+    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
         this.service = service;
-        this.repository = repository;
         this.usuarioUtils = usuarioUtils;
     }
 
@@ -62,6 +63,13 @@ public class UsuarioController {
     public ResponseEntity<Void> removerFotoPerfil() {
         service.removerFotoPerfil();
         return ResponseEntity.status(200).build();
+    }
+
+    @DeleteMapping("/perfil")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
+        service.removerPerfil(senha);
+        return ResponseEntity.status(200).body("Perfil removido com sucesso!");
     }
 
 

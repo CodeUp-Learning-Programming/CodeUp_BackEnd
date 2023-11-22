@@ -3,12 +3,14 @@ package up.code.codeup.service;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
@@ -60,6 +62,14 @@ public class UsuarioService {
         novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
         repository.save(novoUsuario);
         return novoUsuario;
+    }
+
+    public void removerPerfil(String senha) {
+        if (passwordEncoder.matches(senha, usuarioUtils.getUsuarioLogadoCompleto().getSenha())) {
+            repository.delete(usuarioUtils.getUsuarioLogadoCompleto());
+            return;
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha incorreta");
     }
 
     public UsuarioTokenDto autenticar(UsuarioLoginDTO usuarioLoginDTO) {
