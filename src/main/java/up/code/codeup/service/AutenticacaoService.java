@@ -23,4 +23,8 @@ public class AutenticacaoService implements UserDetailsService {
         }
         return new UsuarioDetalhesDto(usuarioOpt.get());
     }
+
+    public static void desfazer(){
+        
+    }
 }
