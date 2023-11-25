@@ -17,7 +17,7 @@ public class ItemLoja {
     private String descricao;
     private String tipo;
     private Double preco;
-    private byte[] imagem;
+    private String imagem;
     @OneToMany(mappedBy = "itemLoja")
     private List<ItemAdquirido> itemAdquirido;
 }

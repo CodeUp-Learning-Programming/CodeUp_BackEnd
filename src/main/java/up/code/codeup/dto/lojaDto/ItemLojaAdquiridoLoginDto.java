@@ -15,7 +15,7 @@ public record ItemLojaAdquiridoLoginDto(
     public ItemLojaAdquiridoLoginDto(ItemLoja itemLoja, boolean equipado) {
         this(
                 itemLoja.getNomeItem(),
-                itemLoja.getImagem() != null ? Base64.getEncoder().encodeToString(itemLoja.getImagem()) : null,
+                itemLoja.getImagem(),
                 itemLoja.getTipo(),
                 itemLoja.getPreco().intValue(),
                 itemLoja.getDescricao(),

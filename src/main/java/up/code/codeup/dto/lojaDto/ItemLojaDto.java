@@ -15,7 +15,7 @@ public record ItemLojaDto(
     public ItemLojaDto(ItemLoja itemLoja, boolean adquirido) {
         this(
                 itemLoja.getNomeItem(),
-                itemLoja.getImagem() != null ? Base64.getEncoder().encodeToString(itemLoja.getImagem()) : null,
+                itemLoja.getImagem(),
                 itemLoja.getTipo(),
                 itemLoja.getPreco().intValue(),
                 itemLoja.getDescricao(),

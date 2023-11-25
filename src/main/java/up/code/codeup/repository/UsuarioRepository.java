@@ -19,7 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Modifying
     @Transactional
     @Query("update Usuario u set u.fotoPerfil = ?2 where u.id = ?1")
-    void setFoto(Integer id, byte[] foto);
+    void setFoto(Integer id, String foto);
 
 //    @Query("select p.foto from Planta p where p.id = ?1")
 //    byte[] getFoto(Integer id);

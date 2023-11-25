@@ -17,7 +17,7 @@ public class Materia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private String titulo;
     @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Fase> fases = new ArrayList<>();

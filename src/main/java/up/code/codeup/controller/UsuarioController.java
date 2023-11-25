@@ -42,9 +42,9 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
-    @PatchMapping(value = "/foto", consumes = "image/*")
+    @PatchMapping("/foto")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull byte[] novaFoto) {
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull String novaFoto) {
         service.atualizarFotoPerfil(novaFoto);
         return ResponseEntity.status(200).build();
     }

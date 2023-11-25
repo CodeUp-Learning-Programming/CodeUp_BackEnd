@@ -17,7 +17,7 @@ public record UsuarioDetalhesPerfil(
 ) {
     public UsuarioDetalhesPerfil(Usuario usuario) {
         this(
-                usuario.getFotoPerfil() == null ? null : Base64.getEncoder().encodeToString(usuario.getFotoPerfil()),
+                usuario.getFotoPerfil(),
                 usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getMoedas(),
