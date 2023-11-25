@@ -3,9 +3,7 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.lojaDto.ItemLojaDto;
 import up.code.codeup.dto.lojaDto.LojaCompletaDto;
 import up.code.codeup.entity.ItemLoja;
@@ -36,4 +34,13 @@ public class LojaController {
                 }).toList();
         return ResponseEntity.status(200).body(new LojaCompletaDto(tipoDosItens, itensLoja));
     }
+
+    @PostMapping("/comprar/{idItem}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> comprarItem(@PathVariable int idItem) {
+        service.comprarItem(idItem);
+        return ResponseEntity.status(201).build();
+    }
+
+
 }
