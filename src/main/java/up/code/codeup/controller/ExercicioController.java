@@ -36,14 +36,14 @@ public class ExercicioController {
         return ResponseEntity.ok(exercicios);
     }
 
-    @PostMapping("/desfazer")
+    @GetMapping("/desfazer")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<String> desfazer() {
         String resultado = pilhaService.desfazer();
         return ResponseEntity.ok(resultado);
     }
 
-    @PostMapping("/refazer")
+    @GetMapping("/refazer")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<String> refazer() {
         String resultado = pilhaService.refazer();
@@ -52,7 +52,7 @@ public class ExercicioController {
 
     @PostMapping("/salvaDefazer")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<String> salvaDefazer(@RequestParam String funcao) {
+    public ResponseEntity<String> salvaDefazer(@RequestBody String funcao) {
         pilhaService.salvaDefazer(funcao);
         return ResponseEntity.created(null).build();
     }
