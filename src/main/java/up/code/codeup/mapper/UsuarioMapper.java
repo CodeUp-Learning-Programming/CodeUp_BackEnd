@@ -49,7 +49,7 @@ public class UsuarioMapper {
 
         usuarioTokenDto.setId(usuario.getId());
         if (usuario.getFotoPerfil() != null) {
-            usuarioTokenDto.setFotoPerfil(Base64.getEncoder().encodeToString(usuario.getFotoPerfil()));
+            usuarioTokenDto.setFotoPerfil(usuario.getFotoPerfil());
         } else {
             usuarioTokenDto.setFotoPerfil(null);
         }

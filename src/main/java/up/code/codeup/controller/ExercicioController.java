@@ -4,13 +4,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
-import up.code.codeup.dto.usuarioDto.UsuarioDetalhesDto;
 import up.code.codeup.service.ExercicioService;
+import up.code.codeup.service.Pilha;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
@@ -21,6 +18,7 @@ import java.util.List;
 public class ExercicioController {
     private final ExercicioService service;
     private final UsuarioUtils usuarioUtils;
+    private final Pilha pilhaService;
 
     @GetMapping("/{idFase}")
     @SecurityRequirement(name = "Bearer")
@@ -37,4 +35,26 @@ public class ExercicioController {
         }
         return ResponseEntity.ok(exercicios);
     }
+
+    @GetMapping("/desfazer")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> desfazer() {
+        String resultado = pilhaService.desfazer();
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/refazer")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> refazer() {
+        String resultado = pilhaService.refazer();
+        return ResponseEntity.ok(resultado);
+    }
+
+    @PostMapping("/salvaDefazer")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> salvaDefazer(@RequestBody String funcao) {
+        pilhaService.salvaDefazer(funcao);
+        return ResponseEntity.created(null).build();
+    }
+
 }

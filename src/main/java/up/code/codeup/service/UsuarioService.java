@@ -94,7 +94,7 @@ public class UsuarioService {
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 
-    public void atualizarFotoPerfil(@NotNull byte[] foto) {
+    public void atualizarFotoPerfil(@NotNull String foto) {
         repository.setFoto(usuarioUtils.getUsuarioLogado().getId(), foto);
     }
 

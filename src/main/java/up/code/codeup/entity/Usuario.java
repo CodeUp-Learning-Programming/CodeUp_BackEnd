@@ -20,7 +20,7 @@ public class Usuario {
     private Integer id;
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024)
-    private byte[] fotoPerfil;
+    private String fotoPerfil;
     private String nome;
     private String email;
     private String senha;

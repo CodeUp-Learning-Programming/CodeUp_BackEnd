@@ -47,7 +47,7 @@ public class JsValidation {
             if (executionThread.isAlive()) {
                 // Se a thread ainda estiver viva após o tempo limite, interrompa-a
                 executionThread.interrupt();
-                jsResult.setResultado("Timeout durante a execução do código.");
+                jsResult.setResultado("Tempo limite da execução do exercicio excedido! Cuidado com loop infinito!.");
                 jsResult.setPassou(false);
             }
 
