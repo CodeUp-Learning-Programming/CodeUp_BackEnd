@@ -27,7 +27,6 @@ public class ProcessamentoService {
     private final MateriaService materiaService;
     private final MateriaRepository materiaRepository;
 
-
     @Scheduled(fixedRate = 60000) // Executa a cada minuto, ajuste conforme necessário
     public List<UsuarioCriacaoDto> executarAgendado(List<MultipartFile> files) {
         FilaObj<MultipartFile> fila;
@@ -128,7 +127,7 @@ public class ProcessamentoService {
 
                     System.out.println("Tentando encontrar Materia com ID: " + idMateria);
                     if (materiaService != null) {
-                        usuarioMateria.setNome(idMateria);
+                        usuarioMateria.setTitulo(idMateria);
                     } else {
                         System.out.println("materiaService é nulo. Certifique-se de que está sendo injetado corretamente.");
                     }

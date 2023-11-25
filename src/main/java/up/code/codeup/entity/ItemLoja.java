@@ -13,10 +13,10 @@ public class ItemLoja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nomeItem;
+    private String nome;
     private String descricao;
     private String tipo;
-    private Double preco;
+    private Integer preco;
     private String imagem;
     @OneToMany(mappedBy = "itemLoja")
     private List<ItemAdquirido> itemAdquirido;

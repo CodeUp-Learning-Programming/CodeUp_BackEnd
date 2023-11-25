@@ -7,7 +7,6 @@ import java.util.Base64;
 import java.util.List;
 
 public record UsuarioDetalhesPerfil(
-        String fotoPerfil,
         String nome,
         String email,
         Integer moedas,
@@ -17,7 +16,6 @@ public record UsuarioDetalhesPerfil(
 ) {
     public UsuarioDetalhesPerfil(Usuario usuario) {
         this(
-                usuario.getFotoPerfil(),
                 usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getMoedas(),

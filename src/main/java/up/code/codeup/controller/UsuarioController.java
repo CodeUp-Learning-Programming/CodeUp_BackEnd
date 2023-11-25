@@ -27,7 +27,6 @@ import java.io.IOException;
 public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
-
     private ProcessamentoService processamentoService;
 
     public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils,  ProcessamentoService processamentoService) {

@@ -1,26 +1,28 @@
 package up.code.codeup.tests;
 
+import lombok.RequiredArgsConstructor;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.PolyglotException;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import up.code.codeup.tests.JsResult;
+import up.code.codeup.service.ExercicioUsuarioService;
+import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/testes")
 @RestController
+@RequiredArgsConstructor
 public class JsValidation {
+    private final ExercicioUsuarioService exercicioUsuarioService;
 
     @GetMapping("/js")
-    public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao) {
+    public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao, @RequestParam Integer idExercicio) {
         JsResult jsResult = new JsResult();
 
         try (Context context = Context.newBuilder("js")
@@ -32,6 +34,7 @@ public class JsValidation {
                     Value resultado = context.eval(Source.newBuilder("js", funcao, "nome_do_arquivo.js").build());
                     jsResult.setResultado(resultado.as(Object.class));
                     jsResult.setPassou(Boolean.TRUE.equals(jsResult.getResultado()));
+                    exercicioUsuarioService.concluiuExercicio(idExercicio);
                 } catch (PolyglotException e) {
                     System.err.println("Erro ao executar código JavaScript: " + e.getMessage());
                     jsResult.setResultado(e.getMessage());

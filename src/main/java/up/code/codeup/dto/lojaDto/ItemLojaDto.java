@@ -14,7 +14,7 @@ public record ItemLojaDto(
 ) {
     public ItemLojaDto(ItemLoja itemLoja, boolean adquirido) {
         this(
-                itemLoja.getNomeItem(),
+                itemLoja.getNome(),
                 itemLoja.getImagem(),
                 itemLoja.getTipo(),
                 itemLoja.getPreco().intValue(),

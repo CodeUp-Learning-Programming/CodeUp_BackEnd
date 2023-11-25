@@ -14,7 +14,7 @@ public record ItemLojaAdquiridoLoginDto(
 ) {
     public ItemLojaAdquiridoLoginDto(ItemLoja itemLoja, boolean equipado) {
         this(
-                itemLoja.getNomeItem(),
+                itemLoja.getNome(),
                 itemLoja.getImagem(),
                 itemLoja.getTipo(),
                 itemLoja.getPreco().intValue(),

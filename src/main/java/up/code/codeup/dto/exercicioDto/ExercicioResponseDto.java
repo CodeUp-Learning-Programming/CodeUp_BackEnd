@@ -12,7 +12,6 @@ public record ExercicioResponseDto(
         String desafio,
         String instrucao,
         String layoutFuncao,
-        String respostaCorreta,
         String respostaUsuario,
         Integer moeda,
         Integer xp
@@ -24,7 +23,6 @@ public record ExercicioResponseDto(
                 exercicio.getDesafio(),
                 exercicio.getInstrucao(),
                 exercicio.getLayoutFuncao(),
-                exercicio.getResposta(),
                 respostaUsuario,
                 exercicio.getMoeda(),
                 exercicio.getXp()

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import up.code.codeup.dto.lojaDto.ItemLojaDto;
 import up.code.codeup.dto.lojaDto.LojaCompletaDto;
 import up.code.codeup.entity.ItemLoja;
-import up.code.codeup.repository.ItemAdquiridoRepository;
-import up.code.codeup.repository.ItemLojaRepository;
 import up.code.codeup.service.LojaService;
 import up.code.codeup.utils.UsuarioUtils;
 

@@ -25,15 +25,19 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDate dtNascimento;
+    @ColumnDefault("0")
     private Integer moedas;
+    @ColumnDefault("0")
     private Integer xp;
-
+    
     @ColumnDefault("0")
     private Integer nivel;
-    @ColumnDefault("0")
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<FaseUsuario> fasesUsuarios;
 
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
