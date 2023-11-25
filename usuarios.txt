@@ -1,0 +1,6 @@
+00USUARIO2023224-11-2023 22:31:5201
+02001Desenvolvedor            dev@gmail.com            2002-02-1305d03d06d
+030000000001
+00USUARIO2023224-11-2023 22:32:2901
+02001Desenvolvedor            dev@gmail.com            2002-02-1305d03d06d
+030000000001

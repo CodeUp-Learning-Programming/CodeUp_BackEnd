@@ -1,0 +1,9 @@
+00Thiagao .17-11-2023        .01
+02Cristina Gomes          .cristina.gomes@email.com.1994-02-03   
+03Algoritimos
+02Grazi Mourao            .grazi.morao@email.com   .1993-08-03   
+03Algoritimos
+02Kim Serafim             .kim.aerafim@email.com   .2004-03-01
+03Algoritimos
+010006
+

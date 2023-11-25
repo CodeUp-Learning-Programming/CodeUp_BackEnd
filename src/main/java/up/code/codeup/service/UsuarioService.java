@@ -19,8 +19,14 @@ import up.code.codeup.entity.Usuario;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.UsuarioRepository;
+import up.code.codeup.utils.ListaObj;
 import up.code.codeup.utils.UsuarioUtils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -36,6 +42,10 @@ public class UsuarioService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UsuarioUtils usuarioUtils;
+
+    public List<Usuario> buscarUsuarios() {
+        return repository.findAll();
+    }
 
     public Usuario buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
@@ -93,6 +103,61 @@ public class UsuarioService {
             usuario.setFotoPerfil(null);
             repository.save(usuario);
         });
+    }
+
+    private static void gravaRegistroTxt(String registro, String nomeArq) {
+        BufferedWriter saida = null;
+        try {
+            saida = new BufferedWriter(new FileWriter(nomeArq,true));
+        }
+        catch (IOException erro) {
+            System.out.println("Erro na abertura do arquivo");
+        }
+        try {
+            saida.append(registro + "\n");
+            saida.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao gravar o arquivo");
+            erro.printStackTrace();
+        }
+    }
+    public static void gravaArquivoTxt(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
+        int contaRegDados = 0;
+
+        // Monta o registro de header
+        String header = "00USUARIO20232";
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += "01";
+
+        // Grava o registro de header
+        gravaRegistroTxt(header, nomeArq);
+
+
+        // Grava os registros de dados (ou registros de corpo)
+        for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
+            Usuario usuario = usuarioListaObj.buscaPorIndice(i);
+            String corpo = "02";
+            corpo += String.format("%03d", usuario.getId());
+            corpo += String.format("%-25.25s", usuario.getNome());
+            corpo += String.format("%-25.25s", usuario.getEmail());
+            corpo += String.format("%-10.10s", usuario.getDtNascimento());
+          //corpo += String.format("%-11.11s", usuario.getCpf());
+          //corpo += String.format("-3.3s", usuario.getPlano());
+            corpo += String.format("05d", usuario.getMoedas());
+          //corpo += String.format("05d", usuario.getDiamantes());
+            corpo += String.format("03d", usuario.getNivel());
+            corpo += String.format("06d", usuario.getXp());
+          //corpo += String.format("03d", usuario.getDiasConsecutivos());
+          //corpo += String.format("03d", usuario.getMaxDiasConsecutivos());
+
+            gravaRegistroTxt(corpo, nomeArq);
+            contaRegDados++;
+        }
+        String trailer = "03";
+        trailer += String.format("%010d", contaRegDados);
+
+        gravaRegistroTxt(trailer, nomeArq);
     }
 
 }
