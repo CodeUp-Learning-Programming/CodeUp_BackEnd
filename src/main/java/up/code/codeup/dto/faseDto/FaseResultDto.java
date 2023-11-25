@@ -6,7 +6,7 @@ public record FaseResultDto(
         Integer numFase,
         String tituloFase,
         Integer qtdExerciciosFase,
-        Integer qtdExerciciosFaseConcluidos
-
+        Integer qtdExerciciosFaseConcluidos,
+        boolean desbloqueada
 ) {
 }

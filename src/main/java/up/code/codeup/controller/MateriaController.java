@@ -32,13 +32,4 @@ public class MateriaController {
         }
         return ResponseEntity.status(200).body(materias);
     }
-
-    @GetMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Materia> buscarMateriaPorId(@PathVariable int id) {
-        if (service.buscarMateriaPorId(id) != null) {
-            return ResponseEntity.status(200).body(service.buscarMateriaPorId(id));
-        }
-        return ResponseEntity.status(404).build();
-    }
 }

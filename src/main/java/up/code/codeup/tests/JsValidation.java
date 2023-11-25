@@ -22,7 +22,7 @@ public class JsValidation {
     private final ExercicioUsuarioService exercicioUsuarioService;
 
     @GetMapping("/js")
-    public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao, @RequestParam Integer idExercicio) {
+    public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao, @RequestParam Integer idExercicio, @RequestParam Integer idFase) {
         JsResult jsResult = new JsResult();
 
         try (Context context = Context.newBuilder("js")
@@ -34,7 +34,7 @@ public class JsValidation {
                     Value resultado = context.eval(Source.newBuilder("js", funcao, "nome_do_arquivo.js").build());
                     jsResult.setResultado(resultado.as(Object.class));
                     jsResult.setPassou(Boolean.TRUE.equals(jsResult.getResultado()));
-                    exercicioUsuarioService.concluiuExercicio(idExercicio);
+                    exercicioUsuarioService.concluiuExercicio(idExercicio, idFase);
                 } catch (PolyglotException e) {
                     System.err.println("Erro ao executar código JavaScript: " + e.getMessage());
                     jsResult.setResultado(e.getMessage());

@@ -24,6 +24,9 @@ public class Fase {
     private Materia materia;
 
     @OneToMany(mappedBy = "fase")
-    private List<Exercicio> exercicios = new ArrayList<>();
+    private List<Exercicio> exercicios;
+
+    @OneToMany(mappedBy = "fase")
+    private List<FaseUsuario> faseUsuarios;
 
 }

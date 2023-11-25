@@ -22,7 +22,7 @@ import java.util.List;
 public class FaseController {
     private final FaseService service;
     private final MateriaService materiaService;
-    private final UsuarioUtils usuarioUtils ;
+    private final UsuarioUtils usuarioUtils;
 
     @GetMapping("/{idMateria}")
     @SecurityRequirement(name = "Bearer")
@@ -32,6 +32,10 @@ public class FaseController {
         List<FaseResultDto> dtos = materia.getFases()
                 .stream()
                 .map(fase -> {
+
+                    boolean b = fase.getFaseUsuarios().stream()
+                            .anyMatch(faseUsuario -> faseUsuario.getUsuario().getId().equals(usuarioUtils.getUsuarioLogado().getId()) && faseUsuario.isDesbloqueada());
+
                     long qtdExerciciosFaseConcluidos = fase.getExercicios()
                             .stream()
                             .flatMap(exercicio -> exercicio.getExerciciosUsuarios().stream())
@@ -40,7 +44,7 @@ public class FaseController {
                             .count();
 
                     return new FaseResultDto(materia.getTitulo(), fase.getId(), fase.getNumFase(),
-                            fase.getTitulo(), fase.getExercicios().size(), (int) qtdExerciciosFaseConcluidos);
+                            fase.getTitulo(), fase.getExercicios().size(), (int) qtdExerciciosFaseConcluidos, b);
                 }).toList();
         return ResponseEntity.status(200).body(dtos);
     }
