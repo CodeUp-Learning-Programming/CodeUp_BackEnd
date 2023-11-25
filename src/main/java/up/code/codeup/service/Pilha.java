@@ -1,17 +1,20 @@
 package up.code.codeup.service;
 
-import org.springframework.security.core.parameters.P;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.entity.PilhaObj;
 
-public class Pilha<T> {
-    PilhaObj<T>pilhaRefazer = new PilhaObj<>(10);
-    PilhaObj<T>pilhaDesfazer = new PilhaObj<>(10);
+@Service
+public class Pilha {
+    PilhaObj<String>pilhaRefazer = new PilhaObj<>(100);
+    PilhaObj<String>pilhaDesfazer = new PilhaObj<>(100);
 
-    public T desfazer() {
+    public String desfazer() {
         if (pilhaDesfazer.isFull()) {
             throw new IllegalStateException("Pilha esta cheia");
         } else if (pilhaDesfazer.isEmpty()) {
-            throw new IllegalStateException("Pilha esta vazia");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
         else {
             pilhaRefazer.push(pilhaDesfazer.peek());
@@ -19,11 +22,11 @@ public class Pilha<T> {
         }
     }
 
-    public T refazer() {
+    public String refazer() {
         if (pilhaRefazer.isFull()) {
             throw new IllegalStateException("Pilha esta cheia");
         } else if (pilhaRefazer.isEmpty()) {
-            throw new IllegalStateException("Pilha esta vazia");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         } else {
             pilhaDesfazer.push(pilhaRefazer.peek());
             return pilhaRefazer.pop();
@@ -31,11 +34,11 @@ public class Pilha<T> {
 
     }
 
-    public void salvaDefazer(T obg){
+    public void salvaDefazer(String funcao){
         if (pilhaDesfazer.isFull()) {
             throw new IllegalStateException("Pilha esta cheia");
         }else {
-            pilhaDesfazer.push(obg);
+            pilhaDesfazer.push(funcao);
         }
     }
 
