@@ -3,13 +3,24 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.service.ProcessamentoService;
 import up.code.codeup.service.UsuarioService;
+import up.code.codeup.utils.ListaObj;
 import up.code.codeup.utils.UsuarioUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -17,8 +28,11 @@ public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
+    private ProcessamentoService processamentoService;
+
+    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils,  ProcessamentoService processamentoService) {
         this.service = service;
+        this.processamentoService = processamentoService;
         this.usuarioUtils = usuarioUtils;
     }
 
@@ -121,4 +135,37 @@ public class UsuarioController {
 //                "content-disposition", "attachment; filename=\"usuarios.csv\"")
 //                .body(resource);
 //    }
+
+    @GetMapping(value = "/download", produces = "text/txt")
+    public ResponseEntity<Resource> downloadTxt() throws IOException {
+        List<Usuario> usuarios = service.buscarUsuarios();
+        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
+
+        for(int i = 0; i < usuarios.size(); i++){
+            usuarioListaObj.adiciona(usuarios.get(i));
+        }
+
+        String nomeArquivo = "usuarios.txt";
+        service.gravaArquivoTxt(usuarioListaObj, nomeArquivo);
+
+        File txtFile = new File("usuarios.txt");
+        FileInputStream fileInputStream = new FileInputStream(txtFile);
+        InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+        return ResponseEntity.status(200).header(
+                        "content-disposition", "attachment; filename=\"usuarios.txt\"")
+                .body(resource);
+    }
+
+    @PostMapping("/upload")
+    public  ResponseEntity<List<UsuarioCriacaoDto>> handleFileUpload(@RequestParam("files") @NotNull List<MultipartFile> files) {
+        System.out.println("Entrou aqui");
+
+        List<UsuarioCriacaoDto> executarAgendado = processamentoService.executarAgendado(files);
+
+        if(executarAgendado == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(executarAgendado);
+    }
 }
