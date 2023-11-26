@@ -17,11 +17,9 @@ import java.util.Optional;
 public class ExercicioUsuarioService {
     private final ExercicioUsuarioRepository repository;
     private final UsuarioRepository usuarioRepository;
-    private final UsuarioUtils usuarioUtils;
 
-    public void concluiuExercicio(int idExercicio, int idFase) {
-        Optional<ExercicioUsuario> exercicioUsuario = repository.findByUsuarioIdAndExercicioId(idExercicio, usuarioUtils.getUsuarioLogado().getId());
-        Usuario usuario = usuarioUtils.getUsuarioLogadoCompleto();
+    public void concluiuExercicio(int idExercicio, int idFase, Usuario usuario) {
+        Optional<ExercicioUsuario> exercicioUsuario = repository.findByUsuarioIdAndExercicioId(usuario.getId(), idExercicio);
 
         if (exercicioUsuario.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercício não encontrado");
@@ -33,6 +31,6 @@ public class ExercicioUsuarioService {
             usuarioRepository.save(usuario);
             repository.save(exercicio);
         }
-        repository.atualizarFaseDesbloqueadaParaUsuario(usuarioUtils.getUsuarioLogado().getId(), idFase);
+        repository.atualizarFaseDesbloqueadaParaUsuario(usuario.getId(), idFase);
     }
 }

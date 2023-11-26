@@ -1,4 +1,4 @@
-package up.code.codeup.tests;
+package up.code.codeup.dto.js;
 
 import lombok.Data;
 
@@ -7,4 +7,6 @@ public class JsResult {
 
     private Object resultado;
     private Boolean passou;
+    private String mensagem;
+
 }

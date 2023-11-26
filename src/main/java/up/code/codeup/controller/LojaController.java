@@ -22,6 +22,7 @@ public class LojaController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<LojaCompletaDto> buscarLojaCompleta() {
+        System.out.println(usuarioUtils.getUsuarioLogadoCompleto().getNome());
         List<ItemLoja> itens = service.buscarItensLoja();
         if (itens.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -41,6 +42,4 @@ public class LojaController {
         service.comprarItem(idItem);
         return ResponseEntity.status(201).build();
     }
-
-
 }
