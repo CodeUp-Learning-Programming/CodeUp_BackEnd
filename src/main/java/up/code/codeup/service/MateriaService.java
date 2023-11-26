@@ -31,4 +31,21 @@ public class MateriaService {
         throw new EntidadeNaoEncontradaException("Id inválido");
     }
 
+    public void salvarMateria(Materia materia) {
+        repository.save(materia);
+    }
+
+    public void deletarMateria(int id) {
+        repository.deleteById(id);
+    }
+
+    public void atualizarMateria(int id, Materia materia) {
+        Optional<Materia> materiaOptional = repository.findById(id);
+        if (materiaOptional.isPresent()) {
+            materia.setId(id);
+            repository.save(materia);
+        } else {
+            throw new EntidadeNaoEncontradaException("Id inválido");
+        }
+    }
 }
