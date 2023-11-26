@@ -4,3 +4,23 @@
 00USUARIO2023224-11-2023 22:32:2901
 02001Desenvolvedor            dev@gmail.com            2002-02-1305d03d06d
 030000000001
+00USUARIO2023226-11-2023 15:09:2701
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+030000000002
+00USUARIO2023226-11-2023 15:09:3201
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+030000000002
+00USUARIO2023226-11-2023 15:21:0901
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+030000000002
+00USUARIO2023226-11-2023 15:21:1101
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+030000000002
+00USUARIO2023226-11-2023 15:34:0601
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+030000000002

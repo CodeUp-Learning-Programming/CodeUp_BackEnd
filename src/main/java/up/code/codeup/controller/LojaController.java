@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.lojaDto.ItemLojaDto;
 import up.code.codeup.dto.lojaDto.LojaCompletaDto;
+import up.code.codeup.dto.usuarioDto.UsuarioAtualizado;
+import up.code.codeup.dto.usuarioDto.UsuarioDetalhesPerfil;
 import up.code.codeup.entity.ItemLoja;
 import up.code.codeup.service.LojaService;
 import up.code.codeup.utils.UsuarioUtils;
@@ -38,8 +40,7 @@ public class LojaController {
 
     @PostMapping("/comprar/{idItem}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> comprarItem(@PathVariable int idItem) {
-        service.comprarItem(idItem);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<UsuarioAtualizado> comprarItem(@PathVariable int idItem) {
+        return ResponseEntity.status(201).body(new UsuarioAtualizado(service.comprarItem(idItem)));
     }
 }

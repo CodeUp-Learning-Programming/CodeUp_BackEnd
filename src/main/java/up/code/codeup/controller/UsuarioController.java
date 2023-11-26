@@ -43,6 +43,14 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(new UsuarioDetalhesPerfil(usuario));
     }
 
+    @GetMapping("/atualizar/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<UsuarioDetalhesPerfil> atualizarListaItensPorId(@PathVariable @NotNull Integer id) {
+        Usuario usuario = service.buscarPorId(id);
+        new UsuarioAtualizado(usuario);
+        return ResponseEntity.status(200).body(new UsuarioDetalhesPerfil(usuario));
+    }
+
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioDetalhesCriacaoDto> cadastrar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
         Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
@@ -77,65 +85,68 @@ public class UsuarioController {
     }
 
 
-//    @GetMapping(value = "/download-ordenado", produces = "text/csv")
-//    public ResponseEntity<Resource> ordenarCsv() throws IOException {
-//        List<Usuario> usuarios = usuarioService.buscarUsuarios();
-//        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-//
-//        for(int i = 0; i < usuarios.size(); i++){
-//            usuarioListaObj.adiciona(usuarios.get(i));
-//        }
-//
-//        // Selection sort otimizado
-//        for (int i = 0; i < usuarioListaObj.getTamanho() - 1; i++) {
-//            int indiceMaior = i;
-//            for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
-//                if (usuarioListaObj.buscaPorIndice(j).getNivel() > usuarioListaObj.buscaPorIndice(indiceMaior).getNivel()) {
-//                    indiceMaior = j;
-//                }
-//            }
-//
-//            Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
-//            usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMaior));
-//            usuarioListaObj.substitui(indiceMaior, usuarioAux);
-//        }
-//
-//
-//        String nomeArquivo = "usuarios";
-//        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-//
-//        // Carregue o arquivo CSV
-//        File csvFile = new File("usuarios.csv");
-//        FileInputStream fileInputStream = new FileInputStream(csvFile);
-//        InputStreamResource resource = new InputStreamResource(fileInputStream);
-//
-//        return ResponseEntity.status(200).header(
-//                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
-//                .body(resource);
-//    }
+    @GetMapping(value = "/download-csv/ordenado", produces = "text/csv")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Resource> ordenarCsv() throws IOException {
+        List<Usuario> usuarios = service.buscarUsuarios();
+        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
 
-//    @GetMapping(value = "/download", produces = "text/csv")
-//    public ResponseEntity<Resource> downloadCsv() throws IOException {
-//        List<Usuario> usuarios = usuarioService.buscarUsuarios();
-//        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-//
-//        for(int i = 0; i < usuarios.size(); i++){
-//            usuarioListaObj.adiciona(usuarios.get(i));
-//        }
-//
-//        String nomeArquivo = "usuarios";
-//        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-//
-//        File csvFile = new File("usuarios.csv");
-//        FileInputStream fileInputStream = new FileInputStream(csvFile);
-//        InputStreamResource resource = new InputStreamResource(fileInputStream);
-//
-//        return ResponseEntity.status(200).header(
-//                "content-disposition", "attachment; filename=\"usuarios.csv\"")
-//                .body(resource);
-//    }
+        for(int i = 0; i < usuarios.size(); i++){
+            usuarioListaObj.adiciona(usuarios.get(i));
+        }
 
-    @GetMapping(value = "/download", produces = "text/txt")
+        //Selection sort otimizado
+        for (int i = 0; i < usuarioListaObj.getTamanho() - 1; i++) {
+            int indiceMaior = i;
+            for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
+                if (usuarioListaObj.buscaPorIndice(j).getNivel() > usuarioListaObj.buscaPorIndice(indiceMaior).getNivel()) {
+                    indiceMaior = j;
+                }
+            }
+
+            Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
+            usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMaior));
+            usuarioListaObj.substitui(indiceMaior, usuarioAux);
+        }
+
+
+        String nomeArquivo = "usuarios";
+        service.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
+
+        //Carregue o arquivo CSV
+        File csvFile = new File("usuarios.csv");
+        FileInputStream fileInputStream = new FileInputStream(csvFile);
+        InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+        return ResponseEntity.status(200).header(
+                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
+                .body(resource);
+    }
+
+    @GetMapping(value = "/download-csv", produces = "text/csv")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Resource> downloadCsv() throws IOException {
+        List<Usuario> usuarios = service.buscarUsuarios();
+        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
+
+        for(int i = 0; i < usuarios.size(); i++){
+            usuarioListaObj.adiciona(usuarios.get(i));
+        }
+
+        String nomeArquivo = "usuarios";
+        service.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
+
+        File csvFile = new File("usuarios.csv");
+        FileInputStream fileInputStream = new FileInputStream(csvFile);
+        InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+        return ResponseEntity.status(200).header(
+                "content-disposition", "attachment; filename=\"usuarios.csv\"")
+                .body(resource);
+    }
+
+    @GetMapping(value = "/download-txt", produces = "text/txt")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Resource> downloadTxt() throws IOException {
         List<Usuario> usuarios = service.buscarUsuarios();
         ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
@@ -157,6 +168,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/upload")
+    @SecurityRequirement(name = "Bearer")
     public  ResponseEntity<List<UsuarioCriacaoDto>> handleFileUpload(@RequestParam("files") @NotNull List<MultipartFile> files) {
         System.out.println("Entrou aqui");
 

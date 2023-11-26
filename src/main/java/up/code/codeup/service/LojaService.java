@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import up.code.codeup.dto.usuarioDto.UsuarioAtualizado;
 import up.code.codeup.entity.ItemAdquirido;
 import up.code.codeup.entity.ItemLoja;
 import up.code.codeup.entity.Usuario;
@@ -26,7 +27,7 @@ public class LojaService {
         return itemLojaRepository.findAll();
     }
 
-    public void comprarItem(int idItem) {
+    public Usuario comprarItem(int idItem) {
         ItemLoja item = itemLojaRepository.findById(idItem).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item não encontrado"));
         Usuario usuario = usuarioUtils.getUsuarioLogadoCompleto();
         if (usuario.getMoedas() < item.getPreco()) {
@@ -44,5 +45,6 @@ public class LojaService {
         usuario.setMoedas(usuario.getMoedas() - item.getPreco());
         usuarioRepository.save(usuario);
         itemAdquiridoRepository.save(itemAdquirido);
+        return usuario;
     }
 }

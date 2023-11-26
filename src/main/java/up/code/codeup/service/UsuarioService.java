@@ -157,53 +157,66 @@ public class UsuarioService {
         gravaRegistroTxt(trailer, nomeArq);
     }
 
+
+    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
+        nomeArq += ".csv";
+        //Titulo
+        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
+            String titulo = String.format("%s;%s;%s;%s;" +
+                            //"%s;%s;" +
+                            "%s;" +
+                            //"%s;" +
+                            //"%s;%s;" +
+                            "%s;%s" +
+                            "\n",
+                    "IdUsuario",
+                    "Nome",
+                    "Email",
+                    "DtNascimento",
+                    //"Cpf",
+                    //"Plano",
+                    "Moedas",
+                    //"Diamantes",
+                    "Nivel",
+                    "Xp"
+                    //"DiasConsecutivos",
+                    //"MaxDiasConsecutivos"
+            );
+
+            arquivoCsv.write(titulo);
+
+            //Linha
+            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
+                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
+                String linha = String.format("%d;%s;%s;%s;" +
+                                //"%s;%s;" +
+                                "%d;" +
+                                //"%d;" +
+                                "%d;%d" +
+                                //";%d;%d" +
+                                "\n",
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getEmail(),
+                        usuario.getDtNascimento(),
+                        //usuario.getCpf(),
+                        //usuario.getPlano(),
+                        usuario.getMoedas(),
+                        //usuario.getDiamantes(),
+                        usuario.getNivel(),
+                        usuario.getXp()
+                        //usuario.getDiasConsecutivos(),
+                        //usuario.getMaxDiasConsecutivos()
+                );
+
+                arquivoCsv.write(linha);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
-//    public void gravaUsuariosEmArquivoCsv(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
-//        nomeArq += ".csv";
-//        //Titulo
-//        try (FileWriter arquivoCsv = new FileWriter(nomeArq)) {
-//            String titulo = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-//                    "IdUsuario",
-//                    "Nome",
-//                    "Email",
-//                    "DtNascimento",
-//                    "Cpf",
-//                    "Plano",
-//                    "Moedas",
-//                    "Diamantes",
-//                    "Nivel",
-//                    "Xp",
-//                    "DiasConsecutivos",
-//                    "MaxDiasConsecutivos"
-//            );
-//
-//            arquivoCsv.write(titulo);
-//
-//            //Linha
-//            for (int i = 0; i < usuarioListaObj.getTamanho(); i++) {
-//                Usuario usuario = usuarioListaObj.buscaPorIndice(i);
-//                String linha = String.format("%d;%s;%s;%s;%s;%s;%d;%d;%d;%d;%d;%d\n",
-//                        usuario.getIdUsuario(),
-//                        usuario.getNome(),
-//                        usuario.getEmail(),
-//                        usuario.getDtNascimento(),
-//                        usuario.getCpf(),
-//                        usuario.getPlano(),
-//                        usuario.getMoedas(),
-//                        usuario.getDiamantes(),
-//                        usuario.getNivel(),
-//                        usuario.getXp(),
-//                        usuario.getDiasConsecutivos(),
-//                        usuario.getMaxDiasConsecutivos()
-//                );
-//
-//                arquivoCsv.write(linha);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
+
 //    @PersistenceContext
 //    private EntityManager entityManager;
 //
