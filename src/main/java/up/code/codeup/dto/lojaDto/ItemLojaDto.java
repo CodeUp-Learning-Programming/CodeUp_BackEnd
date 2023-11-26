@@ -5,6 +5,7 @@ import up.code.codeup.entity.ItemLoja;
 import java.util.Base64;
 
 public record ItemLojaDto(
+        Integer id,
         String nomeItem,
         String fotoItem,
         String tipoItem,
@@ -14,6 +15,7 @@ public record ItemLojaDto(
 ) {
     public ItemLojaDto(ItemLoja itemLoja, boolean adquirido) {
         this(
+                itemLoja.getId(),
                 itemLoja.getNome()  ,
                 itemLoja.getImagem(),
                 itemLoja.getTipo(),
