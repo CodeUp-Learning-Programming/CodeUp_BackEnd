@@ -7,6 +7,7 @@ import up.code.codeup.utils.UsuarioUtils;
 
 public record ExercicioResponseDto(
         Integer id,
+        String titulo,
         Integer numExercicio,
         String conteudoTeorico,
         String desafio,
@@ -18,6 +19,7 @@ public record ExercicioResponseDto(
 ) {
     public ExercicioResponseDto(Exercicio exercicio, String respostaUsuario) {
         this(exercicio.getId(),
+                exercicio.getTitulo(),
                 exercicio.getNumExercicio(),
                 exercicio.getConteudoTeorico(),
                 exercicio.getDesafio(),

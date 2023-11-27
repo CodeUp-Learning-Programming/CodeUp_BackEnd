@@ -50,6 +50,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/webjars/**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
+            new AntPathRequestMatcher("/usuarios/cadastrar/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/download-csv/ordenado"),
             new AntPathRequestMatcher("/download-csv"),
