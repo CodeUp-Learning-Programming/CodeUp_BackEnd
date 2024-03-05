@@ -1,10 +1,6 @@
 package up.code.codeup.utils;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.UtilityClass;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,19 +12,29 @@ import up.code.codeup.repository.UsuarioRepository;
 @RequiredArgsConstructor
 @Component
 public class UsuarioUtils {
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepository repository;
 
     public UsuarioDetalhesDto getUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UsuarioDetalhesDto) authentication.getPrincipal();
     }
 
+    public Usuario gerarUsuarioTemoporario(){
+        int totalTempUsers = repository.countByNomeContainsIgnoreCase("tempUser");
+        Usuario usuarioTemp = new Usuario();
+        usuarioTemp.setEmail("tempUser" + (totalTempUsers + 1) + "@tempmail.com");
+        usuarioTemp.setDtNascimento(usuarioTemp.getDtNascimento());
+        usuarioTemp.setNome(usuarioTemp.getNome() + (totalTempUsers + 1));
+
+        return usuarioTemp;
+    }
+
     public Usuario getUsuarioLogadoCompleto() {
-        return usuarioRepository.findById(getUsuarioLogado().getId()).get();
+        return repository.findById(getUsuarioLogado().getId()).get();
     }
 
     public boolean usuarioPossuiItem(ItemLoja itemLoja) {
-        Usuario usuario = usuarioRepository.findById(getUsuarioLogado().getId()).get();
+        Usuario usuario = repository.findById(getUsuarioLogado().getId()).get();
         return usuario.getItemAdquiridos().stream()
                 .anyMatch(itemAdquirido -> itemAdquirido.getItemLoja().equals(itemLoja));
     }

@@ -49,15 +49,12 @@ public class UsuarioService {
     }
 
     public Usuario cadastrar(Usuario novoUsuario) {
+        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
+
         if (novoUsuario.getNome().equals("tempUser")) {
-            int totalTempUsers = repository.countByNomeContainsIgnoreCase("tempUser");
-            novoUsuario.setEmail("tempUser" + (totalTempUsers + 1) + "@tempmail.com");
-            novoUsuario.setDtNascimento(novoUsuario.getDtNascimento());
-            novoUsuario.setNome(novoUsuario.getNome() + (totalTempUsers + 1));
-            novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
-            this.repository.save(novoUsuario);
-            return novoUsuario;
+            return repository.save(usuarioUtils.gerarUsuarioTemoporario());
         }
+
         repository.findByEmail(novoUsuario.getEmail()).ifPresent(usuarioExistente -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
         });
@@ -66,7 +63,6 @@ public class UsuarioService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Nome já cadastrado");
         });
 
-        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
         repository.save(novoUsuario);
         return novoUsuario;
     }
@@ -105,20 +101,19 @@ public class UsuarioService {
     private static void gravaRegistroTxt(String registro, String nomeArq) {
         BufferedWriter saida = null;
         try {
-            saida = new BufferedWriter(new FileWriter(nomeArq,true));
-        }
-        catch (IOException erro) {
+            saida = new BufferedWriter(new FileWriter(nomeArq, true));
+        } catch (IOException erro) {
             System.out.println("Erro na abertura do arquivo");
         }
         try {
             saida.append(registro + "\n");
             saida.close();
-        }
-        catch (IOException erro) {
+        } catch (IOException erro) {
             System.out.println("Erro ao gravar o arquivo");
             erro.printStackTrace();
         }
     }
+
     public static void gravaArquivoTxt(ListaObj<Usuario> usuarioListaObj, String nomeArq) {
         int contaRegDados = 0;
 
@@ -139,14 +134,14 @@ public class UsuarioService {
             corpo += String.format("%-25.25s", usuario.getNome());
             corpo += String.format("%-25.25s", usuario.getEmail());
             corpo += String.format("%-10.10s", usuario.getDtNascimento());
-          //corpo += String.format("%-11.11s", usuario.getCpf());
-          //corpo += String.format("-3.3s", usuario.getPlano());
+            //corpo += String.format("%-11.11s", usuario.getCpf());
+            //corpo += String.format("-3.3s", usuario.getPlano());
             corpo += String.format("05d", usuario.getMoedas());
-          //corpo += String.format("05d", usuario.getDiamantes());
+            //corpo += String.format("05d", usuario.getDiamantes());
             corpo += String.format("03d", usuario.getNivel());
             corpo += String.format("06d", usuario.getXp());
-          //corpo += String.format("03d", usuario.getDiasConsecutivos());
-          //corpo += String.format("03d", usuario.getMaxDiasConsecutivos());
+            //corpo += String.format("03d", usuario.getDiasConsecutivos());
+            //corpo += String.format("03d", usuario.getMaxDiasConsecutivos());
 
             gravaRegistroTxt(corpo, nomeArq);
             contaRegDados++;

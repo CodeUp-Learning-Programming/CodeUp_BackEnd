@@ -13,11 +13,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private String fotoPerfil;
@@ -25,13 +25,9 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDate dtNascimento;
-    @ColumnDefault("0")
-    private Integer moedas;
-    @ColumnDefault("0")
-    private Integer xp;
-    
-    @ColumnDefault("0")
-    private Integer nivel;
+    private Integer moedas = 0;
+    private Integer xp = 0;
+    private Integer nivel = 0;
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;
@@ -41,4 +37,18 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
+
+    @Override
+    public String toString() {
+        return "Usuario:" +
+                "id: " + id +
+                "\n nome='" + nome + '\'' +
+                "\n email='" + email + '\'' +
+                "\n senha='" + senha + '\'' +
+                "\n dtNascimento=" + dtNascimento +
+                "\n moedas=" + moedas +
+                "\n xp=" + xp +
+                "\n nivel=" + nivel +
+                '}';
+    }
 }
