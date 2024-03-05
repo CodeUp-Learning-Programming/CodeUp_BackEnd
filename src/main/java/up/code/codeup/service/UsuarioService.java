@@ -49,20 +49,13 @@ public class UsuarioService {
     }
 
     public Usuario cadastrar(Usuario novoUsuario) {
-        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
-
         if (novoUsuario.getNome().equals("tempUser")) {
-            return repository.save(usuarioUtils.gerarUsuarioTemoporario());
+            novoUsuario = usuarioUtils.gerarUsuarioTemoporario();
+        } else if (repository.existsByEmail(novoUsuario.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
         }
 
-        repository.findByEmail(novoUsuario.getEmail()).ifPresent(usuarioExistente -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
-        });
-
-        repository.findByNomeIgnoreCase(novoUsuario.getNome()).ifPresent(usuarioExistente -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Nome já cadastrado");
-        });
-
+        novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
         repository.save(novoUsuario);
         return novoUsuario;
     }
