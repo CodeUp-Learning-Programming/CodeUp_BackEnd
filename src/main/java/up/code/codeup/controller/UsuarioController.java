@@ -3,7 +3,6 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
-import up.code.codeup.service.ProcessamentoService;
 import up.code.codeup.service.UsuarioService;
-import up.code.codeup.utils.ListaObj;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.File;
@@ -27,11 +24,9 @@ import java.io.IOException;
 public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
-    private ProcessamentoService processamentoService;
 
-    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils,  ProcessamentoService processamentoService) {
+    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
         this.service = service;
-        this.processamentoService = processamentoService;
         this.usuarioUtils = usuarioUtils;
     }
 
@@ -82,101 +77,5 @@ public class UsuarioController {
     public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
         service.removerPerfil(senha);
         return ResponseEntity.status(200).body("Perfil removido com sucesso!");
-    }
-
-
-    @GetMapping(value = "/download-csv/ordenado", produces = "text/csv")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Resource> ordenarCsv() throws IOException {
-        List<Usuario> usuarios = service.buscarUsuarios();
-        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-
-        for(int i = 0; i < usuarios.size(); i++){
-            usuarioListaObj.adiciona(usuarios.get(i));
-        }
-
-        //Selection sort otimizado
-        for (int i = 0; i < usuarioListaObj.getTamanho() - 1; i++) {
-            int indiceMaior = i;
-            for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
-                if (usuarioListaObj.buscaPorIndice(j).getNivel() > usuarioListaObj.buscaPorIndice(indiceMaior).getNivel()) {
-                    indiceMaior = j;
-                }
-            }
-
-            Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
-            usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMaior));
-            usuarioListaObj.substitui(indiceMaior, usuarioAux);
-        }
-
-
-        String nomeArquivo = "usuarios";
-        service.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-
-        //Carregue o arquivo CSV
-        File csvFile = new File("usuarios.csv");
-        FileInputStream fileInputStream = new FileInputStream(csvFile);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.status(200).header(
-                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
-                .body(resource);
-    }
-
-    @GetMapping(value = "/download-csv", produces = "text/csv")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        List<Usuario> usuarios = service.buscarUsuarios();
-        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-
-        for(int i = 0; i < usuarios.size(); i++){
-            usuarioListaObj.adiciona(usuarios.get(i));
-        }
-
-        String nomeArquivo = "usuarios";
-        service.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-
-        File csvFile = new File("usuarios.csv");
-        FileInputStream fileInputStream = new FileInputStream(csvFile);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.status(200).header(
-                "content-disposition", "attachment; filename=\"usuarios.csv\"")
-                .body(resource);
-    }
-
-    @GetMapping(value = "/download-txt", produces = "text/txt")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Resource> downloadTxt() throws IOException {
-        List<Usuario> usuarios = service.buscarUsuarios();
-        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-
-        for(int i = 0; i < usuarios.size(); i++){
-            usuarioListaObj.adiciona(usuarios.get(i));
-        }
-
-        String nomeArquivo = "usuarios.txt";
-        service.gravaArquivoTxt(usuarioListaObj, nomeArquivo);
-
-        File txtFile = new File("usuarios.txt");
-        FileInputStream fileInputStream = new FileInputStream(txtFile);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.status(200).header(
-                        "content-disposition", "attachment; filename=\"usuarios.txt\"")
-                .body(resource);
-    }
-
-    @PostMapping("/upload")
-    @SecurityRequirement(name = "Bearer")
-    public  ResponseEntity<List<UsuarioCriacaoDto>> handleFileUpload(@RequestParam("files") @NotNull List<MultipartFile> files) {
-        System.out.println("Entrou aqui");
-
-        List<UsuarioCriacaoDto> executarAgendado = processamentoService.executarAgendado(files);
-
-        if(executarAgendado == null){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().body(executarAgendado);
     }
 }

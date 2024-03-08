@@ -43,7 +43,7 @@ public class FaseController {
                                     exercicioUsuario.isConcluido())
                             .count();
 
-                    return new FaseResultDto(materia.getTitulo(), fase.getId(), fase.getNumFase(),
+                    return new FaseResultDto(fase.getId(), fase.getNumFase(),
                             fase.getTitulo(), fase.getExercicios().size(), (int) qtdExerciciosFaseConcluidos, b);
                 }).toList();
         return ResponseEntity.status(200).body(dtos);
