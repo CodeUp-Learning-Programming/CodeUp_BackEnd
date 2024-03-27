@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0.31
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: code1234
+      MYSQL_DATABASE: code_up
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8000:80"
