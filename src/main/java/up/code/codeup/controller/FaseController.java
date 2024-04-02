@@ -17,7 +17,7 @@ import up.code.codeup.utils.UsuarioUtils;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fases")
+@RequestMapping("api/fases")
 @RequiredArgsConstructor
 public class FaseController {
     private final FaseService service;

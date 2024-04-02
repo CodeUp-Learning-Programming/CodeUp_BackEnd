@@ -15,7 +15,7 @@ import up.code.codeup.utils.UsuarioUtils;
 import java.util.List;
 
 @RestController
-@RequestMapping("/loja")
+@RequestMapping("api/loja")
 @RequiredArgsConstructor
 public class LojaController {
     private final UsuarioUtils usuarioUtils;

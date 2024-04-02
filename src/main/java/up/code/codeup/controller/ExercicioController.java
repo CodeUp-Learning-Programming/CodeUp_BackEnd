@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/exercicios")
+@RequestMapping("api/exercicios")
 @RequiredArgsConstructor
 public class ExercicioController {
     private final ExercicioService service;
