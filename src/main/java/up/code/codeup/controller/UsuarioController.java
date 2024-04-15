@@ -20,7 +20,7 @@ import java.util.List;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("api/usuarios")
 public class UsuarioController {
     private UsuarioService service;
     private UsuarioUtils usuarioUtils;
