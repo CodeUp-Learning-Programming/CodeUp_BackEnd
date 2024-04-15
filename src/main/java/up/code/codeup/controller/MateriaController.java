@@ -12,7 +12,7 @@ import up.code.codeup.service.MateriaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/materias")
+@RequestMapping("api/materias")
 @RequiredArgsConstructor
 public class MateriaController {
     private final MateriaService service;
