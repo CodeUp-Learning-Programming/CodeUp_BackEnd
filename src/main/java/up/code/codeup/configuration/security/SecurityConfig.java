@@ -56,6 +56,7 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/download-csv"),
             new AntPathRequestMatcher("/download-txt"),
             new AntPathRequestMatcher("/upload-txt"),
+            new AntPathRequestMatcher("/api/**"),
 //            new AntPathRequestMatcher("/usuarios"),
 //            new AntPathRequestMatcher("/usuarios/**"),
             new AntPathRequestMatcher("/testes/js"),
