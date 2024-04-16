@@ -43,7 +43,6 @@ public class UsuarioUtils {
 
     public void diminuirVida(){
         Usuario usuario = getUsuarioLogadoCompleto();
-        System.Debug();
         usuario.setVidas(usuario.getVidas()-1);
         repository.save(usuario);
     }
