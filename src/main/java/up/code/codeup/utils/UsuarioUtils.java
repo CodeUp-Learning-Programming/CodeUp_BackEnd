@@ -40,4 +40,11 @@ public class UsuarioUtils {
         return usuario.getItemAdquiridos().stream()
                 .anyMatch(itemAdquirido -> itemAdquirido.getItemLoja().equals(itemLoja));
     }
+
+    public void diminuirVida(){
+        Usuario usuario = getUsuarioLogadoCompleto();
+        System.Debug();
+        usuario.setVidas(usuario.getVidas()-1);
+        repository.save(usuario);
+    }
 }

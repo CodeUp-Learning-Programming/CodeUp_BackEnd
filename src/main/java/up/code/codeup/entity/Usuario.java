@@ -28,6 +28,7 @@ public class Usuario {
     private Integer moedas = 0;
     private Integer xp = 0;
     private Integer nivel = 0;
+    private Integer vidas = 5;
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;

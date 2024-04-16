@@ -80,6 +80,10 @@ public class ExercicioController {
                 jsResult.setPassou(false);
             }
 
+            if(!jsResult.getPassou()){
+                usuarioUtils.diminuirVida();
+            }
+
             return ResponseEntity.ok(jsResult);
 
         } catch (Exception e) {

@@ -90,19 +90,4 @@ public class UsuarioService {
         });
     }
 
-    private static void gravaRegistroTxt(String registro, String nomeArq) {
-        BufferedWriter saida = null;
-        try {
-            saida = new BufferedWriter(new FileWriter(nomeArq, true));
-        } catch (IOException erro) {
-            System.out.println("Erro na abertura do arquivo");
-        }
-        try {
-            saida.append(registro + "\n");
-            saida.close();
-        } catch (IOException erro) {
-            System.out.println("Erro ao gravar o arquivo");
-            erro.printStackTrace();
-        }
-    }
 }
