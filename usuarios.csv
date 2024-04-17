@@ -1,17 +1,12 @@
-IdUsuario;Nome;Email;DtNascimento;Cpf;Plano;Moedas;Diamantes;Nivel;Xp;DiasConsecutivos;MaxDiasConsecutivos
-1;Desenvolvedor;dev@sptech.school;2002-02-13;;pro;0;0;100;100000;0;0
-16;Roberto Ribeiro;roberto.ribeiro@outlook.com;1984-12-07;;gratuito;0;0;60;60000;0;0
-14;Eduardo Alves;eduardo.alves@hotmail.com;1994-04-27;;gratuito;0;0;59;59000;0;0
-12;Fernando Santos;fernando.santos@gmail.com;1996-09-14;;gratuito;0;0;58;58000;0;0
-10;Ricardo Martins;ricardo.martins@outlook.com;1997-06-12;;gratuito;0;0;57;57000;0;0
-6;Carlos Rodrigues;carlos.rodrigues@gmail.com;1995-07-19;;gratuito;0;0;55;55000;0;0
-4;Antônio Pereira;antonio.pereira@outlook.com;1992-03-10;;gratuito;0;0;52;52000;0;0
-13;Giovanna Castro;giovanna.castro@outlook.com;1986-07-18;;gratuito;0;0;52;52000;0;0
-8;Felipe Souza;felipe.souza@hotmail.com;1991-02-25;;gratuito;0;0;51;51000;0;0
-2;João da Silva;joao.silva@hotmail.com;1990-05-15;;gratuito;0;0;50;50000;0;0
-7;Amanda Lima;amanda.lima@outlook.com;1993-10-08;;gratuito;0;0;49;49000;0;0
-15;Vitória Fernandes;vitoria.fernandes@gmail.com;1998-01-10;;gratuito;0;0;48;48000;0;0
-5;Mariana Almeida;mariana.almeida@hotmail.com;1988-12-05;;gratuito;0;0;48;48000;0;0
-9;Luana Pereira;luana.pereira@gmail.com;1987-04-30;;gratuito;0;0;47;47000;0;0
-11;Isabella Oliveira;isabella.oliveira@hotmail.com;1989-11-02;;gratuito;0;0;46;46000;0;0
-3;Maria Santos;maria.santos@gmail.com;1985-08-22;;gratuito;0;0;45;45000;0;0
+IdUsuario;Nome;Email;DtNascimento;Moedas;Nivel;Xp
+1;Desenvolvedor;dev@sptech.school;2002-02-13;20;0;200
+2;Thiago Serafim;antonio.pereira@outlook.com;1992-03-10;0;0;0
+3;Dudola malucola;jO2a41@gmail.com;2000-05-20;0;0;200
+4;sadsda;matheusribeiro3105@gmail.com;2000-11-11;920;0;2400
+5;aaaaaa;aaaaa@gmail.com;1999-01-22;0;0;200
+6;Lucas Akiama            .;lucas.akiama@email.com  .;2004-12-23;0;0;0
+7;Carlos Santos           .;thiago.santos@email.com .;2002-10-12;0;0;0
+8;Lucas Souza             .;serafim.souza@email.com .;2003-01-06;0;0;0
+9;Lucas Akiama            .;lucas.akiama@email.com  .;2004-12-23;0;0;0
+10;Carlos Santos           .;thiago.santos@email.com .;2002-10-12;0;0;0
+11;Lucas Souza             .;serafim.souza@email.com .;2003-01-06;0;0;0

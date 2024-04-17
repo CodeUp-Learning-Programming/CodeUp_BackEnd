@@ -1,72 +1,92 @@
 package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.PolyglotException;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.exercicioDto.ExercicioCriacaoDTO;
-import up.code.codeup.dto.exercicioDto.ExercicioDTO;
-import up.code.codeup.entity.Exercicio;
+import up.code.codeup.dto.exercicioDto.ExercicioResponseDto;
+import up.code.codeup.entity.Usuario;
 import up.code.codeup.service.ExercicioService;
+import up.code.codeup.service.ExercicioUsuarioService;
+import up.code.codeup.dto.js.JsResult;
+import up.code.codeup.utils.UsuarioUtils;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/exercicios")
 @RequiredArgsConstructor
 public class ExercicioController {
+    private final ExercicioService service;
+    private final UsuarioUtils usuarioUtils;
+    private final ExercicioUsuarioService exercicioUsuarioService;
 
-    private final ExercicioService exercicioService;
-
-    @PostMapping
+    @GetMapping("/{idFase}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ExercicioCriacaoDTO> criar(@RequestBody @Valid ExercicioCriacaoDTO exercicioCriacaoDTO) {
-        this.exercicioService.criar(exercicioCriacaoDTO);
-        return ResponseEntity.status(201).build();
-    }
+    public ResponseEntity<List<ExercicioResponseDto>> buscarExerciciosPorIdFase(@PathVariable @NotNull Integer idFase) {
+        List<ExercicioResponseDto> exercicios = service.buscarExerciciosPorIdFase(idFase)
+                .stream()
+                .flatMap(exercicio -> usuarioUtils.getUsuarioLogadoCompleto().getExerciciosUsuarios().stream()
+                        .filter(exercicioUsuario -> exercicioUsuario.getExercicio().getId() == exercicio.getId())
+                        .map(exercicioUsuario -> new ExercicioResponseDto(exercicio, exercicioUsuario.getResposta_usuario())))
+                .toList();
 
-    @PutMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> atualizarExercicio(@PathVariable int id, @RequestBody Exercicio materiaAtualizado) {
-        if (exercicioService.atualizarExercicio(materiaAtualizado, id) != null) {
-            return ResponseEntity.status(200).body(materiaAtualizado);
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-    @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> deletarExercicio(@PathVariable int id) {
-        if (exercicioService.deletarExercicio(id)) {
+        if (exercicios.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(exercicios);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/js")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Exercicio> buscarExercicioPorId(@PathVariable int id) {
-        if (exercicioService.buscarExercicioPorId(id) != null) {
-            return ResponseEntity.status(200).body(exercicioService.buscarExercicioPorId(id));
+    public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao, @RequestParam Integer idExercicio, @RequestParam Integer idFase) {
+        Usuario usuario = usuarioUtils.getUsuarioLogadoCompleto();
+
+        JsResult jsResult = new JsResult();
+        try (Context context = Context.newBuilder("js")
+                .option("engine.WarnInterpreterOnly", "false")
+                .build()) {
+            Thread executionThread = new Thread(() -> {
+                try {
+                    Value resultado = context.eval(Source.newBuilder("js", funcao, "nome_do_arquivo.js").build());
+                    System.out.println("Resultado: " + resultado.as(Object.class));
+                    System.out.println("Passou: " + Boolean.TRUE.equals(resultado.as(Object.class)));
+                    System.out.println("Mensagem: " + resultado);
+                    jsResult.setResultado(resultado.as(Object.class));
+                    jsResult.setPassou(Boolean.TRUE.equals(jsResult.getResultado()));
+                    exercicioUsuarioService.concluiuExercicio(idExercicio, idFase, usuario);
+                } catch (PolyglotException e) {
+                    System.err.println("Erro ao executar código JavaScript: " + e.getMessage());
+                    jsResult.setResultado(e.getMessage());
+                    jsResult.setPassou(false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            executionThread.start();
+            executionThread.join(10000); // Aguarde no máximo 10 segundos para a execução da thread
+
+            if (executionThread.isAlive()) {
+                // Se a thread ainda estiver viva após o tempo limite, interrompa-a
+                executionThread.interrupt();
+                jsResult.setResultado("Tempo limite da execução do exercicio excedido! Cuidado com loop infinito!.");
+                jsResult.setPassou(false);
+            }
+
+            return ResponseEntity.ok(jsResult);
+
+        } catch (Exception e) {
+            System.err.println("Erro durante a execução do código: " + e.getMessage());
+            jsResult.setResultado("Erro durante a execução do código.");
+            jsResult.setPassou(false);
+            return ResponseEntity.status(200).body(jsResult);
         }
-        return ResponseEntity.status(404).build();
-    }
-
-    @GetMapping("/{fk_fase}/{numExercicio}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ExercicioDTO> buscarExercicio(@PathVariable Integer fk_fase, @PathVariable Integer numExercicio){
-        ExercicioDTO exercicioDesejado = this.exercicioService.buscarExercicio(fk_fase, numExercicio);
-        return ResponseEntity.ok(exercicioDesejado);
-    }
-
-    @GetMapping("/{fk_fase}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ExercicioDTO>> buscarTodosExercicioFase(@PathVariable Integer fk_fase){
-        List<ExercicioDTO> exercicioDesejados = this.exercicioService.buscarExercicioPorNumExercicio(fk_fase);
-
-        if(exercicioDesejados.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(exercicioDesejados);
     }
 }

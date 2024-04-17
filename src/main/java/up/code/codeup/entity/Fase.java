@@ -1,13 +1,11 @@
 package up.code.codeup.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -22,12 +20,13 @@ public class Fase {
     private String titulo;
 
     @ManyToOne
-    @JoinColumn(name = "fk_materia")
     @JsonBackReference
     private Materia materia;
 
-    @OneToMany(mappedBy = "fase", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Exercicio> exercicios = new ArrayList<>();
+    @OneToMany(mappedBy = "fase")
+    private List<Exercicio> exercicios;
+
+    @OneToMany(mappedBy = "fase")
+    private List<FaseUsuario> faseUsuarios;
 
 }

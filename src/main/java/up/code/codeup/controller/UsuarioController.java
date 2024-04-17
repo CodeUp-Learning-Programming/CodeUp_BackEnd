@@ -2,132 +2,80 @@ package up.code.codeup.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.ListaObj;
-import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
-import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
-import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
+import org.springframework.web.multipart.MultipartFile;
+import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
+import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.service.UsuarioService;
+import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
+import java.io.IOException;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("api/usuarios")
 public class UsuarioController {
-    private UsuarioService usuarioService;
-    public UsuarioController (UsuarioService service){
-        this.usuarioService = service;
-    }
+    private UsuarioService service;
+    private UsuarioUtils usuarioUtils;
 
-    @GetMapping
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        List<Usuario> usuarios = usuarioService.buscarUsuarios();
-        return ResponseEntity.status(200).body(usuarios);
-    }
-
-    @PostMapping("/cadastrar")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
-        this.usuarioService.criar(usuarioCriacaoDto);
-        return ResponseEntity.status(201).build();
-    }
-
-    @PutMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
-        if (usuarioService.atualizarUsuario(usuarioAtualizado, id) != null) {
-            return ResponseEntity.status(200).body(usuarioAtualizado);
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-    @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> deletarUsuario(@PathVariable int id) {
-        if (usuarioService.deletarUsuario(id)) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(204).build();
+    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
+        this.service = service;
+        this.usuarioUtils = usuarioUtils;
     }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        if (usuarioService.buscarUsuarioPorId(id) != null) {
-            return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
-        }
-        return ResponseEntity.status(404).build();
+    public ResponseEntity<UsuarioDetalhesPerfil> buscarPorId(@PathVariable @NotNull Integer id) {
+        Usuario usuario = service.buscarPorId(id);
+        new UsuarioDetalhesPerfil(usuario);
+        return ResponseEntity.status(200).body(new UsuarioDetalhesPerfil(usuario));
+    }
+
+    @GetMapping("/atualizar/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<UsuarioDetalhesPerfil> atualizarListaItensPorId(@PathVariable @NotNull Integer id) {
+        Usuario usuario = service.buscarPorId(id);
+        new UsuarioAtualizado(usuario);
+        return ResponseEntity.status(200).body(new UsuarioDetalhesPerfil(usuario));
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<UsuarioDetalhesCriacaoDto> cadastrar(@RequestBody @Valid UsuarioCriacaoDto usuarioCriacaoDto) {
+        Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
+        return ResponseEntity.status(201).body(new UsuarioDetalhesCriacaoDto(service.cadastrar(novoUsuario)));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDTO);
+        UsuarioTokenDto usuarioToken = this.service.autenticar(usuarioLoginDTO);
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
-    @GetMapping(value = "/download-ordenado", produces = "text/csv")
-    public ResponseEntity<Resource> ordenarCsv() throws IOException {
-        List<Usuario> usuarios = usuarioService.buscarUsuarios();
-        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
-
-        for(int i = 0; i < usuarios.size(); i++){
-            usuarioListaObj.adiciona(usuarios.get(i));
-        }
-
-        // Selection sort otimizado
-        for (int i = 0; i < usuarioListaObj.getTamanho() - 1; i++) {
-            int indiceMaior = i;
-            for (int j = i + 1; j < usuarioListaObj.getTamanho(); j++) {
-                if (usuarioListaObj.buscaPorIndice(j).getNivel() > usuarioListaObj.buscaPorIndice(indiceMaior).getNivel()) {
-                    indiceMaior = j;
-                }
-            }
-
-            Usuario usuarioAux = usuarioListaObj.buscaPorIndice(i);
-            usuarioListaObj.substitui(i, usuarioListaObj.buscaPorIndice(indiceMaior));
-            usuarioListaObj.substitui(indiceMaior, usuarioAux);
-        }
-
-
-        String nomeArquivo = "usuarios";
-        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-
-        // Carregue o arquivo CSV
-        File csvFile = new File("usuarios.csv");
-        FileInputStream fileInputStream = new FileInputStream(csvFile);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.status(200).header(
-                        "content-disposition", "attachment; filename=\"usuarios.csv\"")
-                .body(resource);
+    @PatchMapping("/foto")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull String novaFoto) {
+        service.atualizarFotoPerfil(novaFoto);
+        return ResponseEntity.status(200).build();
     }
 
-    @GetMapping(value = "/download", produces = "text/csv")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        List<Usuario> usuarios = usuarioService.buscarUsuarios();
-        ListaObj<Usuario> usuarioListaObj = new ListaObj(usuarios.size());
+    @DeleteMapping("/foto")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> removerFotoPerfil() {
+        service.removerFotoPerfil();
+        return ResponseEntity.status(200).build();
+    }
 
-        for(int i = 0; i < usuarios.size(); i++){
-            usuarioListaObj.adiciona(usuarios.get(i));
-        }
-
-        String nomeArquivo = "usuarios";
-        usuarioService.gravaUsuariosEmArquivoCsv(usuarioListaObj, nomeArquivo);
-
-        File csvFile = new File("usuarios.csv");
-        FileInputStream fileInputStream = new FileInputStream(csvFile);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.status(200).header(
-                "content-disposition", "attachment; filename=\"usuarios.csv\"")
-                .body(resource);
+    @DeleteMapping("/perfil")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
+        service.removerPerfil(senha);
+        return ResponseEntity.status(200).body("Perfil removido com sucesso!");
     }
 }

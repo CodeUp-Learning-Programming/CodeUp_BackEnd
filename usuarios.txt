@@ -1,0 +1,23 @@
+00USUARIO2023227-11-2023 00:37:3701
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+02003Dudola malucola          jO2a41@gmail.com         2000-05-2005d03d06d
+02004sadsda                   matheusribeiro3105@gmail.2000-11-1105d03d06d
+02005aaaaaa                   aaaaa@gmail.com          1999-01-2205d03d06d
+02006Lucas Akiama            .lucas.akiama@email.com  .2004-12-2305d03d06d
+02007Carlos Santos           .thiago.santos@email.com .2002-10-1205d03d06d
+02008Lucas Souza             .serafim.souza@email.com .2003-01-0605d03d06d
+030000000008
+00USUARIO2023227-11-2023 00:40:1701
+02001Desenvolvedor            dev@sptech.school        2002-02-1305d03d06d
+02002Thiago Serafim           antonio.pereira@outlook.c1992-03-1005d03d06d
+02003Dudola malucola          jO2a41@gmail.com         2000-05-2005d03d06d
+02004sadsda                   matheusribeiro3105@gmail.2000-11-1105d03d06d
+02005aaaaaa                   aaaaa@gmail.com          1999-01-2205d03d06d
+02006Lucas Akiama            .lucas.akiama@email.com  .2004-12-2305d03d06d
+02007Carlos Santos           .thiago.santos@email.com .2002-10-1205d03d06d
+02008Lucas Souza             .serafim.souza@email.com .2003-01-0605d03d06d
+02009Lucas Akiama            .lucas.akiama@email.com  .2004-12-2305d03d06d
+02010Carlos Santos           .thiago.santos@email.com .2002-10-1205d03d06d
+02011Lucas Souza             .serafim.souza@email.com .2003-01-0605d03d06d
+030000000011
