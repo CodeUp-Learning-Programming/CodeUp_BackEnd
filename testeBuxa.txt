@@ -1,0 +1,8 @@
+00Usuário  23-11-2023         01
+02João da Silva            j.silva@email.com        2004-12-23
+02Maria Oliveira           m.oliveira@email.com     1985-05-12
+03Algoritimos
+02Pedro Santos             p.santos@email.com       1987-06-20
+02Ana Souza                a.souza@email.com        1992-03-15
+02Carlos Lima              c.lima@email.com         1980-10-30
+010006

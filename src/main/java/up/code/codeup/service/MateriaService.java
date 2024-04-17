@@ -2,10 +2,11 @@ package up.code.codeup.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import up.code.codeup.dto.materiaDto.MateriaCriacaoDto;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import up.code.codeup.entity.Materia;
-import up.code.codeup.mapper.MateriaMapper;
+import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.repository.MateriaRepository;
 
 import java.util.List;
@@ -16,41 +17,35 @@ import java.util.Optional;
 public class MateriaService {
 
     @Autowired
-    private MateriaRepository materiaRepository;
+    private MateriaRepository repository;
 
     public List<Materia> buscarMaterias() {
-        return materiaRepository.findAll();
-    }
-
-    public void criar(MateriaCriacaoDto materiaCriacaoDto) {
-        final Materia novaMateria = MateriaMapper.of(materiaCriacaoDto);
-        this.materiaRepository.save(novaMateria);
-    }
-
-    public Materia atualizarMateria(Materia novaMateria, int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
-        if (materia.isPresent()) {
-            Materia materiaExistente = materia.get();
-            materiaExistente.setNome(novaMateria.getNome());
-            materiaRepository.save(materiaExistente);
-            return materiaExistente;
-        }
-        return null;
-    }
-
-    public boolean deletarMateria(int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
-        materia.ifPresent(u -> materiaRepository.delete(u));
-        return true;
+        return repository.findAll();
     }
 
     public Materia buscarMateriaPorId(int id) {
-        Optional<Materia> materia = materiaRepository.findById(id);
+        Optional<Materia> materia = repository.findById(id);
         if (materia.isPresent()) {
-            Materia materiaExistente = materia.get();
-            return materiaExistente;
+            return materia.get();
         }
-        return null;
+        throw new EntidadeNaoEncontradaException("Id inválido");
     }
 
+    public void salvarMateria(Materia materia) {
+        repository.save(materia);
+    }
+
+    public void deletarMateria(int id) {
+        repository.deleteById(id);
+    }
+
+    public void atualizarMateria(int id, Materia materia) {
+        Optional<Materia> materiaOptional = repository.findById(id);
+        if (materiaOptional.isPresent()) {
+            materia.setId(id);
+            repository.save(materia);
+        } else {
+            throw new EntidadeNaoEncontradaException("Id inválido");
+        }
+    }
 }

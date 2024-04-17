@@ -7,15 +7,20 @@ import up.code.codeup.entity.Usuario;
 import java.util.Collection;
 
 public class UsuarioDetalhesDto implements UserDetails {
-
+    private Integer id;
     private String nome;
     private String email;
     private String senha;
 
     public UsuarioDetalhesDto(Usuario usuario) {
+        this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getNome() {
