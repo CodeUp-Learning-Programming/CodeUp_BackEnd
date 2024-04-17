@@ -32,6 +32,7 @@ public class UsuarioMapper {
         usuarioTokenDto.setMoedas(usuario.getMoedas());
         usuarioTokenDto.setNivel(usuario.getNivel());
         usuarioTokenDto.setXp(usuario.getXp());
+        usuarioTokenDto.setVidas(usuario.getVidas());
         usuarioTokenDto.setItensAdquiridos(usuario.getItemAdquiridos().stream()
                 .map(itemAdquirido -> new ItemLojaAdquiridoLoginDto(itemAdquirido.getItemLoja(), itemAdquirido.isEquipado())).toList());
 
