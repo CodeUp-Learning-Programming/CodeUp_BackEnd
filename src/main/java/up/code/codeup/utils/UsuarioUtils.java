@@ -43,7 +43,9 @@ public class UsuarioUtils {
 
     public void diminuirVida(){
         Usuario usuario = getUsuarioLogadoCompleto();
-        usuario.setVidas(usuario.getVidas()-1);
-        repository.save(usuario);
+        if(usuario.getVidas() >= 1){
+            usuario.setVidas(usuario.getVidas()-1);
+            repository.save(usuario);
+        }
     }
 }
