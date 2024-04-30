@@ -48,4 +48,13 @@ public class UsuarioUtils {
             repository.save(usuario);
         }
     }
+
+    public void aidicionarvida(){
+        Usuario usuario = getUsuarioLogadoCompleto();
+        if(usuario.getVidas() < 5){
+
+        }
+    }
+
+
 }
