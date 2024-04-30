@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import up.code.codeup.dto.ImageDto;
 import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
@@ -60,8 +61,9 @@ public class UsuarioController {
 
     @PatchMapping("/foto")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull String novaFoto) {
-        service.atualizarFotoPerfil(novaFoto);
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull ImageDto novaFoto) {
+        service.atualizarFotoPerfil(novaFoto.getImage());
+        System.out.println("Aqui ó: " + novaFoto.getImage());
         return ResponseEntity.status(200).build();
     }
 

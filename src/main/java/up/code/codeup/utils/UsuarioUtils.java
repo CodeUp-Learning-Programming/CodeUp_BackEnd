@@ -41,9 +41,19 @@ public class UsuarioUtils {
                 .anyMatch(itemAdquirido -> itemAdquirido.getItemLoja().equals(itemLoja));
     }
 
-    // public void diminuirVida(){
-    //     Usuario usuario = getUsuarioLogadoCompleto();
-    //     usuario.setVidas(usuario.getVidas()-1);
-    //     repository.save(usuario);
-    // }
+    public void diminuirVida(){
+        Usuario usuario = getUsuarioLogadoCompleto();
+        if(usuario.getVidas() >= 1){
+            usuario.setVidas(usuario.getVidas()-1);
+            repository.save(usuario);
+        }
+    }
+
+    public void aidicionarvida(){
+        Usuario usuario = getUsuarioLogadoCompleto();
+        if(usuario.getVidas() < 5){
+
+        }
+    }
+
 }
