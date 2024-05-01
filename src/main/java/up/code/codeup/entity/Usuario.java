@@ -3,7 +3,6 @@ package up.code.codeup.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +27,7 @@ public class Usuario {
     private Integer moedas = 0;
     private Integer xp = 0;
     private Integer nivel = 0;
-    private Integer vidas = 5;
+    private Integer vida = 5;
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;
