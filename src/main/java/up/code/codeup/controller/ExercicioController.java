@@ -84,6 +84,7 @@ public class ExercicioController {
 
              if(!jsResult.getPassou()){
                  usuarioUtils.diminuirVida();
+                 jsResult.setVidas(usuario.getVida());
                  System.out.println("Quantidade atual de vidas depois de perder: " + usuarioUtils.getUsuarioLogadoCompleto().getVida());
              }
 
