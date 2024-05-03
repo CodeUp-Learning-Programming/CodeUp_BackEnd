@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
+import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.repository.AmizadeRepository;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.utils.UsuarioUtils;
 
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -32,6 +35,9 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private AmizadeRepository amizadeRepository;
     @Autowired
     private up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
@@ -88,6 +94,23 @@ public class UsuarioService {
             usuario.setFotoPerfil(null);
             repository.save(usuario);
         });
+    }
+
+    public void solicitarAmizade(Integer idSolicitante, String emailReceptor){
+        Optional<Usuario> optSolicitante = repository.findById(idSolicitante);
+        Optional<Usuario> optReceptor = repository.findByEmail(emailReceptor);
+
+        if (optSolicitante.isPresent() && optReceptor.isPresent()){
+            Usuario solicitante = optSolicitante.get();
+            Usuario receptor = optReceptor.get();
+            Optional<Amizade> optAmizadeExistente = amizadeRepository.findByIdReceptorAndIdSolicitante(receptor.getId(), solicitante.getId());
+            if(optAmizadeExistente.isEmpty()){
+                Amizade amizade = new Amizade();
+                amizade.setReceptor(receptor);
+                amizade.setSolicitante(solicitante);
+                amizadeRepository.save(amizade);
+            }
+        }
     }
 
 }

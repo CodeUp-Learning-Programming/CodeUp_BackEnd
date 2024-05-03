@@ -74,6 +74,12 @@ public class UsuarioController {
         return ResponseEntity.status(200).build();
     }
 
+    @PostMapping("/solicitar/amizade")
+    @SecurityRequirement(name = "Bearer")
+    public static void solicitarAmizade(Integer idSolicitante, String emailReceptor){
+
+    }
+
     @DeleteMapping("/perfil")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
