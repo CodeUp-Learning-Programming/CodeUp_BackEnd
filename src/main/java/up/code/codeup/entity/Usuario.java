@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Usuario")
 @Getter
@@ -37,6 +39,14 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Amizade",
+            joinColumns = @JoinColumn(name = "id_solicitante"),
+            inverseJoinColumns = @JoinColumn(name = "id_receptor")
+    )
+    private Set<Usuario> amigos = new HashSet<>();
 
     @Override
     public String toString() {
