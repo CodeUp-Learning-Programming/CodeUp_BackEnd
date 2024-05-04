@@ -18,6 +18,7 @@ import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.repository.AmizadeRepository;
 import up.code.codeup.repository.UsuarioRepository;
+import up.code.codeup.utils.StatusPedidoAmizade;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.BufferedWriter;
@@ -96,21 +97,25 @@ public class UsuarioService {
         });
     }
 
-    public void solicitarAmizade(Integer idSolicitante, String emailReceptor){
+    public boolean solicitarAmizade(Integer idSolicitante, String emailReceptor){
+        boolean conviteEnviado = false;
         Optional<Usuario> optSolicitante = repository.findById(idSolicitante);
         Optional<Usuario> optReceptor = repository.findByEmail(emailReceptor);
 
         if (optSolicitante.isPresent() && optReceptor.isPresent()){
             Usuario solicitante = optSolicitante.get();
             Usuario receptor = optReceptor.get();
-            Optional<Amizade> optAmizadeExistente = amizadeRepository.findByIdReceptorAndIdSolicitante(receptor.getId(), solicitante.getId());
+            Optional<Amizade> optAmizadeExistente = amizadeRepository.buscarAmizadeExistente(solicitante.getId(), receptor.getId());
             if(optAmizadeExistente.isEmpty()){
                 Amizade amizade = new Amizade();
                 amizade.setReceptor(receptor);
                 amizade.setSolicitante(solicitante);
+                amizade.setStatus(StatusPedidoAmizade.PENDENTE);
                 amizadeRepository.save(amizade);
+                conviteEnviado = true;
             }
         }
+        return conviteEnviado;
     }
 
 }

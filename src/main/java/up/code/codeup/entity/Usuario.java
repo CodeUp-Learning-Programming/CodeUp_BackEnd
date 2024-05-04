@@ -40,13 +40,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Amizade",
-            joinColumns = @JoinColumn(name = "id_solicitante"),
-            inverseJoinColumns = @JoinColumn(name = "id_receptor")
-    )
-    private Set<Usuario> amigos = new HashSet<>();
+    @OneToMany(mappedBy = "solicitante")
+    private List<Amizade> amizadesSolicitadas;
+
+    @OneToMany(mappedBy = "receptor")
+    private List<Amizade> amizadesRecebidas;
 
     @Override
     public String toString() {

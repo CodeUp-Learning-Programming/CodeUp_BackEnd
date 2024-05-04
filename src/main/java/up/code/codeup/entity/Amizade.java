@@ -2,6 +2,7 @@ package up.code.codeup.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import up.code.codeup.utils.StatusPedidoAmizade;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,5 +26,5 @@ public class Amizade {
     @JoinColumn(name = "id_receptor")
     private Usuario receptor;
 
-    private Integer status;
+    private StatusPedidoAmizade status;
 }

@@ -1,11 +1,13 @@
 package up.code.codeup.controller;
 
+import com.oracle.truffle.regex.charset.SortedListOfRanges;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.dto.ImageDto;
@@ -76,8 +78,9 @@ public class UsuarioController {
 
     @PostMapping("/solicitar/amizade")
     @SecurityRequirement(name = "Bearer")
-    public static void solicitarAmizade(Integer idSolicitante, String emailReceptor){
-
+    public ResponseEntity<Boolean> solicitarAmizade(@RequestBody SolicitarAmizadeRequest body) {
+        Boolean conviteEnviado = service.solicitarAmizade(body.getIdSolicitante(), body.getEmailReceptor());
+        return ResponseEntity.status(200).body(conviteEnviado);
     }
 
     @DeleteMapping("/perfil")
