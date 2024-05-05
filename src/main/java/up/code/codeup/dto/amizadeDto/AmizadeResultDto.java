@@ -13,5 +13,6 @@ import up.code.codeup.utils.StatusPedidoAmizade;
 public class AmizadeResultDto {
     private String nome;
     private String email;
+    private String foto;
     private StatusPedidoAmizade status;
 }

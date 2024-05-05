@@ -12,6 +12,7 @@ public class AmizadeMapper {
         AmizadeResultDto amizadeResultDto = new AmizadeResultDto();
         amizadeResultDto.setNome(solicitante.getNome());
         amizadeResultDto.setEmail(solicitante.getEmail());
+        amizadeResultDto.setFoto(solicitante.getFotoPerfil());
         amizadeResultDto.setStatus(amizade.getStatus());
         return amizadeResultDto;
 
