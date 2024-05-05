@@ -3,8 +3,9 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.usuarioDto.AmizadeResultDto;
-import up.code.codeup.dto.usuarioDto.SolicitarAmizadeRequest;
+import up.code.codeup.dto.amizadeDto.AmigoDto;
+import up.code.codeup.dto.amizadeDto.AmizadeResultDto;
+import up.code.codeup.dto.amizadeDto.SolicitarAmizadeRequest;
 import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.AmizadeMapper;
@@ -62,6 +63,25 @@ public class AmizadeController {
         for (Amizade a: amizades) {
             Usuario usuario = usuarioService.buscarPorId(a.getReceptor().getId());
             amizadesDto.add(AmizadeMapper.toDto(a, usuario));
+        }
+        return ResponseEntity.status(200).body(amizadesDto);
+    }
+
+    @GetMapping("/amigos")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<AmigoDto>> amigos(@RequestParam Integer idUsuario) {
+        List<Amizade> amizades = amizadeService.buscarAmigos(idUsuario);
+
+        ArrayList<AmigoDto> amizadesDto = new ArrayList<>();
+        for (Amizade a: amizades) {
+            Integer idAmigo = 0;
+            if(a.getSolicitante().getId() == idUsuario){
+                idAmigo = a.getReceptor().getId();
+            }else {
+                idAmigo = a.getSolicitante().getId();
+            }
+            Usuario amigo = usuarioService.buscarPorId(idAmigo);
+            amizadesDto.add(AmizadeMapper.toAmigoDto(amigo));
         }
         return ResponseEntity.status(200).body(amizadesDto);
     }

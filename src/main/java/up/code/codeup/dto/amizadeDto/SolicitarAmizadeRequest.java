@@ -1,4 +1,4 @@
-package up.code.codeup.dto.usuarioDto;
+package up.code.codeup.dto.amizadeDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

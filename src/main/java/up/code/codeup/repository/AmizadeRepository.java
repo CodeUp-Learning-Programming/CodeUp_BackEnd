@@ -18,5 +18,8 @@ public interface AmizadeRepository extends JpaRepository<Amizade, Integer> {
     List<Amizade> buscarSolicitacoesAmizade(Integer idReceptor);
     @Query("SELECT a FROM Amizade a WHERE a.solicitante.id = :idSolicitante AND a.status = 0")
     List<Amizade> buscarSolicitacoesAmizadeEnviadas(Integer idSolicitante);
+
+    @Query("SELECT a FROM Amizade a WHERE (a.solicitante.id = :idUsuario OR a.receptor.id = :idUsuario) AND a.status = 1")
+    List<Amizade> buscarAmigos(Integer idUsuario);
 }
 

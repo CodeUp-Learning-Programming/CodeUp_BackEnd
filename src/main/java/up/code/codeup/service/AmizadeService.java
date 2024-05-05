@@ -49,4 +49,8 @@ public class AmizadeService {
         List<Amizade> amizades = amizadeRepository.buscarSolicitacoesAmizadeEnviadas(idUsuario);
         return amizades;
     }
+    public List<Amizade> buscarAmigos(Integer idUsuario){
+        List<Amizade> amizades = amizadeRepository.buscarAmigos(idUsuario);
+        return amizades;
+    }
 }

@@ -1,4 +1,4 @@
-package up.code.codeup.dto.usuarioDto;
+package up.code.codeup.dto.amizadeDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,9 @@ import up.code.codeup.utils.StatusPedidoAmizade;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AmizadeResultDto {
+public class AmigoDto {
     private String nome;
     private String email;
-    private StatusPedidoAmizade status;
+    private String foto;
+    private Integer xp;
 }
