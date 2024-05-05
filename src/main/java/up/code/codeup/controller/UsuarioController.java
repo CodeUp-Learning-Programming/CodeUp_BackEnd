@@ -86,25 +86,4 @@ public class UsuarioController {
         return ResponseEntity.status(200).body("Perfil removido com sucesso!");
     }
 
-    @PostMapping("/solicitar/amizade")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Boolean> solicitarAmizade(@RequestBody SolicitarAmizadeRequest body) {
-        Boolean conviteEnviado = service.solicitarAmizade(body.getIdSolicitante(), body.getEmailReceptor());
-        return ResponseEntity.status(200).body(conviteEnviado);
-    }
-
-    @GetMapping("/solicitacoes/recebidas")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<AmizadeResultDto>> solicitacoesAmizadeRecebidas(@RequestParam Integer idUsuario) {
-        List<Amizade> amizades = service.buscarSolicitacoesAmizade(idUsuario);
-
-        ArrayList<AmizadeResultDto> amizadesDto = new ArrayList<>();
-        for (Amizade a: amizades) {
-            Usuario usuario = service.buscarPorId(a.getSolicitante().getId());
-            amizadesDto.add(AmizadeMapper.toDto(a, usuario));
-        }
-        return ResponseEntity.status(200).body(amizadesDto);
-    }
-
-
 }

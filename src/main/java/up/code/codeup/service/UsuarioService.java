@@ -97,30 +97,4 @@ public class UsuarioService {
         });
     }
 
-    public boolean solicitarAmizade(Integer idSolicitante, String emailReceptor){
-        boolean conviteEnviado = false;
-        Optional<Usuario> optSolicitante = repository.findById(idSolicitante);
-        Optional<Usuario> optReceptor = repository.findByEmail(emailReceptor);
-
-        if (optSolicitante.isPresent() && optReceptor.isPresent()){
-            Usuario solicitante = optSolicitante.get();
-            Usuario receptor = optReceptor.get();
-            Optional<Amizade> optAmizadeExistente = amizadeRepository.buscarAmizadeExistente(solicitante.getId(), receptor.getId());
-            if(optAmizadeExistente.isEmpty()){
-                Amizade amizade = new Amizade();
-                amizade.setReceptor(receptor);
-                amizade.setSolicitante(solicitante);
-                amizade.setStatus(StatusPedidoAmizade.PENDENTE);
-                amizadeRepository.save(amizade);
-                conviteEnviado = true;
-            }
-        }
-        return conviteEnviado;
-    }
-
-    public List<Amizade> buscarSolicitacoesAmizade(Integer idUsuario){
-        List<Amizade> amizades = amizadeRepository.buscarSolicitacoesAmizade(idUsuario);
-        return amizades;
-    }
-
 }
