@@ -9,8 +9,8 @@ public class AmizadeMapper {
         System.out.println("Aqui está o id do soilictante na mapper" + amizade.getSolicitante().getId());
 
         AmizadeResultDto amizadeResultDto = new AmizadeResultDto();
-        amizadeResultDto.setNomeSolicitante(solicitante.getNome());
-        amizadeResultDto.setEmailSolicitante(solicitante.getEmail());
+        amizadeResultDto.setNome(solicitante.getNome());
+        amizadeResultDto.setEmail(solicitante.getEmail());
         amizadeResultDto.setStatus(amizade.getStatus());
         return amizadeResultDto;
 

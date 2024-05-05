@@ -11,7 +11,7 @@ import up.code.codeup.utils.StatusPedidoAmizade;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AmizadeResultDto {
-    private String nomeSolicitante;
-    private String emailSolicitante;
+    private String nome;
+    private String email;
     private StatusPedidoAmizade status;
 }

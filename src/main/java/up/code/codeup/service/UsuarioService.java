@@ -54,6 +54,10 @@ public class UsuarioService {
         return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
     }
 
+    public Usuario buscarPorEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+    }
+
     public Usuario cadastrar(Usuario novoUsuario) {
         if (novoUsuario.getNome().equals("tempUser")) {
             novoUsuario = usuarioUtils.gerarUsuarioTemoporario();
