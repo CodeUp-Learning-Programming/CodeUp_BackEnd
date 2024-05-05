@@ -118,4 +118,9 @@ public class UsuarioService {
         return conviteEnviado;
     }
 
+    public List<Amizade> buscarSolicitacoesAmizade(Integer idUsuario){
+        List<Amizade> amizades = amizadeRepository.buscarSolicitacoesAmizade(idUsuario);
+        return amizades;
+    }
+
 }

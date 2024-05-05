@@ -13,5 +13,8 @@ import java.util.Optional;
 public interface AmizadeRepository extends JpaRepository<Amizade, Integer> {
     @Query("SELECT a FROM Amizade a WHERE a.solicitante.id = :idSolicitante AND a.receptor.id = :idReceptor")
     Optional<Amizade> buscarAmizadeExistente(Integer idSolicitante, Integer idReceptor);
+
+    @Query("SELECT a FROM Amizade a WHERE a.receptor.id = :idReceptor AND a.status = 0")
+    List<Amizade> buscarSolicitacoesAmizade(Integer idReceptor);
 }
 

@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.dto.ImageDto;
 import up.code.codeup.dto.usuarioDto.*;
+import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
+import up.code.codeup.mapper.AmizadeMapper;
 import up.code.codeup.mapper.UsuarioMapper;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 
@@ -76,6 +79,13 @@ public class UsuarioController {
         return ResponseEntity.status(200).build();
     }
 
+    @DeleteMapping("/perfil")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
+        service.removerPerfil(senha);
+        return ResponseEntity.status(200).body("Perfil removido com sucesso!");
+    }
+
     @PostMapping("/solicitar/amizade")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Boolean> solicitarAmizade(@RequestBody SolicitarAmizadeRequest body) {
@@ -83,10 +93,18 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(conviteEnviado);
     }
 
-    @DeleteMapping("/perfil")
+    @GetMapping("/solicitacoes/recebidas")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
-        service.removerPerfil(senha);
-        return ResponseEntity.status(200).body("Perfil removido com sucesso!");
+    public ResponseEntity<List<AmizadeResultDto>> solicitacoesAmizadeRecebidas(@RequestParam Integer idUsuario) {
+        List<Amizade> amizades = service.buscarSolicitacoesAmizade(idUsuario);
+
+        ArrayList<AmizadeResultDto> amizadesDto = new ArrayList<>();
+        for (Amizade a: amizades) {
+            Usuario usuario = service.buscarPorId(a.getSolicitante().getId());
+            amizadesDto.add(AmizadeMapper.toDto(a, usuario));
+        }
+        return ResponseEntity.status(200).body(amizadesDto);
     }
+
+
 }
