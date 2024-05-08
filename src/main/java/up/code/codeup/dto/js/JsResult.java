@@ -8,5 +8,5 @@ public class JsResult {
     private Object resultado;
     private Boolean passou;
     private String mensagem;
-
+    private Integer vidas;
 }

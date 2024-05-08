@@ -48,6 +48,8 @@ public class ExercicioController {
     public ResponseEntity<JsResult> testJavaScriptCode(@RequestParam String funcao, @RequestParam Integer idExercicio, @RequestParam Integer idFase) {
         Usuario usuario = usuarioUtils.getUsuarioLogadoCompleto();
 
+        System.out.println("Quantidade atual de vidas antes de perder: " + usuario.getVida());
+
         JsResult jsResult = new JsResult();
         try (Context context = Context.newBuilder("js")
                 .option("engine.WarnInterpreterOnly", "false")
@@ -80,9 +82,11 @@ public class ExercicioController {
                 jsResult.setPassou(false);
             }
 
-            // if(!jsResult.getPassou()){
-            //     usuarioUtils.diminuirVida();
-            // }
+             if(!jsResult.getPassou()){
+                 usuarioUtils.diminuirVida();
+                 jsResult.setVidas(usuario.getVida());
+                 System.out.println("Quantidade atual de vidas depois de perder: " + usuarioUtils.getUsuarioLogadoCompleto().getVida());
+             }
 
             return ResponseEntity.ok(jsResult);
 

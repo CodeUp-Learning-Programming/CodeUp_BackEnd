@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import up.code.codeup.dto.usuarioDto.UsuarioLoginDTO;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
+import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.repository.AmizadeRepository;
 import up.code.codeup.repository.UsuarioRepository;
+import up.code.codeup.utils.StatusPedidoAmizade;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.io.BufferedWriter;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -32,6 +36,9 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private AmizadeRepository amizadeRepository;
     @Autowired
     private up.code.codeup.configuration.security.jwt.GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
@@ -45,6 +52,10 @@ public class UsuarioService {
 
     public Usuario buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
     }
 
     public Usuario cadastrar(Usuario novoUsuario) {

@@ -5,8 +5,6 @@ import up.code.codeup.dto.usuarioDto.UsuarioCriacaoDto;
 import up.code.codeup.dto.usuarioDto.UsuarioTokenDto;
 import up.code.codeup.entity.Usuario;
 
-import java.util.Base64;
-
 public class UsuarioMapper {
     public static Usuario of(UsuarioCriacaoDto usuarioCriacaoDto) {
         Usuario usuario = new Usuario();
@@ -32,7 +30,7 @@ public class UsuarioMapper {
         usuarioTokenDto.setMoedas(usuario.getMoedas());
         usuarioTokenDto.setNivel(usuario.getNivel());
         usuarioTokenDto.setXp(usuario.getXp());
-        usuarioTokenDto.setVidas(usuario.getVidas());
+        usuarioTokenDto.setVidas(usuario.getVida());
         usuarioTokenDto.setItensAdquiridos(usuario.getItemAdquiridos().stream()
                 .map(itemAdquirido -> new ItemLojaAdquiridoLoginDto(itemAdquirido.getItemLoja(), itemAdquirido.isEquipado())).toList());
 
