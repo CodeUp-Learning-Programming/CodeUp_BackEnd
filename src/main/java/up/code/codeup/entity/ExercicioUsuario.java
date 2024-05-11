@@ -16,6 +16,7 @@ public class ExercicioUsuario {
     private Integer id;
     private boolean concluido;
     private String resposta_usuario;
+    private Integer mesConcluido;
 
     @ManyToOne
     private Exercicio exercicio;

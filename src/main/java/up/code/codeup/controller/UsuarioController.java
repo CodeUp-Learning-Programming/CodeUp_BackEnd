@@ -1,38 +1,30 @@
 package up.code.codeup.controller;
 
-import com.oracle.truffle.regex.charset.SortedListOfRanges;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import up.code.codeup.dto.ImageDto;
 import up.code.codeup.dto.usuarioDto.*;
-import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
-import up.code.codeup.mapper.AmizadeMapper;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.service.ExercicioUsuarioService;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/usuarios")
 public class UsuarioController {
     private UsuarioService service;
+    private ExercicioUsuarioService exercicioUsuarioService;
     private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
+    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
         this.service = service;
+        this.exercicioUsuarioService = exercicioUsuarioService;
         this.usuarioUtils = usuarioUtils;
     }
 
@@ -84,6 +76,13 @@ public class UsuarioController {
     public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
         service.removerPerfil(senha);
         return ResponseEntity.status(200).body("Perfil removido com sucesso!");
+    }
+
+    @GetMapping("/exercicios/mes/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Map<Integer, Integer>> exerciciosConcluidosMes(@PathVariable @NotNull Integer id) {
+        Map<Integer, Integer> mesQtdExercicio = exercicioUsuarioService.exerciciosConcluidosMes(id);
+        return ResponseEntity.ok(mesQtdExercicio);
     }
 
 }
