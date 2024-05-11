@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface AmizadeRepository extends JpaRepository<Amizade, Integer> {
-    @Query("SELECT a FROM Amizade a WHERE a.solicitante.id = :idSolicitante AND a.receptor.id = :idReceptor")
-    Optional<Amizade> buscarAmizadeExistente(Integer idSolicitante, Integer idReceptor);
+//    @Query("SELECT a FROM Amizade a WHERE a.solicitante.id = :idSolicitante AND a.receptor.id = :idReceptor")
+//    Optional<Amizade> buscarAmizadeExistente(Integer idSolicitante, Integer idReceptor);
 
     @Query("SELECT a FROM Amizade a WHERE a.receptor.id = :idReceptor AND a.status = 0")
     List<Amizade> buscarSolicitacoesAmizade(Integer idReceptor);
@@ -22,5 +22,8 @@ public interface AmizadeRepository extends JpaRepository<Amizade, Integer> {
 
     @Query("SELECT a FROM Amizade a WHERE (a.solicitante.id = :idUsuario OR a.receptor.id = :idUsuario) AND a.status = 1")
     List<Amizade> buscarAmigos(Integer idUsuario);
+
+    @Query("SELECT a FROM Amizade a WHERE a.solicitante.id IN :idUsuarios AND a.receptor.id IN :idUsuarios")
+    List<Amizade> buscarRelacionamento(List<Integer> idUsuarios);
 }
 

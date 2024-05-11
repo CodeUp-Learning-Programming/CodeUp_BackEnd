@@ -2,13 +2,16 @@ package up.code.codeup.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import up.code.codeup.dto.amizadeDto.BuscarPorNomeResultDto;
 import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.exception.EntidadeNaoEncontradaException;
+import up.code.codeup.mapper.AmizadeMapper;
 import up.code.codeup.repository.AmizadeRepository;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.utils.StatusPedidoAmizade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +31,10 @@ public class AmizadeService {
         if (optSolicitante.isPresent() && optReceptor.isPresent()) {
             Usuario solicitante = optSolicitante.get();
             Usuario receptor = optReceptor.get();
-            Optional<Amizade> optAmizadeExistente = amizadeRepository.buscarAmizadeExistente(solicitante.getId(), receptor.getId());
+            ArrayList<Integer> ids = new ArrayList<>();
+            ids.add(idSolicitante);
+            ids.add(receptor.getId());
+            List<Amizade> optAmizadeExistente = amizadeRepository.buscarRelacionamento(ids);
             if (optAmizadeExistente.isEmpty()) {
                 Amizade amizade = new Amizade();
                 amizade.setReceptor(receptor);
@@ -58,19 +64,17 @@ public class AmizadeService {
 
     public StatusPedidoAmizade gerenciarPedido(String emailSolicitante, Integer idReceptor, boolean resposta) {
         Optional<Usuario> optUsuario = usuarioRepository.findByEmail(emailSolicitante);
-        Integer idUsuarioSolicitante = -1;
+        ArrayList<Integer> ids = new ArrayList<>();
         if (optUsuario.isPresent()){
-            idUsuarioSolicitante = optUsuario.get().getId();
+            Usuario usuarioSolicitante = optUsuario.get();
+            ids.add(usuarioSolicitante.getId());
         }
+        ids.add(idReceptor);
 
-        System.out.println("id solicitante " + idUsuarioSolicitante);
-        System.out.println("id receptor " + idReceptor);
-        Optional<Amizade> solicitacao = amizadeRepository.buscarAmizadeExistente(idUsuarioSolicitante, idReceptor);
-
-        System.out.println("Aqui ó este caralho: " + solicitacao.get());
+        List<Amizade> solicitacao = amizadeRepository.buscarRelacionamento(ids);
 
         if (!solicitacao.isEmpty()) {
-            Amizade amizade = solicitacao.get();
+            Amizade amizade = solicitacao.get(0);
             if (resposta == true) {
                 amizade.setStatus(StatusPedidoAmizade.ACEITO);
             } else {
@@ -80,6 +84,26 @@ public class AmizadeService {
             return amizade.getStatus();
         } else {
             throw new EntidadeNaoEncontradaException("Solicitação de amizade não encontrada");
+        }
+    }
+
+    public BuscarPorNomeResultDto buscarRelacionamentoPorNome(String nome, Integer idUsuario){
+        Optional<Usuario> optUsuario = usuarioRepository.buscarPorNome(nome);
+
+        ArrayList<Integer> idUsuarioList = new ArrayList<>();
+        idUsuarioList.add(idUsuario);
+        if (!optUsuario.isEmpty()) {
+            Usuario usuario = optUsuario.get();
+            idUsuarioList.add(usuario.getId());
+            List<Amizade> relacionamentos = amizadeRepository.buscarRelacionamento(idUsuarioList);
+            if (!relacionamentos.isEmpty()) {
+                Amizade amizade = relacionamentos.get(0);
+                return AmizadeMapper.toBuscarPorNomeResultDto(amizade, idUsuario);
+            }else {
+               return AmizadeMapper.toBuscarPorNomeResultDto(usuario);
+            }
+        }else {
+            throw new EntidadeNaoEncontradaException("Usuário não encontrado");
         }
     }
 }

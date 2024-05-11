@@ -2,6 +2,7 @@ package up.code.codeup.mapper;
 
 import up.code.codeup.dto.amizadeDto.AmigoDto;
 import up.code.codeup.dto.amizadeDto.AmizadeResultDto;
+import up.code.codeup.dto.amizadeDto.BuscarPorNomeResultDto;
 import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 
@@ -26,4 +27,33 @@ public class AmizadeMapper {
         amigoDto.setXp(amigo.getXp());
         return amigoDto;
     }
+
+    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Amizade amizade, Integer idUsuario) {
+        BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
+        if (amizade.getSolicitante().getId() == idUsuario) {
+            buscarPorNomeResultDto.setNome(amizade.getReceptor().getNome());
+            buscarPorNomeResultDto.setEmail(amizade.getReceptor().getEmail());
+            buscarPorNomeResultDto.setFoto(amizade.getReceptor().getFotoPerfil());
+            buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
+            buscarPorNomeResultDto.setStatusUsuario("Receptor");
+        } else {
+            buscarPorNomeResultDto.setNome(amizade.getSolicitante().getNome());
+            buscarPorNomeResultDto.setEmail(amizade.getSolicitante().getEmail());
+            buscarPorNomeResultDto.setFoto(amizade.getSolicitante().getFotoPerfil());
+            buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
+            buscarPorNomeResultDto.setStatusUsuario("Solicitante");
+        }
+        return buscarPorNomeResultDto;
+    }
+    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Usuario usuario) {
+        BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
+        buscarPorNomeResultDto.setNome(usuario.getNome());
+        buscarPorNomeResultDto.setEmail(usuario.getEmail());
+        buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
+        buscarPorNomeResultDto.setStatusAmizade(null);
+        buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
+        return buscarPorNomeResultDto;
+    }
+
+
 }

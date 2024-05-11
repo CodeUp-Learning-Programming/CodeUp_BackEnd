@@ -3,10 +3,7 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import up.code.codeup.dto.amizadeDto.AmigoDto;
-import up.code.codeup.dto.amizadeDto.AmizadeResultDto;
-import up.code.codeup.dto.amizadeDto.RespostaSolicitacao;
-import up.code.codeup.dto.amizadeDto.SolicitarAmizadeRequest;
+import up.code.codeup.dto.amizadeDto.*;
 import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.AmizadeMapper;
@@ -93,5 +90,12 @@ public class AmizadeController {
     public ResponseEntity<StatusPedidoAmizade> gerenciarConvite(@RequestBody RespostaSolicitacao res) {
         StatusPedidoAmizade statusPedidoAmizade = amizadeService.gerenciarPedido(res.getEmailSolicitante(), res.getIdReceptor(), res.isResposta());
         return ResponseEntity.status(200).body(statusPedidoAmizade);
+    }
+
+    @PostMapping("/buscar_por_nome")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<BuscarPorNomeResultDto> buscarRelacionemtno(@RequestBody BuscarPorNomeDto res) {
+        BuscarPorNomeResultDto buscarPorNomeResultDto = amizadeService.buscarRelacionamentoPorNome(res.getNome(), res.getIdUsuario());
+        return ResponseEntity.status(200).body(buscarPorNomeResultDto);
     }
 }

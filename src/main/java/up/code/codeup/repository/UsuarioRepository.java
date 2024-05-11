@@ -4,12 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByEmailOrNome(String email, String nome);
+    @Query("SELECT u FROM Usuario u WHERE u.nome LIKE :nome%")
+    Optional<Usuario> buscarPorNome(String nome);
 
     Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
