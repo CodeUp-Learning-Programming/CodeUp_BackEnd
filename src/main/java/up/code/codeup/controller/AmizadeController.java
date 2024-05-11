@@ -5,12 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.amizadeDto.AmigoDto;
 import up.code.codeup.dto.amizadeDto.AmizadeResultDto;
+import up.code.codeup.dto.amizadeDto.RespostaSolicitacao;
 import up.code.codeup.dto.amizadeDto.SolicitarAmizadeRequest;
 import up.code.codeup.entity.Amizade;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.AmizadeMapper;
 import up.code.codeup.service.AmizadeService;
 import up.code.codeup.service.UsuarioService;
+import up.code.codeup.utils.StatusPedidoAmizade;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.ArrayList;
@@ -84,5 +86,12 @@ public class AmizadeController {
             amizadesDto.add(AmizadeMapper.toAmigoDto(amigo));
         }
         return ResponseEntity.status(200).body(amizadesDto);
+    }
+
+    @PostMapping("/gerenciar/convite")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<StatusPedidoAmizade> gerenciarConvite(@RequestBody RespostaSolicitacao res) {
+        StatusPedidoAmizade statusPedidoAmizade = amizadeService.gerenciarPedido(res.getEmailSolicitante(), res.getIdReceptor(), res.isResposta());
+        return ResponseEntity.status(200).body(statusPedidoAmizade);
     }
 }

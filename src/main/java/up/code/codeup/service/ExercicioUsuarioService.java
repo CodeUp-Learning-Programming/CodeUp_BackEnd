@@ -26,6 +26,12 @@ public class ExercicioUsuarioService {
         } else {
             ExercicioUsuario exercicio = exercicioUsuario.get();
             exercicio.setConcluido(true);
+<<<<<<< Updated upstream
+=======
+            Calendar cal = Calendar.getInstance();
+            int mesAtual = cal.get(Calendar.MONTH) + 1;
+            exercicio.setMesConcluido(mesAtual);
+>>>>>>> Stashed changes
             usuario.setMoedas(usuario.getMoedas() + exercicio.getExercicio().getMoeda());
             usuario.setXp(usuario.getXp() + exercicio.getExercicio().getXp());
             usuarioRepository.save(usuario);
