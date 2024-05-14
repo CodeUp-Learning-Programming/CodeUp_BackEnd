@@ -33,7 +33,7 @@ public class AmizadeController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Boolean> solicitarAmizade(@RequestBody SolicitarAmizadeRequest body) {
         Usuario usuario = usuarioService.buscarPorEmail(body.getEmailReceptor());
-        if(body.getIdSolicitante() == usuario.getId()){
+        if (body.getIdSolicitante() == usuario.getId()) {
             return ResponseEntity.status(400).build();
         }
         Boolean conviteEnviado = amizadeService.solicitarAmizade(body.getIdSolicitante(), body.getEmailReceptor());
@@ -46,7 +46,7 @@ public class AmizadeController {
         List<Amizade> amizades = amizadeService.buscarSolicitacoesAmizade(idUsuario);
 
         ArrayList<AmizadeResultDto> amizadesDto = new ArrayList<>();
-        for (Amizade a: amizades) {
+        for (Amizade a : amizades) {
             Usuario usuario = usuarioService.buscarPorId(a.getSolicitante().getId());
             amizadesDto.add(AmizadeMapper.toDto(a, usuario));
         }
@@ -59,7 +59,7 @@ public class AmizadeController {
         List<Amizade> amizades = amizadeService.buscarSolicitacoesAmizadeEnviadas(idUsuario);
 
         ArrayList<AmizadeResultDto> amizadesDto = new ArrayList<>();
-        for (Amizade a: amizades) {
+        for (Amizade a : amizades) {
             Usuario usuario = usuarioService.buscarPorId(a.getReceptor().getId());
             amizadesDto.add(AmizadeMapper.toDto(a, usuario));
         }
@@ -72,11 +72,11 @@ public class AmizadeController {
         List<Amizade> amizades = amizadeService.buscarAmigos(idUsuario);
 
         ArrayList<AmigoDto> amizadesDto = new ArrayList<>();
-        for (Amizade a: amizades) {
+        for (Amizade a : amizades) {
             Integer idAmigo = 0;
-            if(a.getSolicitante().getId() == idUsuario){
+            if (a.getSolicitante().getId() == idUsuario) {
                 idAmigo = a.getReceptor().getId();
-            }else {
+            } else {
                 idAmigo = a.getSolicitante().getId();
             }
             Usuario amigo = usuarioService.buscarPorId(idAmigo);
@@ -92,10 +92,13 @@ public class AmizadeController {
         return ResponseEntity.status(200).body(statusPedidoAmizade);
     }
 
-    @PostMapping("/buscar_por_nome")
+    @GetMapping("/busca-nome")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<BuscarPorNomeResultDto>> buscarRelacionemtno(@RequestBody BuscarPorNomeDto res) {
-        List<BuscarPorNomeResultDto> buscarPorNomeResultDto = amizadeService.buscarRelacionamentoPorNome(res.getNome(), res.getIdUsuario());
-        return ResponseEntity.status(200).body(buscarPorNomeResultDto);
+    public ResponseEntity<List<BuscarPorNomeResultDto>> buscarRelacionemtno(@RequestParam Integer usuarioLogadoID, String nomePesquisa) {
+        List<BuscarPorNomeResultDto> usuariosPesquisados = amizadeService.buscarRelacionamentoPorNome(nomePesquisa, usuarioLogadoID);
+        if (usuariosPesquisados.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(usuariosPesquisados);
     }
 }

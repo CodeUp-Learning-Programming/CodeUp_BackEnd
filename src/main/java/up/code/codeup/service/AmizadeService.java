@@ -89,7 +89,7 @@ public class AmizadeService {
 
     public List<BuscarPorNomeResultDto> buscarRelacionamentoPorNome(String nome, Integer usuarioLogadoID) {
         List<BuscarPorNomeResultDto> returnList = new ArrayList<BuscarPorNomeResultDto>();
-        List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome);
+        List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome, usuarioLogadoID);
         List<Amizade> amizades = amizadeRepository.buscarAmizadesPorIdUsuario(usuarioLogadoID);
 
         if (!usuarios.isEmpty()) {
@@ -100,10 +100,7 @@ public class AmizadeService {
                     returnList.add(buscarPorNomeResultDto);
                 }
             }
-        } else {
-            throw new EntidadeNaoEncontradaException("Usuário não encontrado");
         }
-
         return returnList;
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    @Query("SELECT u FROM Usuario u WHERE u.nome LIKE :nome%")
-    List<Usuario> buscarPorNome(String nome);
+    @Query("SELECT u FROM Usuario u WHERE u.nome LIKE :nome% AND u.id != :usuarioLogadoID")
+    List<Usuario> buscarPorNome(String nome, Integer usuarioLogadoID);
 
     Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
