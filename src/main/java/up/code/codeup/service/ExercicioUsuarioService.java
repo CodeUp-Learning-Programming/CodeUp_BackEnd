@@ -27,7 +27,7 @@ public class ExercicioUsuarioService {
             ExercicioUsuario exercicio = exercicioUsuario.get();
             exercicio.setConcluido(true);
             Calendar cal = Calendar.getInstance();
-            int mesAtual = cal.get(Calendar.MONTH) + 2;
+            int mesAtual = cal.get(Calendar.MONTH) + 1;
             exercicio.setMesConcluido(mesAtual);
             usuario.setMoedas(usuario.getMoedas() + exercicio.getExercicio().getMoeda());
             usuario.setXp(usuario.getXp() + exercicio.getExercicio().getXp());
