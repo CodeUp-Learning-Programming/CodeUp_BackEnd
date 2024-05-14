@@ -94,8 +94,8 @@ public class AmizadeController {
 
     @PostMapping("/buscar_por_nome")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<BuscarPorNomeResultDto> buscarRelacionemtno(@RequestBody BuscarPorNomeDto res) {
-        BuscarPorNomeResultDto buscarPorNomeResultDto = amizadeService.buscarRelacionamentoPorNome(res.getNome(), res.getIdUsuario());
+    public ResponseEntity<List<BuscarPorNomeResultDto>> buscarRelacionemtno(@RequestBody BuscarPorNomeDto res) {
+        List<BuscarPorNomeResultDto> buscarPorNomeResultDto = amizadeService.buscarRelacionamentoPorNome(res.getNome(), res.getIdUsuario());
         return ResponseEntity.status(200).body(buscarPorNomeResultDto);
     }
 }

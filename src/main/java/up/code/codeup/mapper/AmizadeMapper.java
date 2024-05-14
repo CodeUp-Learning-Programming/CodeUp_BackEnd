@@ -28,32 +28,27 @@ public class AmizadeMapper {
         return amigoDto;
     }
 
-    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Amizade amizade, Integer idUsuario) {
+    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Amizade amizade, Integer usuarioLogadoID, Usuario usuario) {
         BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
-        if (amizade.getSolicitante().getId() == idUsuario) {
+        if (amizade.getSolicitante().getId() == usuario.getId() && amizade.getReceptor().getId() == usuarioLogadoID) {
+            buscarPorNomeResultDto.setNome(amizade.getSolicitante().getNome());
+            buscarPorNomeResultDto.setEmail(amizade.getSolicitante().getEmail());
+            buscarPorNomeResultDto.setFoto(amizade.getSolicitante().getFotoPerfil());
+            buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
+            buscarPorNomeResultDto.setStatusUsuario("Solicitante");
+        } else if (amizade.getReceptor().getId() == usuario.getId() && amizade.getSolicitante().getId() == usuarioLogadoID) {
             buscarPorNomeResultDto.setNome(amizade.getReceptor().getNome());
             buscarPorNomeResultDto.setEmail(amizade.getReceptor().getEmail());
             buscarPorNomeResultDto.setFoto(amizade.getReceptor().getFotoPerfil());
             buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
             buscarPorNomeResultDto.setStatusUsuario("Receptor");
         } else {
-            buscarPorNomeResultDto.setNome(amizade.getSolicitante().getNome());
-            buscarPorNomeResultDto.setEmail(amizade.getSolicitante().getEmail());
-            buscarPorNomeResultDto.setFoto(amizade.getSolicitante().getFotoPerfil());
-            buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
-            buscarPorNomeResultDto.setStatusUsuario("Solicitante");
+            buscarPorNomeResultDto.setNome(usuario.getNome());
+            buscarPorNomeResultDto.setEmail(usuario.getEmail());
+            buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
+            buscarPorNomeResultDto.setStatusAmizade(null);
+            buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
         }
         return buscarPorNomeResultDto;
     }
-    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Usuario usuario) {
-        BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
-        buscarPorNomeResultDto.setNome(usuario.getNome());
-        buscarPorNomeResultDto.setEmail(usuario.getEmail());
-        buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
-        buscarPorNomeResultDto.setStatusAmizade(null);
-        buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
-        return buscarPorNomeResultDto;
-    }
-
-
 }

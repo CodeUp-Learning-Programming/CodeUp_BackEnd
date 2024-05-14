@@ -65,7 +65,7 @@ public class AmizadeService {
     public StatusPedidoAmizade gerenciarPedido(String emailSolicitante, Integer idReceptor, boolean resposta) {
         Optional<Usuario> optUsuario = usuarioRepository.findByEmail(emailSolicitante);
         ArrayList<Integer> ids = new ArrayList<>();
-        if (optUsuario.isPresent()){
+        if (optUsuario.isPresent()) {
             Usuario usuarioSolicitante = optUsuario.get();
             ids.add(usuarioSolicitante.getId());
         }
@@ -87,23 +87,23 @@ public class AmizadeService {
         }
     }
 
-    public BuscarPorNomeResultDto buscarRelacionamentoPorNome(String nome, Integer idUsuario){
-        Optional<Usuario> optUsuario = usuarioRepository.buscarPorNome(nome);
+    public List<BuscarPorNomeResultDto> buscarRelacionamentoPorNome(String nome, Integer usuarioLogadoID) {
+        List<BuscarPorNomeResultDto> returnList = new ArrayList<BuscarPorNomeResultDto>();
+        List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome);
+        List<Amizade> amizades = amizadeRepository.buscarAmizadesPorIdUsuario(usuarioLogadoID);
 
-        ArrayList<Integer> idUsuarioList = new ArrayList<>();
-        idUsuarioList.add(idUsuario);
-        if (!optUsuario.isEmpty()) {
-            Usuario usuario = optUsuario.get();
-            idUsuarioList.add(usuario.getId());
-            List<Amizade> relacionamentos = amizadeRepository.buscarRelacionamento(idUsuarioList);
-            if (!relacionamentos.isEmpty()) {
-                Amizade amizade = relacionamentos.get(0);
-                return AmizadeMapper.toBuscarPorNomeResultDto(amizade, idUsuario);
-            }else {
-               return AmizadeMapper.toBuscarPorNomeResultDto(usuario);
+        if (!usuarios.isEmpty()) {
+            for (Usuario usuarioResult : usuarios) {
+                Integer idAmigo = usuarioResult.getId();
+                for (Amizade amizade : amizades) {
+                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(amizade, usuarioLogadoID, usuarioResult);
+                    returnList.add(buscarPorNomeResultDto);
+                }
             }
-        }else {
+        } else {
             throw new EntidadeNaoEncontradaException("Usuário não encontrado");
         }
+
+        return returnList;
     }
 }
