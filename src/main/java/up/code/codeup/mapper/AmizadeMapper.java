@@ -42,13 +42,18 @@ public class AmizadeMapper {
             buscarPorNomeResultDto.setFoto(amizade.getReceptor().getFotoPerfil());
             buscarPorNomeResultDto.setStatusAmizade(amizade.getStatus());
             buscarPorNomeResultDto.setStatusUsuario("Receptor");
-        } else {
-            buscarPorNomeResultDto.setNome(usuario.getNome());
-            buscarPorNomeResultDto.setEmail(usuario.getEmail());
-            buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
-            buscarPorNomeResultDto.setStatusAmizade(null);
-            buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
         }
+
+        return buscarPorNomeResultDto;
+    }
+
+    public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Integer usuarioLogadoID, Usuario usuario) {
+        BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
+        buscarPorNomeResultDto.setNome(usuario.getNome());
+        buscarPorNomeResultDto.setEmail(usuario.getEmail());
+        buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
+        buscarPorNomeResultDto.setStatusAmizade(null);
+        buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
         return buscarPorNomeResultDto;
     }
 }

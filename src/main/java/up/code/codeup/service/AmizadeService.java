@@ -89,14 +89,19 @@ public class AmizadeService {
 
     public List<BuscarPorNomeResultDto> buscarRelacionamentoPorNome(String nome, Integer usuarioLogadoID) {
         List<BuscarPorNomeResultDto> returnList = new ArrayList<BuscarPorNomeResultDto>();
+
         List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome, usuarioLogadoID);
         List<Amizade> amizades = amizadeRepository.buscarAmizadesPorIdUsuario(usuarioLogadoID);
 
         if (!usuarios.isEmpty()) {
-            for (Usuario usuarioResult : usuarios) {
-                Integer idAmigo = usuarioResult.getId();
-                for (Amizade amizade : amizades) {
-                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(amizade, usuarioLogadoID, usuarioResult);
+            for (Usuario usuarioPesquisa : usuarios) {
+                if (!amizades.isEmpty()) {
+                    for (Amizade amizade : amizades) {
+                        BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(amizade, usuarioLogadoID, usuarioPesquisa);
+                        returnList.add(buscarPorNomeResultDto);
+                    }
+                } else {
+                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuarioPesquisa);
                     returnList.add(buscarPorNomeResultDto);
                 }
             }
