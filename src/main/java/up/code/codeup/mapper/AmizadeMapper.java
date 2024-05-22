@@ -53,7 +53,7 @@ public class AmizadeMapper {
         buscarPorNomeResultDto.setEmail(usuario.getEmail());
         buscarPorNomeResultDto.setFoto(usuario.getFotoPerfil());
         buscarPorNomeResultDto.setStatusAmizade(null);
-        buscarPorNomeResultDto.setStatusUsuario("Não há relacionamento");
+        buscarPorNomeResultDto.setStatusUsuario(null);
         return buscarPorNomeResultDto;
     }
 }

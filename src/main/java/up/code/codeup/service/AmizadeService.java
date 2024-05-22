@@ -11,9 +11,7 @@ import up.code.codeup.repository.AmizadeRepository;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.utils.StatusPedidoAmizade;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AmizadeService {
@@ -88,24 +86,39 @@ public class AmizadeService {
     }
 
     public List<BuscarPorNomeResultDto> buscarRelacionamentoPorNome(String nome, Integer usuarioLogadoID) {
-        List<BuscarPorNomeResultDto> returnList = new ArrayList<BuscarPorNomeResultDto>();
+        ArrayList<BuscarPorNomeResultDto> returnList = new ArrayList<BuscarPorNomeResultDto>();
 
         List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome, usuarioLogadoID);
         List<Amizade> amizades = amizadeRepository.buscarAmizadesPorIdUsuario(usuarioLogadoID);
 
+        Map<Integer, Integer> recptorESolicitante = new HashMap<>();
+        for (Amizade a:amizades) {
+            if(!recptorESolicitante.containsKey(a.getReceptor())){
+                recptorESolicitante.put(a.getReceptor().getId(), a.getSolicitante().getId());
+            }
+        }
+
+        System.out.println("Essa bomba aqui ó: " + usuarios.size());
+        System.out.println("Essa nome bomba aqui ó: " + usuarios.get(0).getNome());
+
+        System.out.println("Essa bomba dessa amizade aqui ó: " + amizades.size());
+
+
+
         if (!usuarios.isEmpty()) {
             for (Usuario usuarioPesquisa : usuarios) {
-                if (!amizades.isEmpty()) {
-                    for (Amizade amizade : amizades) {
-                        BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(amizade, usuarioLogadoID, usuarioPesquisa);
-                        returnList.add(buscarPorNomeResultDto);
-                    }
-                } else {
+                if(recptorESolicitante.containsKey(usuarioPesquisa.getId()) || recptorESolicitante.containsValue(usuarioPesquisa.getId())){
+                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuarioPesquisa);
+                    returnList.add(buscarPorNomeResultDto);
+                }else {
                     BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuarioPesquisa);
                     returnList.add(buscarPorNomeResultDto);
                 }
             }
         }
+
+        System.out.println("Aqui essa bucha: " + returnList.size());
+        System.out.println("Osh ó essa bomba aqui ó: " + returnList.get(0).getNome());
         return returnList;
     }
 }
