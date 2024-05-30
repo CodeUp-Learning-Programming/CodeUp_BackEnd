@@ -29,6 +29,10 @@ public class LojaController {
         if (itens.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
+        for (ItemLoja item : itens) {
+            System.out.println(item.getNome());
+        }
+
         List<String> tipoDosItens = itens.stream().map(ItemLoja::getTipo).distinct().toList();
         List<ItemLojaDto> itensLoja = itens.stream()
                 .map(itemLoja -> {

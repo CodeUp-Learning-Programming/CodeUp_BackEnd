@@ -53,6 +53,7 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
         UsuarioTokenDto usuarioToken = this.service.autenticar(usuarioLoginDTO);
+        System.out.println(usuarioToken.getNome());
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
