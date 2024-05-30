@@ -9,7 +9,9 @@ import up.code.codeup.dto.lojaDto.LojaCompletaDto;
 import up.code.codeup.dto.usuarioDto.UsuarioAtualizado;
 import up.code.codeup.dto.usuarioDto.UsuarioDetalhesPerfil;
 import up.code.codeup.entity.ItemLoja;
+import up.code.codeup.service.ExercicioUsuarioService;
 import up.code.codeup.service.LojaService;
+import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
@@ -20,6 +22,11 @@ import java.util.List;
 public class LojaController {
     private final UsuarioUtils usuarioUtils;
     private final LojaService service;
+
+    public LojaController(LojaService service, UsuarioUtils usuarioUtils) {
+        this.service = service;
+        this.usuarioUtils = usuarioUtils;
+    }
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")

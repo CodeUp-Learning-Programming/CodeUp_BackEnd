@@ -22,11 +22,11 @@ public class UsuarioController {
     private ExercicioUsuarioService exercicioUsuarioService;
     private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
-        this.service = service;
-        this.exercicioUsuarioService = exercicioUsuarioService;
-        this.usuarioUtils = usuarioUtils;
-    }
+//    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
+//        this.service = service;
+//        this.exercicioUsuarioService = exercicioUsuarioService;
+//        this.usuarioUtils = usuarioUtils;
+//    }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
@@ -57,6 +57,13 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
+    @PatchMapping("/foto")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull ImageDto novaFoto) {
+        service.atualizarFotoPerfil(novaFoto.getImage());
+        System.out.println("Aqui ó: " + novaFoto.getImage());
+        return ResponseEntity.status(200).build();
+    }
 
     @DeleteMapping("/foto")
     @SecurityRequirement(name = "Bearer")
