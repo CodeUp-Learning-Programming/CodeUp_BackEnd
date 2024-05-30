@@ -57,13 +57,6 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
-//    @PatchMapping("/foto")
-//    @SecurityRequirement(name = "Bearer")
-//    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull ImageDto novaFoto) {
-//        service.atualizarFotoPerfil(novaFoto.getImage());
-//        System.out.println("Aqui ó: " + novaFoto.getImage());
-//        return ResponseEntity.status(200).build();
-//    }
 
     @DeleteMapping("/foto")
     @SecurityRequirement(name = "Bearer")
