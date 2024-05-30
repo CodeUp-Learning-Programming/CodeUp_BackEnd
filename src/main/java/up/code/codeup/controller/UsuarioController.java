@@ -61,7 +61,7 @@ public class UsuarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull ImageDto novaFoto) {
         service.atualizarFotoPerfil(novaFoto.getImage());
-        System.out.println("Aqui ó: " + novaFoto.getImage());
+        System.out.println("Aqui : " + novaFoto.getImage());
         return ResponseEntity.status(200).build();
     }
 
@@ -76,7 +76,7 @@ public class UsuarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<String> removerPerfil(@RequestBody String senha) {
         service.removerPerfil(senha);
-        return ResponseEntity.status(200).body("Perfil removido com sucesso!");
+        return ResponseEntity.status(200).body("Perfil removido com sucesso");
     }
 
     @GetMapping("/exercicios/mes/{id}")

@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.*;
 import up.code.codeup.dto.lojaDto.ItemLojaDto;
 import up.code.codeup.dto.lojaDto.LojaCompletaDto;
 import up.code.codeup.dto.usuarioDto.UsuarioAtualizado;
+import up.code.codeup.dto.usuarioDto.UsuarioDetalhesPerfil;
 import up.code.codeup.entity.ItemLoja;
 import up.code.codeup.service.LojaService;
 import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
+
+// ##########################################
+// ATENÇÃO, NÃO APAGAR ESSE COMENTÁRIO
+// ##########################################
 
 @RestController
 @RequestMapping("api/loja")
@@ -19,6 +24,7 @@ import java.util.List;
 public class LojaController {
     private final UsuarioUtils usuarioUtils;
     private final LojaService service;
+
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")

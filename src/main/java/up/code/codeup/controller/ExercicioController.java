@@ -19,6 +19,10 @@ import up.code.codeup.utils.UsuarioUtils;
 import java.io.IOException;
 import java.util.List;
 
+// ##########################################
+// ATENÇÃO, NÃO APAGAR ESSE COMENTÁRIO
+// ##########################################
+
 @RestController
 @RequestMapping("api/exercicios")
 @RequiredArgsConstructor
