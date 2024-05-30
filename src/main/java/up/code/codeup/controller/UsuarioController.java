@@ -22,11 +22,11 @@ public class UsuarioController {
     private ExercicioUsuarioService exercicioUsuarioService;
     private UsuarioUtils usuarioUtils;
 
-//    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
-//        this.service = service;
-//        this.exercicioUsuarioService = exercicioUsuarioService;
-//        this.usuarioUtils = usuarioUtils;
-//    }
+    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
+        this.service = service;
+        this.exercicioUsuarioService = exercicioUsuarioService;
+        this.usuarioUtils = usuarioUtils;
+    }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
