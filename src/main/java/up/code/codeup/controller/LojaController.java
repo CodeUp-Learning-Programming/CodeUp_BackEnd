@@ -17,7 +17,9 @@ import java.util.List;
 // ##########################################
 // ATENÇÃO, NÃO APAGAR ESSE COMENTÁRIO
 // ##########################################
-
+// ##########################################
+// ATENÇÃO, NÃO APAGAR ESSE COMENTÁRIO
+// ##########################################
 @RestController
 @RequestMapping("api/loja")
 @RequiredArgsConstructor

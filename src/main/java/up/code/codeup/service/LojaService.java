@@ -15,6 +15,10 @@ import up.code.codeup.utils.UsuarioUtils;
 
 import java.util.List;
 
+// ##########################################
+// ATENÇÃO, NÃO APAGAR ESSE COMENTÁRIO
+// ##########################################
+
 @Service
 @RequiredArgsConstructor
 public class LojaService {
