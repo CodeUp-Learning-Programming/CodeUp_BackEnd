@@ -30,6 +30,7 @@ public class AmizadeMapper {
 
     public static BuscarPorNomeResultDto toBuscarPorNomeResultDto(Amizade amizade, Integer usuarioLogadoID, Usuario usuario) {
         BuscarPorNomeResultDto buscarPorNomeResultDto = new BuscarPorNomeResultDto();
+
         if (amizade.getSolicitante().getId() == usuario.getId() && amizade.getReceptor().getId() == usuarioLogadoID) {
             buscarPorNomeResultDto.setNome(amizade.getSolicitante().getNome());
             buscarPorNomeResultDto.setEmail(amizade.getSolicitante().getEmail());

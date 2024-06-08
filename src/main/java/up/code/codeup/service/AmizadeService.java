@@ -91,34 +91,38 @@ public class AmizadeService {
         List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome, usuarioLogadoID);
         List<Amizade> amizades = amizadeRepository.buscarAmizadesPorIdUsuario(usuarioLogadoID);
 
-        Map<Integer, Integer> recptorESolicitante = new HashMap<>();
-        for (Amizade a:amizades) {
-            if(!recptorESolicitante.containsKey(a.getReceptor())){
-                recptorESolicitante.put(a.getReceptor().getId(), a.getSolicitante().getId());
+        Set<Usuario> usuariosProcessados = new HashSet<>();
+
+        for (Usuario usuario : usuarios) {
+            if (usuariosProcessados.contains(usuario)) {
+                continue;
             }
-        }
 
-        System.out.println("Essa bomba aqui ó: " + usuarios.size());
-        System.out.println("Essa nome bomba aqui ó: " + usuarios.get(0).getNome());
+            BuscarPorNomeResultDto buscarPorNomeResultDto = null;
 
-        System.out.println("Essa bomba dessa amizade aqui ó: " + amizades.size());
-
-
-
-        if (!usuarios.isEmpty()) {
-            for (Usuario usuarioPesquisa : usuarios) {
-                if(recptorESolicitante.containsKey(usuarioPesquisa.getId()) || recptorESolicitante.containsValue(usuarioPesquisa.getId())){
-                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuarioPesquisa);
-                    returnList.add(buscarPorNomeResultDto);
-                }else {
-                    BuscarPorNomeResultDto buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuarioPesquisa);
-                    returnList.add(buscarPorNomeResultDto);
+            if (amizades.isEmpty()) {
+                buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuario);
+            } else {
+                boolean isAmigo = false;
+                for (Amizade amizade : amizades) {
+                    if (amizade.getSolicitante().getId() == usuario.getId() || amizade.getReceptor().getId() == usuario.getId()) {
+                        buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(amizade, usuarioLogadoID, usuario);
+                        isAmigo = true;
+                        break;
+                    }
+                }
+                if (!isAmigo) {
+                    buscarPorNomeResultDto = AmizadeMapper.toBuscarPorNomeResultDto(usuarioLogadoID, usuario);
                 }
             }
+
+            returnList.add(buscarPorNomeResultDto);
+            usuariosProcessados.add(usuario);
         }
 
-        System.out.println("Aqui essa bucha: " + returnList.size());
-        System.out.println("Osh ó essa bomba aqui ó: " + returnList.get(0).getNome());
+
+        System.out.println("Tamanaho da lista" + returnList.size());
+
         return returnList;
     }
 }
