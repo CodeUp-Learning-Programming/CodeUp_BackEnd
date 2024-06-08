@@ -36,5 +36,4 @@ public class UsuarioMapper {
 
         return usuarioTokenDto;
     }
-
 }

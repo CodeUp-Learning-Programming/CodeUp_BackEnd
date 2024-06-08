@@ -101,4 +101,7 @@ public class UsuarioService {
         });
     }
 
+    public List<Usuario> ranking(){
+        return repository.buscarRanking();
+    }
 }

@@ -13,6 +13,8 @@ import up.code.codeup.service.ExercicioUsuarioService;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -83,6 +85,23 @@ public class UsuarioController {
     public ResponseEntity<Map<Integer, Integer>> exerciciosConcluidosMes(@PathVariable @NotNull Integer id) {
         Map<Integer, Integer> mesQtdExercicio = exercicioUsuarioService.exerciciosConcluidosMes(id);
         return ResponseEntity.ok(mesQtdExercicio);
+    }
+
+    @GetMapping("/ranking")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<UsuarioRankingDto>> exerciciosConcluidosMes() {
+        List<Usuario> ranking = service.ranking();
+        List<UsuarioRankingDto> returnList =new ArrayList<>();
+        if (ranking.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }else {
+            for (Usuario usuario:ranking) {
+                UsuarioRankingDto usuarioRankingDto = new UsuarioRankingDto(usuario);
+                returnList.add(usuarioRankingDto);
+            }
+        }
+
+        return ResponseEntity.status(200).body(returnList);
     }
 
 }
