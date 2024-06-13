@@ -3,30 +3,30 @@ package up.code.codeup.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import up.code.codeup.dto.ImageDto;
 import up.code.codeup.dto.usuarioDto.*;
 import up.code.codeup.entity.Usuario;
 import up.code.codeup.mapper.UsuarioMapper;
+import up.code.codeup.service.ExercicioUsuarioService;
 import up.code.codeup.service.UsuarioService;
 import up.code.codeup.utils.UsuarioUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/usuarios")
 public class UsuarioController {
     private UsuarioService service;
+    private ExercicioUsuarioService exercicioUsuarioService;
     private UsuarioUtils usuarioUtils;
 
-    public UsuarioController(UsuarioService service, UsuarioUtils usuarioUtils) {
+    public UsuarioController(UsuarioService service, ExercicioUsuarioService exercicioUsuarioService, UsuarioUtils usuarioUtils) {
         this.service = service;
+        this.exercicioUsuarioService = exercicioUsuarioService;
         this.usuarioUtils = usuarioUtils;
     }
 
@@ -60,8 +60,9 @@ public class UsuarioController {
 
     @PatchMapping("/foto")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull String novaFoto) {
-        service.atualizarFotoPerfil(novaFoto);
+    public ResponseEntity<Void> atualizarFotoPerfil(@RequestBody @NotNull ImageDto novaFoto) {
+        service.atualizarFotoPerfil(novaFoto.getImage());
+        System.out.println("Aqui ó: " + novaFoto.getImage());
         return ResponseEntity.status(200).build();
     }
 
@@ -78,4 +79,29 @@ public class UsuarioController {
         service.removerPerfil(senha);
         return ResponseEntity.status(200).body("Perfil removido com sucesso!");
     }
+
+    @GetMapping("/exercicios/mes/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Map<Integer, Integer>> exerciciosConcluidosMes(@PathVariable @NotNull Integer id) {
+        Map<Integer, Integer> mesQtdExercicio = exercicioUsuarioService.exerciciosConcluidosMes(id);
+        return ResponseEntity.ok(mesQtdExercicio);
+    }
+
+    @GetMapping("/ranking")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<UsuarioRankingDto>> exerciciosConcluidosMes() {
+        List<Usuario> ranking = service.ranking();
+        List<UsuarioRankingDto> returnList =new ArrayList<>();
+        if (ranking.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }else {
+            for (Usuario usuario:ranking) {
+                UsuarioRankingDto usuarioRankingDto = new UsuarioRankingDto(usuario);
+                returnList.add(usuarioRankingDto);
+            }
+        }
+
+        return ResponseEntity.status(200).body(returnList);
+    }
+
 }

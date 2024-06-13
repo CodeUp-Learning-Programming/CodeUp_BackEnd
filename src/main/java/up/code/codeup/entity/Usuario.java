@@ -3,10 +3,11 @@ package up.code.codeup.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Usuario")
 @Getter
@@ -28,7 +29,7 @@ public class Usuario {
     private Integer moedas = 0;
     private Integer xp = 0;
     private Integer nivel = 0;
-    private Integer vidas = 5;
+    private Integer vida = 5;
 
     @OneToMany(mappedBy = "usuario")
     private List<ExercicioUsuario> exerciciosUsuarios;
@@ -38,6 +39,12 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<ItemAdquirido> itemAdquiridos;
+
+    @OneToMany(mappedBy = "solicitante")
+    private List<Amizade> amizadesSolicitadas;
+
+    @OneToMany(mappedBy = "receptor")
+    private List<Amizade> amizadesRecebidas;
 
     @Override
     public String toString() {

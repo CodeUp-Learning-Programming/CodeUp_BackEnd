@@ -10,7 +10,7 @@ import up.code.codeup.repository.ExercicioUsuarioRepository;
 import up.code.codeup.repository.UsuarioRepository;
 import up.code.codeup.utils.UsuarioUtils;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +26,9 @@ public class ExercicioUsuarioService {
         } else {
             ExercicioUsuario exercicio = exercicioUsuario.get();
             exercicio.setConcluido(true);
+            Calendar cal = Calendar.getInstance();
+            int mesAtual = cal.get(Calendar.MONTH) + 1;
+            exercicio.setMesConcluido(mesAtual);
             usuario.setMoedas(usuario.getMoedas() + exercicio.getExercicio().getMoeda());
             usuario.setXp(usuario.getXp() + exercicio.getExercicio().getXp());
             usuarioRepository.save(usuario);
@@ -33,4 +36,21 @@ public class ExercicioUsuarioService {
         }
         repository.atualizarFaseDesbloqueadaParaUsuario(usuario.getId(), idFase);
     }
+
+    public Map<Integer, Integer> exerciciosConcluidosMes(Integer idUsuario) {
+        List<ExercicioUsuario> exercicioUsuarioList = repository.findByUsuarioIdAndConcluidoTrue(idUsuario);
+
+        Map<Integer, Integer> mesQtdExercicio = new HashMap<>();
+        for (ExercicioUsuario exe : exercicioUsuarioList) {
+            int mesConcluido = exe.getMesConcluido();
+            if (mesQtdExercicio.containsKey(mesConcluido)) {
+                int qtdExercicios = mesQtdExercicio.get(mesConcluido);
+                mesQtdExercicio.put(mesConcluido, qtdExercicios + 1);
+            } else {
+                mesQtdExercicio.put(mesConcluido, 1);
+            }
+        }
+        return mesQtdExercicio;
+    }
+
 }
